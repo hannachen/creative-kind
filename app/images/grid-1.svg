@@ -142,7 +142,6 @@
 	<polygon fill="#828282" points="49.99,450.01 0,500 50.05,500 50.05,450.07 	"/>
 	<polygon fill="#828282" points="0,400.02 0,449.95 49.93,449.95 	"/>
 	<polygon fill="#828282" points="49.93,449.95 0,449.95 0,500 49.99,450.01 	"/>
-	<polygon fill="#828282" points="50.05,250 0.45,299.61 50.05,250 0,250 0,300.05 50.05,300.05 	"/>
 	<polygon fill="#828282" points="149.9,50.05 149.96,49.99 99.98,0 99.98,50.05 	"/>
 	<polygon fill="#828282" points="150.02,49.93 150.02,0 99.98,0 149.96,49.99 	"/>
 	<polygon fill="#828282" points="50.05,50.05 99.98,50.05 99.98,0 50.05,49.93 	"/>
@@ -250,6 +249,8 @@
 	<polygon fill="#828282" points="400.02,200.07 449.95,250 449.95,199.95 400.02,199.95 	"/>
 	<polygon fill="#828282" points="449.95,349.98 449.95,300.05 400.02,300.05 	"/>
 	<polygon fill="#828282" points="400.02,349.98 449.95,349.98 400.02,300.05 	"/>
+	<polygon fill="#828282" points="50.05,250 0,250 0,300.05 0,300.05 50.05,250 	"/>
+	<polygon fill="#828282" points="50.05,250 0,300.05 50.05,300.05 	"/>
 </g>
 <g id="lines">
 	<rect fill="none" stroke="#231F20" stroke-width="0.25" stroke-miterlimit="10" stroke-dasharray="5,2" width="500" height="500"/>
@@ -310,7 +311,7 @@
 	
 		<line fill="none" stroke="#231F20" stroke-width="0.25" stroke-miterlimit="10" stroke-dasharray="5,2" x1="400.02" y1="0" x2="0" y2="400.02"/>
 	
-		<line fill="none" stroke="#231F20" stroke-width="0.25" stroke-miterlimit="10" stroke-dasharray="5,2" x1="300.05" y1="0" x2="0.45" y2="299.61"/>
+		<line fill="none" stroke="#231F20" stroke-width="0.25" stroke-miterlimit="10" stroke-dasharray="5,2" x1="300.05" y1="0" x2="0" y2="300.05"/>
 	
 		<line fill="none" stroke="#231F20" stroke-width="0.25" stroke-miterlimit="10" stroke-dasharray="5,2" x1="199.95" y1="0" x2="0" y2="199.95"/>
 	
