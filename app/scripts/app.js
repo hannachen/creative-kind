@@ -3,8 +3,10 @@ var app = (function ($) {
   var containerEl = document.getElementById("canvas-container"),
       selectedItem,
       grid,
+      linesGroup,
       colourAreas = [],
-      $colorPalette;
+      $colorPalette,
+      $lineToggleButton;
 
   function init() {
     // Colour palette
@@ -16,14 +18,22 @@ var app = (function ($) {
       }
     });
 
+    // Line toggle button
+    $lineToggleButton = $('.line-toggle');
+    $lineToggleButton.on('click', function(e) {
+      if (linesGroup) {
+        linesGroup.visible = linesGroup.visible ? false : true;
+        view.draw();
+      }
+    });
+
     // Setup directly from canvas id:
     paper.setup('coloring-area');
 
     // Add grid SVG
     project.importSVG('../images/grid-1.svg', function(item) {
-      fitToContainer(item);
       grid = item;
-      console.log('SVG:', item);
+      fitToContainer(item);
       if (item.hasChildren() && item.children.gridareas) {
         colourAreas = item.children.gridareas.children;
         _.forEach(colourAreas, function(shapeArea) {
@@ -31,10 +41,16 @@ var app = (function ($) {
             return;
           }
           shapeArea.strokeScaling = false;
-          shapeArea.onMouseEnter = enterArea;
-          shapeArea.onMouseLeave = leaveArea;
+          if (!Modernizr.touch) {
+            shapeArea.onMouseEnter = enterArea;
+            shapeArea.onMouseLeave = leaveArea;
+          }
           shapeArea.onClick = clickArea;
         });
+      }
+      if (item.hasChildren() && item.children.lines) {
+        linesGroup = item.children.lines;
+        console.log(linesGroup);
       }
     });
     view.draw();
@@ -52,7 +68,7 @@ var app = (function ($) {
   }
 
   function enterArea(e) {
-    e.target.opacity = 0.5;
+    e.target.opacity = 0.8;
   }
 
   function leaveArea(e) {
@@ -68,7 +84,7 @@ var app = (function ($) {
 
     item.scale(scale);
     item.position = [newPosX, newPosY];
-    console.log('size', width, scale);
+    view.draw();
   }
 
   function viewportEvents() {
@@ -84,12 +100,15 @@ var app = (function ($) {
         height = getContainerH(),
         size = new Size(width, height);
 
-    console.log(width, height);
-
     // Update paper size
     view.viewSize = size;
   }
 
+  /**
+   * Get container width in box sizing mode.
+   *
+   * @returns {number}
+   */
   function getContainerW() {
     var computedStyle = getComputedStyle(containerEl),
         containerWidth = containerEl.clientWidth;
@@ -99,6 +118,11 @@ var app = (function ($) {
     return containerWidth;
   }
 
+  /**
+   * Get container height in box sizing mode.
+   *
+   * @returns {number}
+   */
   function getContainerH() {
     var computedStyle = getComputedStyle(containerEl),
       containerHeight = containerEl.clientHeight;
