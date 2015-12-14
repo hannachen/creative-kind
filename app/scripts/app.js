@@ -1,31 +1,15 @@
 var app = (function ($) {
 
   var containerEl = document.getElementById("canvas-container"),
-      selectedItem,
+      selectedItems = [],
       grid,
       linesGroup,
       colourAreas = [],
+      multipleSelection = true, // initial state for multiple selection
       $colorPalette,
       $lineToggleButton;
 
   function init() {
-    // Colour palette
-    $colorPalette = $('.color-palette .color-button');
-    $colorPalette.on('click', function(e) {
-      if (selectedItem) {
-        selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
-        view.draw();
-      }
-    });
-
-    // Line toggle button
-    $lineToggleButton = $('.line-toggle');
-    $lineToggleButton.on('click', function(e) {
-      if (linesGroup) {
-        linesGroup.visible = linesGroup.visible ? false : true;
-        view.draw();
-      }
-    });
 
     // Setup directly from canvas id:
     paper.setup('coloring-area');
@@ -46,25 +30,89 @@ var app = (function ($) {
             shapeArea.onMouseLeave = leaveArea;
           }
           shapeArea.onClick = clickArea;
+          shapeArea.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
         });
       }
       if (item.hasChildren() && item.children.lines) {
         linesGroup = item.children.lines;
-        console.log(linesGroup);
       }
     });
     view.draw();
 
     // Setup viewport events
     viewportEvents();
+
+    // Setup drawing tools
+    initToolbars();
+  }
+
+  function initToolbars() {
+
+    // Toolbar selection
+    var $toolbar = $('.toolbar'),
+      $toggleMultiple = $toolbar.find('.select-multiple');
+
+    // Select multiple toggle
+    $toggleMultiple.bootstrapSwitch({
+      state: multipleSelection,
+      onSwitchChange: function(e, state) {
+        if (state) {
+          multipleSelection = true;
+          changeSelectionColor('#00ecde');
+        } else {
+          multipleSelection = false;
+          changeSelectionColor('#009dec');
+        }
+      }
+    });
+
+    // Reset Tool
+    $toolbar.find('[data-tool="clear"]').on('click', function() {
+      clearSelected();
+    });
+
+    // Colour palette
+    $colorPalette = $('.color-palette .color-button');
+    $colorPalette.on('click', function(e) {
+      if (selectedItems.length) {
+        _.forEach(selectedItems, function(selectedItem) {
+          selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
+        });
+        view.draw();
+      }
+    });
+
+    // Line toggle button
+    $lineToggleButton = $('.line-toggle');
+    $lineToggleButton.on('click', function() {
+      if (linesGroup) {
+        linesGroup.visible = linesGroup.visible ? false : true;
+        view.draw();
+      }
+    });
+  }
+
+  function changeSelectionColor(newColor) {
+    _.forEach(colourAreas, function(colourArea) {
+      colourArea.selectedColor = new Color(newColor);
+    });
+    view.draw();
   }
 
   function clickArea(e) {
-    if (selectedItem) { // Clear previously selected
-      selectedItem.selected = false;
+    var selectItem = true;
+    if (multipleSelection) {
+      if (_.includes(selectedItems, e.target)) {
+        selectItem = false;
+        e.target.selected = false;
+        _.remove(selectedItems, e.target);
+      }
+    } else {
+      clearSelected();
     }
-    selectedItem = e.target; // Cache selected
-    selectedItem.selected = true;
+    if (selectItem) {
+      selectTarget(e.target);
+    }
   }
 
   function enterArea(e) {
@@ -73,6 +121,25 @@ var app = (function ($) {
 
   function leaveArea(e) {
     e.target.opacity = 1;
+  }
+
+  /**
+   * Remove selection indicator for all selected areas.
+   */
+  function clearSelected() {
+    _.forEach(selectedItems, function(selected) {
+      selected.selected = false;
+    });
+    view.draw();
+    selectedItems = [];
+  }
+
+  /**
+   * Select the current target.
+   */
+  function selectTarget(target) {
+    selectedItems.push(target);
+    target.selected = true;
   }
 
   function fitToContainer(item) {

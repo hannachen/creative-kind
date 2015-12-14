@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "paper": "~0.9.25",
-    "normalize-css": "normalize.css#~3.0.3"
+    "normalize-css": "normalize.css#~3.0.3",
+    "bootstrap-switch": "~3.3.2"
   }
 }
