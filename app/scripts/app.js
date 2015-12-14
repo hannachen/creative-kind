@@ -67,13 +67,13 @@ var app = (function ($) {
     });
 
     // Reset Tool
-    $toolbar.find('[data-tool="clear"]').on('click', function() {
+    $toolbar.find('[data-tool="clear"]').on('touchstart click', function() {
       clearSelected();
     });
 
     // Colour palette
     $colorPalette = $('.color-palette .color-button');
-    $colorPalette.on('click', function(e) {
+    $colorPalette.on('touchstart click', function(e) {
       if (selectedItems.length) {
         _.forEach(selectedItems, function(selectedItem) {
           selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
