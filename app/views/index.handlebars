@@ -1,0 +1,19 @@
+
+  <h1>{{title }}</h1>
+
+  <p>A creative community with a common goal.</p>
+
+  <ul>
+    <li><a href="/quilts">View Quilts</a></li>
+  </ul>
+
+
+  {{#if user}}
+
+    <h2>Welcome {{user.username}}</h2>
+
+  {{else}}
+
+    {{>login-menu }}
+
+  {{/if}}

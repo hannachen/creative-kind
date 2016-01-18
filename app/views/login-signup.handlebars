@@ -1,0 +1,20 @@
+
+  <h1>{{title }}</h1>
+
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#login">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#signup">Sign Up</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="login" role="tabpanel">
+      {{>login-form }}
+    </div>
+    <div class="tab-pane" id="signup" role="tabpanel">
+      {{>signup-form }}
+    </div>
+  </div>

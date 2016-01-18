@@ -1,0 +1,36 @@
+
+  <h1>{{title }}</h1>
+
+  {{#if user}}
+  <h2>You are logged in as: {{user.username}}</h2>
+  <ul>
+    <li><a href="/quilts">View quilts</a></li>
+    <li><a href="/quilts/create">Create a quilt</a></li>
+    <li><a href="/account/logout">Logout</a></li>
+  </ul>
+  {{/if}}
+
+  {{#if quilts}}
+  <h3>My Quilts</h3>
+  <ul>
+    {{#each quilts}}
+      <li>{{title}}&nbsp;[{{type}}]</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if userdata}}
+  <ul>
+    <li>{{userdata.email}}</li>
+    <li>{{userdata.username}}</li>
+    <li>{{userdata.password}}</li>
+  </ul>
+  {{/if}}
+
+  {{#if userlist}}
+  <ul>
+    {{#each userlist}}
+      <li>{{username}}&nbsp;({{email}})</li>
+    {{/each}}
+  </ul>
+  {{/if}}
