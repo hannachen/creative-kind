@@ -27,6 +27,19 @@ router.get('/', function (req, res, next) {
   });
 });
 
+router.get('/:id*', function (req, res, next) {
+  Quilt.findOne({'_id':req.param('id')}, function (err, quilt) {
+    console.log('ID?? ', req.param('id'));
+    console.log(quilt);
+    if (err) return next(err);
+    res.render('pages/quilts/view', {
+      title: 'View Quilt',
+      quilt: quilt
+    });
+  });
+});
+
+
 router.get('/create', isAuthenticated, function (req, res, next) {
   res.render('pages/quilts/create', {
     title: 'Create a quilt'
