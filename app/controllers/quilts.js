@@ -27,16 +27,18 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/:id*', function (req, res, next) {
-  Quilt.findOne({'_id':req.param('id')}, function (err, quilt) {
-    console.log('ID?? ', req.param('id'));
-    console.log(quilt);
-    if (err) return next(err);
-    res.render('pages/quilts/view', {
-      title: 'View Quilt',
-      quilt: quilt
+router.get('/view/:id*', function (req, res, next) {
+  Quilt.findOne({'_id':req.params.id})
+    .populate('_user')
+    .exec(function (err, quilt) {
+      console.log('ID?? ', req.param('id'));
+      console.log(quilt);
+      if (err) return next(err);
+      res.render('pages/quilts/view', {
+        title: 'View Quilt',
+        quilt: quilt
+      });
     });
-  });
 });
 
 

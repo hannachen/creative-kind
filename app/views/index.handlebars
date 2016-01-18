@@ -3,17 +3,20 @@
 
   <p>A creative community with a common goal.</p>
 
-  <ul>
-    <li><a href="/quilts">View Quilts</a></li>
-  </ul>
-
 
   {{#if user}}
 
     <h2>Welcome {{user.username}}</h2>
+    <ul>
+      <li><a href="/account">Account</a></li>
+    </ul>
 
   {{else}}
 
     {{>login-menu }}
 
   {{/if}}
+
+  <ul>
+    <li><a href="/quilts">View Quilts</a></li>
+  </ul>

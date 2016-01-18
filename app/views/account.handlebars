@@ -1,6 +1,10 @@
 
   <h1>{{title }}</h1>
 
+  {{#if user.fb.id}}
+    <img src="https://graph.facebook.com/{{user.fb.id}}/picture?type=square" />
+  {{/if}}
+
   {{#if user}}
   <h2>You are logged in as: {{user.username}}</h2>
   <ul>
