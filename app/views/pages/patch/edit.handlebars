@@ -1,0 +1,29 @@
+<div class="patch-container">
+
+  <ul class="toolbar">
+    <li class="tool">
+      <span class="label">Select Multiple</span>
+      <input class="select-multiple" type="checkbox" checked>
+    </li>
+    <li class="tool"><button data-tool="clear">Clear Selection</button></li>
+  </ul>
+  <div id="canvas-container" class="canvas-container select">
+    <img src="/img/grid-spacer.png" class="grid-spacer" />
+    <canvas id="coloring-area" class="coloring-area"></canvas>
+  </div>
+  <ul class="color-palette">
+    <li class="color"><button class="color-button" data-color="#588C7E" style="background-color:#588C7E;"></button></li>
+    <li class="color"><button class="color-button" data-color="#F2E394" style="background-color:#F2E394;"></button></li>
+    <li class="color"><button class="color-button" data-color="#F2AE72" style="background-color:#F2AE72;"></button></li>
+    <li class="color"><button class="color-button" data-color="#D96459" style="background-color:#D96459;"></button></li>
+    <li class="color"><button class="color-button" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
+  </ul>
+  <div class="utils">
+    <button class="line-toggle">Toggle Lines</button>
+  </div>
+
+  <form action="/patch/edit/{{patch.uid}}" method="post">
+    <input type="submit" value="Save" />
+  </form>
+
+</div>

@@ -1,6 +1,4 @@
 
-  <h1>{{title }}</h1>
-
   {{#if user.fb.id}}
     <img src="https://graph.facebook.com/{{user.fb.id}}/picture?type=square" />
   {{/if}}
@@ -18,7 +16,7 @@
   <h3>My Quilts</h3>
   <ul>
     {{#each quilts}}
-      <li>{{title}}&nbsp;[{{type}}]</li>
+      <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
     {{/each}}
   </ul>
   {{/if}}

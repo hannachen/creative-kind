@@ -1,6 +1,25 @@
 
-  <h1>{{title }}</h1>
-
   <h2>{{quilt.title}}</h2>
   <h4>{{quilt.type}}</h4>
   <h5>By: {{quilt._user.username}}</h5>
+
+  {{#if patches}}
+    <ul class="quilt-list">
+      {{#each patches}}
+        <li class="patch-list-item">
+          {{#if_eq status "new"}}
+            <a href="/patch/edit/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
+          {{/if_eq}}
+          {{#if_eq status "progress"}}
+            <span class="patch-item-link status-{{status}}">{{status}}</span>
+          {{/if_eq}}
+          {{#if_eq status "mine"}}
+            <a href="/patch/edit/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
+          {{/if_eq}}
+          {{#if_eq status "complete"}}
+            <a href="/patch/view/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
+          {{/if_eq}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}

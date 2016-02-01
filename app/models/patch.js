@@ -1,19 +1,19 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var QuiltSchema = new Schema({
+var PatchSchema = new Schema({
       _user : { type: Schema.Types.ObjectId, ref: 'User' },
-      _patches: [{ type: Schema.Types.ObjectId, ref: 'Patch' }],
-      title: String,
-      type: String,
+      _quilt: { type: Schema.Types.ObjectId, ref: 'Quilt' },
+      uid: String,
+      colors: [],
       status: String,
       theme: String
-    });
+    }, { collection: 'patches' });
 
-QuiltSchema.virtual('date')
+PatchSchema.virtual('date')
   .get(function(){
     return this._id.getTimestamp();
   });
 
-mongoose.model('Quilt', QuiltSchema);
+mongoose.model('Patch', PatchSchema);
 

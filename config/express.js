@@ -18,6 +18,9 @@ module.exports = function(app, config) {
   app.locals.ENV_DEVELOPMENT = env == 'development';
   
   app.engine('handlebars', exphbs({
+    helpers: {
+      'if_eq': function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this); }
+    },
     layoutsDir: config.root + '/app/views/layouts/',
     defaultLayout: 'main',
     partialsDir: [config.root + '/app/views/partials/']

@@ -7,3 +7,4 @@ bower_components
 test/bower_components
 data
 public/components
+.DS_Store

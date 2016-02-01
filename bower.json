@@ -1,12 +1,17 @@
 {
-  "name": "qb-test",
+  "name": "quilting-bee",
   "version": "0.0.1",
   "ignore": [
     "**/.*",
     "node_modules",
+    "bower_components",
     "components"
   ],
   "devDependencies": {
-    "bootstrap": "v4.0.0-alpha.2"
+    "bootstrap": "v4.0.0-alpha.2",
+    "lodash": "~4.0.0",
+    "paper": "^0.9.25",
+    "normalize-css": "~3.0.3",
+    "bootstrap-switch": "~3.3.2"
   }
 }

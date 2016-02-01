@@ -1,7 +1,7 @@
 'use strict';
 (function($,window) {
-  var QuiltingBee = {
 
+  var QuiltingBee = {
     init: function() {
       this.initVariables();
       this.initEvents();
@@ -21,5 +21,7 @@
     }
   }
 
-  $(document).ready(QuiltingBee.init());
+  $(function() {
+    QuiltingBee.init();
+  });
 })(jQuery,window);

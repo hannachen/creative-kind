@@ -1,0 +1,36 @@
+.quilt-list {
+  margin: 0;
+  padding: 0;
+  width: 500px;
+
+  .patch-list-item,
+  .patch-item-link {
+    display: block;
+    float: left;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .patch-list-item {
+    margin: 5px;
+    padding: 0;
+    list-style-type: none;
+    display: block;
+
+    .patch-item-link {
+      text-indent: -100px;
+      background-color: #cccccc;
+    }
+    .status-new {
+      background-color: #ffcccc;
+    }
+    .status-complete {
+      background-color: #bbffbb;
+    }
+    .status-mine {
+      background-color: #2aabd2;
+      border: 2px solid #025aa5;
+    }
+  }
+}

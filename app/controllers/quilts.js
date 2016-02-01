@@ -1,7 +1,11 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
-    Quilt = mongoose.model('Quilt');
+    Quilt = mongoose.model('Quilt'),
+    Patch = mongoose.model('Patch');
+
+var _ = require('lodash'),
+    uuid = require('node-uuid');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -31,12 +35,21 @@ router.get('/view/:id*', function (req, res, next) {
   Quilt.findOne({'_id':req.params.id})
     .populate('_user')
     .exec(function (err, quilt) {
-      console.log('ID?? ', req.param('id'));
-      console.log(quilt);
       if (err) return next(err);
-      res.render('pages/quilts/view', {
-        title: 'View Quilt',
-        quilt: quilt
+      Patch.find({'_quilt': quilt.id}, function(err, patches) {
+        if (err) return next(err);
+        _.forEach(patches, function(patch) {
+          if (patch._user && req.user &&
+              String(req.user.id) === String(patch._user) &&
+              patch.status === 'progress') {
+            patch.status = 'mine';
+          }
+        });
+        res.render('pages/quilts/view', {
+          title: 'View Quilt',
+          quilt: quilt,
+          patches: patches
+        });
       });
     });
 });
@@ -55,12 +68,28 @@ router.post('/create', isAuthenticated, function (req, res, next) {
     'title': req.body.title,
     'type': req.body.type
   };
-  console.log(quiltData);
   // create a new quilt
   var newQuilt = new Quilt(quiltData);
-  newQuilt.save(function(err) {
+  newQuilt.save(function(err, quilt) {
     if (err) throw err;
     console.log('Quilt saved successfully!');
-    res.redirect('/account');
+    if (quilt) { // Add patches
+      for (var i=0; i<61; i++) {
+        var patchData = {
+          'uid': uuid.v1(),
+          '_quilt': quilt.id,
+          '_user': null,
+          'colors': [],
+          'status': 'new',
+          'theme': ''
+        };
+        var patch = new Patch(patchData);
+        patch.save(function(err) {
+          if (err) throw err;
+          console.log('patch saved.');
+        });
+      }
+      res.redirect('/account');
+    }
   });
 });
