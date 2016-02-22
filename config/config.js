@@ -21,6 +21,15 @@ var config = {
     db: 'mongodb://localhost/qb-test-test'
   },
 
+  staging: {
+    root: rootPath,
+    app: {
+      name: 'qb-stg'
+    },
+    port: 8080,
+    db: 'mongodb://localhost/quilting-bee'
+  },
+
   production: {
     root: rootPath,
     app: {
