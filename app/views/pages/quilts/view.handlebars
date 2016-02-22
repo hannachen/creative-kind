@@ -1,7 +1,9 @@
 
-  <h2>{{quilt.title}}</h2>
-  <h4>{{quilt.type}}</h4>
-  <h5>By: {{quilt._user.username}}</h5>
+  <h2>{{quilt.title}} [{{quilt.type}}]</h2>
+
+  {{#if_eq quilt.type "private"}}
+    <h5>By: {{quilt._user.username}}</h5>
+  {{/if_eq}}
 
   {{#if patches}}
     <ul class="quilt-list">

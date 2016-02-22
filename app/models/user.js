@@ -7,6 +7,7 @@ var UserSchema = new Schema({
         required: true,
         unique: 'Username is taken, please select another.'
       },
+      usertype: String,
       email: {
         type: String,
         required: true,

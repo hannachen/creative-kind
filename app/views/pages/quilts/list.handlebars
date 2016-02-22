@@ -1,6 +1,8 @@
 
   <ul>
     {{#each quilts}}
-      <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
+      {{#if_eq type 'public'}}
+        <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
+      {{/if_eq}}
     {{/each}}
   </ul>

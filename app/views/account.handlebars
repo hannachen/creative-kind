@@ -4,7 +4,12 @@
   {{/if}}
 
   {{#if user}}
-  <h2>You are logged in as: {{user.username}}</h2>
+  <h2>
+    You are logged in as: {{user.username}}
+    {{#if user.usertype}}
+      [{{user.usertype}}]
+    {{/if}}
+  </h2>
   <ul>
     <li><a href="/quilts">View quilts</a></li>
     <li><a href="/quilts/create">Create a quilt</a></li>

@@ -57,7 +57,8 @@ router.get('/view/:id*', function (req, res, next) {
 
 router.get('/create', isAuthenticated, function (req, res, next) {
   res.render('pages/quilts/create', {
-    title: 'Create a quilt'
+    title: 'Create a quilt',
+    user: req.user
   });
 });
 

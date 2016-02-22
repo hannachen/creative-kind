@@ -44,6 +44,9 @@ var app = (function($) {
 
     // Setup drawing tools
     initToolbars();
+
+    // Setup form handler
+    initFormActions();
   }
 
   function initToolbars() {
@@ -89,6 +92,17 @@ var app = (function($) {
         linesGroup.visible = linesGroup.visible ? false : true;
         view.draw();
       }
+    });
+  }
+
+  function initFormActions() {
+    var $actionsForm = $('#formActions'),
+        $saveButton = $actionsForm.find('input[name="saveAction"]');
+    $actionsForm.on('submit', function(e) {
+      e.preventDefault();
+    });
+    $saveButton.on('click', function(e) {
+      console.log(e);
     });
   }
 

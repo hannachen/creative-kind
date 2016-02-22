@@ -83,11 +83,12 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
 });
 
 router.post('/edit/:uid*', isAuthenticated, function (req, res, next) {
+  var patchData = req.params.patchData;
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
       if (isMine(req, res, patch)) {
-        patch.status = 'complete';
+        //patch.status = 'complete';
         patch.save(function(err) {
           if (err) throw err;
           res.redirect('/quilts/view/'+patch._quilt);

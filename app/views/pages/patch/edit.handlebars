@@ -22,8 +22,9 @@
     <button class="line-toggle">Toggle Lines</button>
   </div>
 
-  <form action="/patch/edit/{{patch.uid}}" method="post">
-    <input type="submit" value="Save" />
+  <form action="/patch/edit/{{patch.uid}}" method="post" id="formActions">
+    <input type="button" name="saveAction" value="Save" />
+    <input type="button" name="completeAction" value="Complete" />
   </form>
 
 </div>
