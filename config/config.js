@@ -8,7 +8,7 @@ var config = {
     app: {
       name: 'qb-test'
     },
-    port: 8080,
+    port: 3000,
     db: 'mongodb://localhost/quilting-bee'
   },
 
