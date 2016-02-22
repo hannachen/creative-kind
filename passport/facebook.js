@@ -4,11 +4,12 @@ var mongoose = require('mongoose'),
     FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = function(passport) {
+  var env = process.env.NODE_ENV || 'development';
 
   passport.use('facebook', new FacebookStrategy({
-      clientID        : fbConfig.appID,
-      clientSecret    : fbConfig.appSecret,
-      callbackURL     : fbConfig.callbackUrl,
+      clientID        : fbConfig.env.appID,
+      clientSecret    : fbConfig.env.appSecret,
+      callbackURL     : fbConfig.env.callbackUrl,
       profileFields   : ['id', 'emails']
     },
 

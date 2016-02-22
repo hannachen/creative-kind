@@ -4,11 +4,12 @@ var mongoose = require('mongoose'),
     TwitterStrategy = require('passport-twitter').Strategy;
 
 module.exports = function (passport) {
+  var env = process.env.NODE_ENV || 'development';
 
   passport.use('twitter', new TwitterStrategy({
-      consumerKey: twitterConfig.apikey,
-      consumerSecret: twitterConfig.apisecret,
-      callbackURL: twitterConfig.callbackURL
+      consumerKey: twitterConfig.env.apikey,
+      consumerSecret: twitterConfig.env.apisecret,
+      callbackURL: twitterConfig.env.callbackURL
     },
     function (token, tokenSecret, profile, done) {
 
