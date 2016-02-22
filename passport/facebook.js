@@ -7,9 +7,9 @@ module.exports = function(passport) {
   var env = process.env.NODE_ENV || 'development';
 
   passport.use('facebook', new FacebookStrategy({
-      clientID        : fbConfig.env.appID,
-      clientSecret    : fbConfig.env.appSecret,
-      callbackURL     : fbConfig.env.callbackUrl,
+      clientID        : fbConfig[env].appID,
+      clientSecret    : fbConfig[env].appSecret,
+      callbackURL     : fbConfig[env].callbackUrl,
       profileFields   : ['id', 'emails']
     },
 
