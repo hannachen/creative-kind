@@ -36,7 +36,7 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js'
     ])
     .pipe(concat('vendor.min.js'))
-    .pipe(uglify())
+    .pipe(uglify({options: {'preserveComments':'all'}}))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
 });

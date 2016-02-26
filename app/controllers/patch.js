@@ -114,3 +114,12 @@ router.post('/start/:uid*', isAuthenticated, function (req, res, next) {
       }
     });
 });
+
+router.get('/dev-static', function (req, res, next) {
+  Quilt.find({}, function (err, quilts) {
+    if (err) return next(err);
+    res.render('pages/patch/edit', {
+      title: 'Patch'
+    });
+  });
+});

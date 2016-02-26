@@ -96,6 +96,7 @@ var app = (function($) {
   }
 
   function initFormActions() {
+    console.log('starting form action listeners....');
     var $actionsForm = $('#formActions'),
         $saveButton = $actionsForm.find('input[name="saveAction"]');
     $actionsForm.on('submit', function(e) {
