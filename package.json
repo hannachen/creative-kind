@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prestart": "pgrep mongod || mongod --dbpath ./data/db/ --fork --logpath db.startup.log",
     "start": "node app.js"
   },
   "dependencies": {
