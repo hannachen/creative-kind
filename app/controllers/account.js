@@ -2,6 +2,7 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     passport = require('passport'),
+    recaptcha = require('express-recaptcha'),
     User = mongoose.model('User'),
     Quilt = mongoose.model('Quilt');
 
@@ -52,6 +53,24 @@ router.post('/register', function(req, res, next) {
     res.redirect('/account');
   });
 });
+
+
+
+router.get('/recover-password', recaptcha.middleware.render, function(req, res) {
+  res.render('pages/recover-password/index', { captcha:req.recaptcha });
+});
+
+router.post('/recover-password', recaptcha.middleware.verify, function(req, res) {
+  console.log(req.body.user.email);
+  if (!req.recaptcha.error) {
+    console.log('captcha success');
+    res.render('pages/recover-password/confirm');
+  } else {
+    console.log('captcha error');
+    res.render('pages/recover-password/index', { captcha: recaptcha.render() });
+  }
+});
+
 
 
 router.get('/login', function(req, res) {

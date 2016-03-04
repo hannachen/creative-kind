@@ -11,6 +11,7 @@ var methodOverride = require('method-override');
 var exphbs  = require('express-handlebars');
 
 var passport = require('passport');
+var recaptcha = require('express-recaptcha');
 
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
@@ -19,7 +20,12 @@ module.exports = function(app, config) {
   
   app.engine('handlebars', exphbs({
     helpers: {
-      'if_eq': function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this); }
+      'if_eq': function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this); },
+      'section': function(name, options) {
+        if(!this._sections) this._sections = {};
+        this._sections[name] = options.fn(this);
+        return null;
+      }
     },
     layoutsDir: config.root + '/app/views/layouts/',
     defaultLayout: 'main',
@@ -49,6 +55,9 @@ module.exports = function(app, config) {
   // Initialize Passport
   var initPassport = require('../passport/init');
   initPassport(passport);
+
+  // Initialize reCAPTCHA
+  recaptcha.init('6LdaWRkTAAAAAA4kTdqU6kzSCv2CgQsfgtKltN2q', '6LdaWRkTAAAAAO9kULf6PhFROv1wOCbSg-AgS6lZ');
 
   var controllers = glob.sync(config.root + '/app/controllers/*.js');
   controllers.forEach(function (controller) {
