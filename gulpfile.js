@@ -1,12 +1,22 @@
 var gulp = require('gulp'),
+    fs = require('fs'),
+    path = require('path'),
     nodemon = require('gulp-nodemon'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
     cssmin = require('gulp-cssmin'),
     livereload = require('gulp-livereload'),
     modernizr = require('modernizr'),
     sass = require('gulp-ruby-sass');
+
+function getFolders(dir) {
+  return fs.readdirSync(dir)
+    .filter(function(file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+}
 
 gulp.task('sass', function () {
   return sass('app/src/styles/**/*.scss')
@@ -48,21 +58,33 @@ gulp.task('js:main', function() {
     .pipe(livereload());
 });
 gulp.task('js:pages', function() {
-  return gulp.src('app/src/scripts/**/*.js')
-    .pipe(concat('main.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('public/js'))
-    .pipe(livereload());
+  var folders = getFolders('app/src/scripts');
+  console.log(folders);
+  var tasks = folders.map(function(folder) {
+    return gulp.src(path.join('app/src/scripts', folder, '/**/*.js'))
+      // concat into foldername.js
+      .pipe(concat(folder + '.js'))
+      // write to output
+      .pipe(gulp.dest('tmp/scripts/'))
+      // minify
+      .pipe(uglify())
+      // rename to folder.min.js
+      .pipe(rename(folder + '.min.js'))
+      // write to output again
+      .pipe(gulp.dest('public/js'));
+  });
+  return tasks;
 });
 
 gulp.task('scripts', [
   'js:vendor',
-  'js:main'
+  'js:main',
+  'js:pages'
 ]);
 
 gulp.task('watch', function() {
   gulp.watch('app/src/styles/**/*.scss', ['sass']);
-  gulp.watch('app/src/scripts/*.js', ['scripts']);
+  gulp.watch('app/src/scripts/**/*.js', ['scripts']);
 });
 
 gulp.task('build-modernizr', function () {

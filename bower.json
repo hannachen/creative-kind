@@ -9,9 +9,9 @@
   ],
   "devDependencies": {
     "bootstrap": "v4.0.0-alpha.2",
-    "lodash": "~4.0.0",
+    "lodash": "~4.7.0",
     "paper": "^0.9.25",
-    "normalize-css": "~3.0.3",
+    "normalize-css": "~4.0.0",
     "bootstrap-switch": "~3.3.2"
   }
 }

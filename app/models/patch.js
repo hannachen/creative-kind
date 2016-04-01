@@ -7,6 +7,7 @@ var PatchSchema = new Schema({
       uid: String,
       colors: [],
       status: String,
+      svg: String,
       theme: String
     }, { collection: 'patches' });
 

@@ -83,12 +83,13 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
 });
 
 router.post('/edit/:uid*', isAuthenticated, function (req, res, next) {
-  var patchData = req.params.patchData;
+  var patchData = req.body.patchData;
+  console.log(patchData);
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
       if (isMine(req, res, patch)) {
-        //patch.status = 'complete';
+        patch.svg = patchData.colours;
         patch.save(function(err) {
           if (err) throw err;
           res.redirect('/quilts/view/'+patch._quilt);
@@ -109,6 +110,27 @@ router.post('/start/:uid*', isAuthenticated, function (req, res, next) {
           console.log('patch saved.');
           res.redirect('/patch/edit/'+patch.uid);
         });
+      } else {
+        res.redirect('/quilts/view/'+patch._quilt.id);
+      }
+    });
+});
+
+router.post('/save/:uid*', isAuthenticated, function (req, res, next) {
+  console.log('hkhgjh');
+  Patch.findOne({'uid':req.params.uid })
+    .exec(function (err, patch) {
+      if (err) return next(err);
+      if (isMine(req, res, patch)) {
+        console.log(req.svgData);
+        patch._user = req.user.id;
+        // patch.status = 'progress';
+        // patch.save(function(err) {
+        //   if (err) throw err;
+        //   console.log('patch saved.');
+        //   res.redirect('/patch/edit/'+patch.uid);
+        // });
+        res.redirect('/patch/edit/'+patch.uid);
       } else {
         res.redirect('/quilts/view/'+patch._quilt.id);
       }

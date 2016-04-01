@@ -1,3 +1,6 @@
+{{#section 'footer'}}
+  <script src="/js/patch.min.js"></script>
+{{/section}}
 <div class="patch-container">
 
   <ul class="toolbar">
@@ -21,10 +24,13 @@
   <div class="utils">
     <button class="line-toggle">Toggle Lines</button>
   </div>
+  <div id="saveData">
+    {{patch.svg}}
+  </div>
 
   <form action="/patch/edit/{{patch.uid}}" method="post" id="formActions">
-    <input type="button" name="saveAction" value="Save" />
-    <input type="button" name="completeAction" value="Complete" />
+    <input type="button" name="saveAction" data-target="#formActions" value="Save" />
+    <input type="button" name="completeAction" data-target="#formActions" value="Complete" />
   </form>
 
 </div>
