@@ -9,3 +9,4 @@ data
 public/components
 .DS_Store
 db.startup.log
+tmp
