@@ -18,7 +18,7 @@ var app = (function($) {
     paper.setup('coloring-area');
 
     var saveDataString = saveData.innerHTML;
-    
+
     if (saveDataString) {
       patchData = saveDataString.split(',');
       // _.each(patchData, function(color) {
@@ -139,6 +139,8 @@ var app = (function($) {
         patchData: {
           colours: data
         }
+      }, function() {
+        location.reload();
       });
     });
   }

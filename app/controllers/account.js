@@ -4,7 +4,8 @@ var express = require('express'),
     passport = require('passport'),
     recaptcha = require('express-recaptcha'),
     User = mongoose.model('User'),
-    Quilt = mongoose.model('Quilt');
+    Quilt = mongoose.model('Quilt'),
+    Patch = mongoose.model('Patch');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -23,11 +24,19 @@ module.exports = function (app, config) {
 router.get('/', isAuthenticated, function (req, res, next) {
   Quilt.find({'_user': req.user.id}, function(err, quilts) {
     if (err) return next(err);
-    res.render('account', {
-      title: 'Account',
-      user: req.user,
-      quilts: quilts
-    });
+    
+    Patch
+      .find({'_user': req.user.id})
+      .populate('_quilt')
+      .exec(function(err, patches) {
+        if (err) return next(err);
+        res.render('account', {
+          title: 'Account',
+          user: req.user,
+          quilts: quilts,
+          patches: patches
+        });
+      });
   });
 });
 
