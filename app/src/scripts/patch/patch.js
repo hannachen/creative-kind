@@ -2,5 +2,5 @@
 paper.install(window);
 (function($,window) {
 
-  app.init();
+  patch.init();
 })(jQuery,window);

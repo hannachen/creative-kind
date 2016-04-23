@@ -1,11 +1,12 @@
 'use strict';
-var app = (function($) {
+var quilt = (function($) {
 
   var newPatches = document.getElementsByClassName('status-new'),
       myPatches = document.getElementsByClassName('status-mine'),
       $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
-      $alertModal = $('#alert-modal').modal('hide');
+      $alertModal = $('#alert-modal').modal('hide'),
+      clickedPatch;
 
   $donationModal.on('hidden.bs.modal', function() {
     $confirmationModal.modal('show');
@@ -13,7 +14,6 @@ var app = (function($) {
 
   _.forEach(newPatches, function(patch) {
     patch.onclick = function(e) {
-      console.log(e);
       e.preventDefault();
       if (myPatches.length) {
         $alertModal.modal('show');
@@ -25,169 +25,139 @@ var app = (function($) {
   });
 
   var containerEl = document.getElementById('canvas-container'),
-      saveData = document.getElementById('saveData'),
+      quiltData = document.getElementById('quilt-data'),
       patchData = [],
-      selectedItems = [],
       grid,
-      linesGroup,
-      colourAreas = [],
-      multipleSelection = true, // initial state for multiple selection
-      $colorPalette,
-      $lineToggleButton;
+      startGroup = [],
+      takenGroup = [],
+      patchStatus;
 
   function init() {
 
     // Setup directly from canvas id:
-    paper.setup('coloring-area');
+    paper.setup('grid-area');
 
-    var saveDataString = saveData.innerHTML;
-
-    if (saveDataString) {
-      patchData = saveDataString.split(',');
-      // _.each(patchData, function(color) {
-      //
-      // });
-      // console.log(patchData);
-      // console.log(saveDataString);
-      // patchSvg = doc.getElementById('gridareas');
+    if (quiltData) {
+      var quiltDataString = quiltData.innerHTML;
+    }
+    if (quiltDataString) {
+      patchStatus = JSON.parse(quiltDataString);
     }
 
+    // Handle layers
+    var initialLayer = project.activeLayer;
+
     // Add grid SVG
-    project.importSVG('/img/grid-1.svg', function(item) {
-      grid = item;
-      fitToContainer(item);
-      if (item.hasChildren() && item.children.gridareas) {
-        colourAreas = item.children.gridareas.children;
-        var i = 0;
-        _.forEach(colourAreas, function(shapeArea) {
-          if (shapeArea === undefined) {
+    project.importSVG('/img/quilt-grid.svg', function(svg) {
+      grid = svg;
+      fitToContainer(svg);
+      if (svg.hasChildren() && svg.children.patches) {
+        if (svg.hasChildren() && svg.children.start) {
+          startGroup = svg.children.start.children;
+          // console.log(svg.children.start);
+          // var startLayer = moveToNewLayer(svg.children.start, 'start');
+          // startGroup = startLayer.children;
+          // project.layers.push(startLayer);
+        }
+        if (svg.hasChildren() && svg.children.taken) {
+          takenGroup = svg.children.taken.children;
+          // var takenLayer = moveToNewLayer(svg.children.taken, 'taken');
+          // takenGroup = takenLayer.children;
+          // project.layers.push(takenLayer);
+        }
+        // initialLayer.activate();
+        var patches = svg.children,
+            i = 0;
+        console.log(patches.length);
+        // for(var j=0;j<patches.length;j++) {
+        //   console.log(patches[j]);
+        // }
+        _.forEach(patches, function(patch) {
+          if (patch === undefined) {
             return;
           }
-          shapeArea.strokeScaling = false;
-          if (!Modernizr.touch) {
-            shapeArea.onMouseEnter = enterArea;
-            shapeArea.onMouseLeave = leaveArea;
+
+          var patchGroup = new paper.Group();
+          patch.strokeScaling = false;
+          patch.fillColor = '#ffffff';
+          patch.data.uid = patchStatus[i].uid;
+          patch.data.status = patchStatus[i].status;
+          patch.copyTo(patchGroup);
+
+          switch (patch.data.status) {
+            case 'progress':
+              startGroup[i].visible = false;
+              takenGroup[i].visible = true;
+              break;
+            case 'mine':
+              patch.fillColor = '#aab0ff';
+              break;
+            case 'complete':
+              patch.fillColor = '#ffcccc';
+              break;
+            case 'new':
+            default:
+              startGroup[i].visible = true;
+              takenGroup[i].visible = false;
+              break;
           }
-          shapeArea.onClick = clickArea;
-          shapeArea.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
-          shapeArea.fillColor = patchData[i];
-          console.log(patchData[i]);
+          startGroup[i].copyTo(patchGroup);
+          takenGroup[i].copyTo(patchGroup);
+          patchGroup.on(getPatchEvents);
+          patchGroup.copyTo(initialLayer);
+          console.log(patchGroup);
+
           i++;
+
+          if (i === patches.length - 1) {
+            svg.children.start.remove();
+            svg.children.taken.remove();
+            console.log(patches.length);
+            console.log(i);
+          }
         });
-      }
-      if (item.hasChildren() && item.children.lines) {
-        linesGroup = item.children.lines;
       }
     });
     view.draw();
 
     // Setup viewport events
     viewportEvents();
-
-    // Setup drawing tools
-    initToolbars();
-
-    // Setup form handler
-    initFormActions();
   }
 
-  function initToolbars() {
-
-    // Toolbar selection
-    var $toolbar = $('.toolbar'),
-        $toggleMultiple = $toolbar.find('.select-multiple');
-
-    // Select multiple toggle
-    //$toggleMultiple.bootstrapSwitch({
-    //  state: multipleSelection,
-    //  onSwitchChange: function(e, state) {
-    //    if (state) {
-    //      multipleSelection = true;
-    //      changeSelectionColor('#00ecde');
-    //    } else {
-    //      multipleSelection = false;
-    //      changeSelectionColor('#009dec');
-    //    }
-    //  }
-    //});
-
-    // Reset Tool
-    $toolbar.find('[data-tool="clear"]').on('touchstart click', function() {
-      clearSelected();
+  /**
+   * Move elements into a layer within the project
+   * @param element
+   * @param {string} newLayerName
+   * @returns {paper.Layer} layer
+   */
+  function moveToNewLayer(element, newLayerName) {
+    var layer = new paper.Layer();
+    layer.activate();
+    _.forEach(element.children, function(shape) {
+      shape.copyTo(layer);
     });
-
-    // Colour palette
-    $colorPalette = $('.color-palette .color-button');
-    $colorPalette.on('touchstart click', function(e) {
-      if (selectedItems.length) {
-        _.forEach(selectedItems, function(selectedItem) {
-          selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
-        });
-        view.draw();
-      }
-    });
-
-    // Line toggle button
-    $lineToggleButton = $('.line-toggle');
-    $lineToggleButton.on('click', function() {
-      if (linesGroup) {
-        linesGroup.visible = linesGroup.visible ? false : true;
-        view.draw();
-      }
-    });
+    layer.name = newLayerName || '';
+    layer.locked = true;
+    element.removeChildren();
+    return layer;
   }
 
-  function initFormActions() {
-    console.log('starting form action listeners....');
-    var $actionsForm = $('#formActions'),
-        $saveButton = $actionsForm.find('input[name="saveAction"]');
-    $actionsForm.on('submit', function(e) {
-      e.preventDefault();
-    });
-    $saveButton.on('click', function(e) {
-      console.log('SAVING...', e);
-      var form = e.currentTarget.getAttribute('data-target'),
-          $form = $(form),
-          svgString = paper.project.exportSVG({asString:true}),
-          parser = new DOMParser(),
-          doc = parser.parseFromString(svgString, 'image/svg+xml'),
-          $svg = $(doc).find('#gridareas'),
-          $gridItem = $svg.find('path'),
-          data = [];
-
-      $gridItem.each(function(i, v) {
-        data.push(v.getAttribute('fill'));
-      });
-      $.post($form.attr('action'), {
-        patchData: {
-          colours: data
-        }
-      }, function() {
-        location.reload();
-      });
-    });
-  }
-
-  function changeSelectionColor(newColor) {
-    _.forEach(colourAreas, function(colourArea) {
-      colourArea.selectedColor = new Color(newColor);
-    });
-    view.draw();
-  }
-
-  function clickArea(e) {
-    var selectItem = true;
-    if (multipleSelection) {
-      if (_.includes(selectedItems, e.target)) {
-        selectItem = false;
-        e.target.selected = false;
-        _.remove(selectedItems, e.target);
-      }
-    } else {
-      clearSelected();
+  function getPatchEvents() {
+    var events = {};
+    events.click = clickPatch;
+    if (!Modernizr.touch) {
+      events.mouseenter = enterArea;
+      events.mouseleave = leaveArea;
     }
-    if (selectItem) {
-      selectTarget(e.target);
+    return events;
+  }
+
+  function clickPatch(e) {
+    clickedPatch = e.target.data;
+    if (myPatches.length) {
+      $alertModal.modal('show');
+    } else {
+      $donationModal.modal('show');
     }
   }
 
@@ -197,25 +167,6 @@ var app = (function($) {
 
   function leaveArea(e) {
     e.target.opacity = 1;
-  }
-
-  /**
-   * Remove selection indicator for all selected areas.
-   */
-  function clearSelected() {
-    _.forEach(selectedItems, function(selected) {
-      selected.selected = false;
-    });
-    view.draw();
-    selectedItems = [];
-  }
-
-  /**
-   * Select the current target.
-   */
-  function selectTarget(target) {
-    selectedItems.push(target);
-    target.selected = true;
   }
 
   function htmlEncode(value){

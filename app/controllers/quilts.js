@@ -7,6 +7,8 @@ var express = require('express'),
 var _ = require('lodash'),
     uuid = require('node-uuid');
 
+var totalPatch = 41;
+
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
   // Passport adds this method to request object. A middleware is allowed to add properties to
@@ -38,16 +40,23 @@ router.get('/view/:id*', function (req, res, next) {
       if (err) return next(err);
       Patch.find({'_quilt': quilt.id}, function(err, patches) {
         if (err) return next(err);
+        var simplePatchData = new Array();
         _.forEach(patches, function(patch) {
           if (patch._user && req.user &&
               String(req.user.id) === String(patch._user) &&
               patch.status === 'progress') {
             patch.status = 'mine';
           }
+          var simplePatch = {
+            uid: patch.uid,
+            status: patch.status
+          };
+          simplePatchData.push(simplePatch);
         });
         res.render('pages/quilts/view', {
           title: 'View Quilt',
           quilt: quilt,
+          quiltData: JSON.stringify(simplePatchData),
           patches: patches
         });
       });
@@ -75,7 +84,7 @@ router.post('/create', isAuthenticated, function (req, res, next) {
     if (err) throw err;
     console.log('Quilt saved successfully!');
     if (quilt) { // Add patches
-      for (var i=0; i<61; i++) {
+      for (var i=0; i<totalPatch; i++) {
         var patchData = {
           'uid': uuid.v1(),
           '_quilt': quilt.id,

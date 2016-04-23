@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     fs = require('fs'),
     path = require('path'),
+    gutil = require('gulp-util'),
     nodemon = require('gulp-nodemon'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
@@ -46,28 +47,27 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js'
     ])
     .pipe(concat('vendor.min.js'))
-    .pipe(uglify({options: {'preserveComments':'all'}}))
+    .pipe(uglify({options: {'preserveComments':'all'}}).on('error', gutil.log))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
 });
 gulp.task('js:main', function() {
   return gulp.src('app/src/scripts/*.js')
     .pipe(concat('main.min.js'))
-    .pipe(uglify())
+    .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
 });
 gulp.task('js:pages', function() {
   var folders = getFolders('app/src/scripts');
-  console.log(folders);
   var tasks = folders.map(function(folder) {
     return gulp.src(path.join('app/src/scripts', folder, '/**/*.js'))
+      // minify
+      .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
       // concat into foldername.js
       .pipe(concat(folder + '.js'))
       // write to output
       .pipe(gulp.dest('tmp/scripts/'))
-      // minify
-      .pipe(uglify())
       // rename to folder.min.js
       .pipe(rename(folder + '.min.js'))
       // write to output again

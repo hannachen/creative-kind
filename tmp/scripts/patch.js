@@ -1,5 +1,5 @@
 'use strict';
-var app = (function($) {
+var patch = (function($) {
 
   var containerEl = document.getElementById('canvas-container'),
       saveData = document.getElementById('saveData'),
@@ -48,7 +48,7 @@ var app = (function($) {
           shapeArea.onClick = clickArea;
           shapeArea.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
           shapeArea.fillColor = patchData[i];
-          console.log(patchData[i]);
+          // console.log(patchData[i]);
           i++;
         });
       }
@@ -72,7 +72,7 @@ var app = (function($) {
 
     // Toolbar selection
     var $toolbar = $('.toolbar'),
-        $toggleMultiple = $toolbar.find('.select-multiple');
+      $toggleMultiple = $toolbar.find('.select-multiple');
 
     // Select multiple toggle
     //$toggleMultiple.bootstrapSwitch({
@@ -207,10 +207,10 @@ var app = (function($) {
 
   function fitToContainer(item) {
     var width = item.bounds.x + item.bounds.width,
-        height = item.bounds.y + item.bounds.height,
-        scale = getContainerW() / width,
-        newPosX = getContainerW() / 2,
-        newPosY = height * scale / 2;
+      height = item.bounds.y + item.bounds.height,
+      scale = getContainerW() / width,
+      newPosX = getContainerW() / 2,
+      newPosY = height * scale / 2;
 
     item.scale(scale);
     item.position = [newPosX, newPosY];
@@ -227,8 +227,8 @@ var app = (function($) {
 
   function setViewport() {
     var width = getContainerW(),
-        height = getContainerH(),
-        size = new Size(width, height);
+      height = getContainerH(),
+      size = new Size(width, height);
 
     // Update paper size
     view.viewSize = size;
@@ -241,7 +241,7 @@ var app = (function($) {
    */
   function getContainerW() {
     var computedStyle = getComputedStyle(containerEl),
-        containerWidth = containerEl.clientWidth;
+      containerWidth = containerEl.clientWidth;
 
     containerWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
     containerWidth -= parseFloat(computedStyle.marginLeft) + parseFloat(computedStyle.marginRight);
@@ -282,5 +282,5 @@ var app = (function($) {
 paper.install(window);
 (function($,window) {
 
-  app.init();
+  patch.init();
 })(jQuery,window);

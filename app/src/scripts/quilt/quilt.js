@@ -2,5 +2,7 @@
 paper.install(window);
 (function($,window) {
 
-  app.init();
+  $(function() {
+    quilt.init();
+  });
 })(jQuery,window);

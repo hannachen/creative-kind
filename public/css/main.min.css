@@ -1384,10 +1384,32 @@ a.text-danger:focus, a.text-danger:hover {
 @media (min-width: 768px) {
   .modal-lg {
     width: 900px; } }
+.quilt-container {
+  max-width: 600px;
+  padding: 2em;
+  background-color: #888888; }
+  .quilt-container .canvas-container {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    box-sizing: border-box;
+    position: relative; }
+  .quilt-container .grid-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; }
+  .quilt-container .grid-spacer {
+    width: 100%;
+    height: auto; }
+
+#quilt-data {
+  display: none; }
+
 .quilt-list {
   margin: 0;
   padding: 0;
-  width: 500px; }
+  display: none; }
   .quilt-list .patch-list-item,
   .quilt-list .patch-item-link {
     display: block;
@@ -1400,7 +1422,14 @@ a.text-danger:focus, a.text-danger:hover {
     margin: 5px;
     padding: 0;
     list-style-type: none;
-    display: block; }
+    float: left; }
+    .quilt-list .patch-list-item .soft-break {
+      clear: left; }
+      .quilt-list .patch-list-item .soft-break:after {
+        content: '\A';
+        white-space: pre; }
+      .quilt-list .patch-list-item .soft-break a {
+        background-color: #ff0000 !important; }
     .quilt-list .patch-list-item .patch-item-link {
       text-indent: -100px;
       background-color: #cccccc; }
@@ -1477,6 +1506,8 @@ a.text-danger:focus, a.text-danger:hover {
       width: 100%;
       height: 60px;
       border: 1px solid #cccccc; }
+  .patch-container #saveData {
+    display: none !important; }
 
 html,
 body {

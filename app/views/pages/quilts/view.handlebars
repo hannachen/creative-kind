@@ -9,6 +9,9 @@
   {{/if_eq}}
 
   {{#if patches}}
+    <div id="quilt-data">
+      {{quiltData}}
+    </div>
     <ul class="quilt-list">
       {{#each patches}}
         <li class="patch-list-item">
@@ -27,6 +30,12 @@
         </li>
       {{/each}}
     </ul>
+    <div class="quilt-container">
+      <div id="canvas-container" class="canvas-container">
+        <img src="/img/spacer.png" class="grid-spacer" id="grid-spacer" />
+        <canvas id="grid-area" class="grid-area"></canvas>
+      </div>
+    </div>
   {{/if}}
 
   <div id="donation-modal" class="modal fade">
@@ -62,7 +71,7 @@
           <p>Please confirm you want to select this square.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Ok</button>
+          <a href="#" class="btn btn-primary">Ok</a>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div><!-- /.modal-content -->
