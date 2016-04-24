@@ -9,27 +9,12 @@
   {{/if_eq}}
 
   {{#if patches}}
-    <div id="quilt-data">
+    <div class="data" id="quilt-data">
       {{quiltData}}
     </div>
-    <ul class="quilt-list">
-      {{#each patches}}
-        <li class="patch-list-item">
-          {{#if_eq status "new"}}
-            <a href="/patch/edit/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
-          {{/if_eq}}
-          {{#if_eq status "progress"}}
-            <span class="patch-item-link status-{{status}}">{{status}}</span>
-          {{/if_eq}}
-          {{#if_eq status "mine"}}
-            <a href="/patch/edit/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
-          {{/if_eq}}
-          {{#if_eq status "complete"}}
-            <a href="/patch/view/{{uid}}" class="patch-item-link status-{{status}}">{{status}}</a>
-          {{/if_eq}}
-        </li>
-      {{/each}}
-    </ul>
+    <div class="data" id="user-data">
+      {{userData}}
+    </div>
     <div class="quilt-container">
       <div id="canvas-container" class="canvas-container">
         <img src="/img/spacer.png" class="grid-spacer" id="grid-spacer" />

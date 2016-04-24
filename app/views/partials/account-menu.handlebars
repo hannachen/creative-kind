@@ -1,0 +1,23 @@
+{{#if user}}
+<div id="account-drawer" class="drawer dw-xs-10 dw-sm-6 dw-md-3 fold" aria-labelledby="account-drawer">
+  <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-foldedopen="false" aria-controls="account-drawer">User</button>
+  <div class="drawer-contents">
+    <h2>
+      <span class="account-username">{{user.username}}</span>
+      {{#if user.usertype}}
+        <span class="account-type">{{user.usertype}}</span>
+      {{/if}}
+    </h2>
+    <ul>
+      {{#if_eq user.usertype 'admin'}}
+        <li><a href="/qb-admin">Admin</a></li>
+      {{/if_eq}}
+      <li><a href="/quilts/create">Create a quilt</a></li>
+      <li><a href="#">My Quilts</a></li>
+      <li><a href="#">My Squares</a></li>
+      <li><a href="/account">Settings</a></li>
+      <li><a href="/account/logout">Logout</a></li>
+    </ul>
+  </div>
+</div>
+{{/if}}

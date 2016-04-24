@@ -1,16 +1,20 @@
-var gulp = require('gulp'),
-    fs = require('fs'),
-    path = require('path'),
-    gutil = require('gulp-util'),
-    nodemon = require('gulp-nodemon'),
-    plumber = require('gulp-plumber'),
-    concat = require('gulp-concat'),
-    rename = require('gulp-rename'),
-    uglify = require('gulp-uglify'),
-    cssmin = require('gulp-cssmin'),
-    livereload = require('gulp-livereload'),
-    modernizr = require('modernizr'),
-    sass = require('gulp-ruby-sass');
+'use strict';
+
+import gulp from 'gulp';
+import fs from 'fs';
+import path from 'path';
+import babel from 'gulp-babel';
+import gutil from 'gulp-util';
+import nodemon from 'gulp-nodemon';
+import plumber from 'gulp-plumber';
+import concat from 'gulp-concat';
+import rename from 'gulp-rename';
+import uglify from 'gulp-uglify';
+import cssmin from 'gulp-cssmin';
+import livereload from 'gulp-livereload';
+import modernizr from 'modernizr';
+import sass from 'gulp-ruby-sass';
+import lodashAutobuild from 'gulp-lodash-autobuild';
 
 function getFolders(dir) {
   return fs.readdirSync(dir)
@@ -27,24 +31,39 @@ gulp.task('sass', function () {
 });
 gulp.task('vendor-styles', function () {
   return gulp.src([
-      'bower_components/normalize-css/normalize.css',
-      'bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css'
+      'bower_components/sanitize-css/sanitize.css',
+      'bower_components/bootstrap-drawer/dist/css/bootstrap-drawer.css'
     ])
     .pipe(concat('vendor.min.css'))
     .pipe(cssmin())
     .pipe(gulp.dest('public/css'));
 });
+gulp.task('styles', [
+  'sass',
+  'vendor-styles'
+]);
 
 // Concatenate & Minify JS
+var lodashOptions = {
+  target: ".tmp/scripts/vendor/lodash.custom.js",
+  settings: {}
+};
+gulp.task('lodash:autobuild', function (cb) {
+  return gulp.src("/app/src/scripts/**", {buffer: false})
+    .pipe(lodashAutobuild(lodashOptions))
+    .on('error', function (err) {
+      console.log('err: ', err)
+    })
+});
 gulp.task('js:vendor', function() {
   return gulp.src([
-      'bower_components/jquery/dist/jquery.js',
-      'bower_components/lodash/lodash.js',
+      '.tmp/scripts/vendor/lodash.custom.js',
       'bower_components/paper/dist/paper-full.js',
       'bower_components/bootstrap/js/dist/util.js',
       'bower_components/bootstrap/js/dist/tab.js',
       'bower_components/bootstrap/js/dist/modal.js',
-      'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js'
+      'bower_components/bootstrap/js/dist/collapse.js',
+      'bower_components/bootstrap-drawer/dist/js/drawer.js'
     ])
     .pipe(concat('vendor.min.js'))
     .pipe(uglify({options: {'preserveComments':'all'}}).on('error', gutil.log))
@@ -53,6 +72,7 @@ gulp.task('js:vendor', function() {
 });
 gulp.task('js:main', function() {
   return gulp.src('app/src/scripts/*.js')
+    .pipe(babel())
     .pipe(concat('main.min.js'))
     .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
     .pipe(gulp.dest('public/js'))
@@ -62,12 +82,13 @@ gulp.task('js:pages', function() {
   var folders = getFolders('app/src/scripts');
   var tasks = folders.map(function(folder) {
     return gulp.src(path.join('app/src/scripts', folder, '/**/*.js'))
-      // minify
-      .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
+      .pipe(babel())
       // concat into foldername.js
       .pipe(concat(folder + '.js'))
+      // minify
+      .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
       // write to output
-      .pipe(gulp.dest('tmp/scripts/'))
+      .pipe(gulp.dest('.tmp/scripts/'))
       // rename to folder.min.js
       .pipe(rename(folder + '.min.js'))
       // write to output again
@@ -77,6 +98,7 @@ gulp.task('js:pages', function() {
 });
 
 gulp.task('scripts', [
+  'lodash:autobuild',
   'js:vendor',
   'js:main',
   'js:pages'
@@ -124,7 +146,7 @@ gulp.task('develop', function () {
   livereload.listen();
   nodemon({
     script: 'app.js',
-    ext: 'js coffee handlebars',
+    ext: 'js handlebars',
     stdout: false
   }).on('readable', function () {
     this.stdout.on('data', function (chunk) {

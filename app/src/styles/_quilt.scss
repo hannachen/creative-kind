@@ -1,5 +1,4 @@
 .quilt-container {
-  max-width: 600px;
   padding: 2em;
   background-color: #888888;
 
@@ -21,7 +20,7 @@
     height: auto;
   }
 }
-#quilt-data {
+.data {
   display: none;
 }
 .quilt-list {

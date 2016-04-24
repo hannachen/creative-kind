@@ -1,7 +1,6 @@
 var express = require('express'),
     router = express.Router(),
-    mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    mongoose = require('mongoose');
 
 module.exports = function (app) {
   app.use('/', router);
@@ -9,7 +8,6 @@ module.exports = function (app) {
 
 router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Quilting Bee',
-    user: req.user
+    title: 'Quilting Bee'
   });
 });

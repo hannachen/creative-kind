@@ -56,6 +56,12 @@ module.exports = function(app, config) {
   var initPassport = require('../passport/init');
   initPassport(passport);
 
+  // Make the user object available to all views provided that req.user is available.
+  app.use(function(req, res, next) {
+    res.locals.user = req.user;
+    next();
+  });
+
   // Initialize reCAPTCHA
   recaptcha.init('6LdaWRkTAAAAAA4kTdqU6kzSCv2CgQsfgtKltN2q', '6LdaWRkTAAAAAO9kULf6PhFROv1wOCbSg-AgS6lZ');
 
@@ -69,7 +75,7 @@ module.exports = function(app, config) {
     err.status = 404;
     next(err);
   });
-  
+
   if(app.get('env') === 'development'){
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);

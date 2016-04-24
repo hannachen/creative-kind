@@ -57,6 +57,7 @@ router.get('/view/:id*', function (req, res, next) {
           title: 'View Quilt',
           quilt: quilt,
           quiltData: JSON.stringify(simplePatchData),
+          userData: JSON.stringify(req.user),
           patches: patches
         });
       });
@@ -66,8 +67,7 @@ router.get('/view/:id*', function (req, res, next) {
 
 router.get('/create', isAuthenticated, function (req, res, next) {
   res.render('pages/quilts/create', {
-    title: 'Create a quilt',
-    user: req.user
+    title: 'Create a quilt'
   });
 });
 

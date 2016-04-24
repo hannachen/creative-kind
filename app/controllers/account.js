@@ -32,7 +32,6 @@ router.get('/', isAuthenticated, function (req, res, next) {
         if (err) return next(err);
         res.render('account', {
           title: 'Account',
-          user: req.user,
           quilts: quilts,
           patches: patches
         });
@@ -127,5 +126,5 @@ router.get('/login/twitter/callback',
 
 /* GET Twitter View Page */
 router.get('/twitter', isAuthenticated, function(req, res) {
-  res.render('account', { user: req.user });
+  res.render('account');
 });
