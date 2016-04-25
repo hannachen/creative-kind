@@ -20,7 +20,7 @@ var quilt = (function($) {
       userData = document.getElementById('user-data'),
       grid,
       patchStatus,
-      myPatch,
+      myPatch = '',
       user = {};
 
   function init() {

@@ -25,7 +25,6 @@ function getFolders(dir) {
 
 gulp.task('sass', function () {
   return sass('app/src/styles/**/*.scss')
-    .pipe(concat('main.min.css'))
     .pipe(gulp.dest('public/css'))
     .pipe(livereload());
 });

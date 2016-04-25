@@ -1,48 +1,74 @@
 <ul class="admin-nav">
   <li>
-    <a href="/qb-admin/themes/create">Create Theme</a>
+    <a href="/qb-admin/theme/create">Create Theme</a>
   </li>
   <li>
     <a href="/qb-admin/color/create">Create Colour Set</a>
   </li>
 </ul>
 
+<h4>Colour Sets</h4>
+<table class="table">
+  <thead class="thead-inverse">
+  <tr>
+    <th class="name">Name</th>
+    <th>Color 1</th>
+    <th>Color 2</th>
+    <th>Color 3</th>
+    <th>Color 4</th>
+    <th>Color 5</th>
+    <th class="actions">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each colors}}
+    <tr>
+      <th>{{name}}</th>
+      {{#each colors}}
+        <td class="color-cell" style="background-color:#{{this}};">#{{this}}</td>
+      {{/each}}
+      <td>
+        <ul>
+          <li><a href="/qb-admin/color/edit/{{id}}">Edit</a></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+
 <h4>Quilt Themes</h4>
 <table class="table">
   <thead class="thead-inverse">
     <tr>
-      <th>Name</th>
+      <th class="name">Name</th>
       <th>Set 1</th>
       <th>Set 2</th>
       <th>Set 3</th>
       <th>Set 4</th>
       <th>Set 5</th>
+      <th class="actions">Actions</th>
     </tr>
   </thead>
   <tbody>
+  {{#each themes}}
     <tr>
-      <th>Name</th>
-      <td>Set 1</td>
-      <td>Set 2</td>
-      <td>Set 3</td>
-      <td>Set 4</td>
-      <td>Set 5</td>
+      <th>{{name}}</th>
+      {{#each colors}}
+        <td class="colors">
+          {{#each colors}}
+            <div class="color-swatch" style="background-color: #{{this}}">&nbsp;</div>
+          {{/each}}
+        </td>
+      {{/each}}
+      <td>
+        <ul>
+          <li><a href="/qb-admin/color/edit/{{id}}">Edit</a></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+      </td>
     </tr>
-    <tr>
-      <td>Name</td>
-      <td>Set 1</td>
-      <td>Set 2</td>
-      <td>Set 3</td>
-      <td>Set 4</td>
-      <td>Set 5</td>
-    </tr>
-    <tr>
-      <td>Name</td>
-      <td>Set 1</td>
-      <td>Set 2</td>
-      <td>Set 3</td>
-      <td>Set 4</td>
-      <td>Set 5</td>
-    </tr>
+  {{/each}}
   </tbody>
 </table>

@@ -21,6 +21,22 @@ module.exports = function(app, config) {
   app.engine('handlebars', exphbs({
     helpers: {
       'if_eq': function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this); },
+      'math': function(lvalue, operator, rvalue, options) {
+        console.log(lvalue);
+        console.log(rvalue);
+        lvalue = parseFloat(lvalue);
+        rvalue = parseFloat(rvalue);
+
+        console.log('MATHING');
+
+        return {
+          "+": lvalue + rvalue,
+          "-": lvalue - rvalue,
+          "*": lvalue * rvalue,
+          "/": lvalue / rvalue,
+          "%": lvalue % rvalue
+        }[operator];
+      },
       'section': function(name, options) {
         if(!this._sections) this._sections = {};
         this._sections[name] = options.fn(this);

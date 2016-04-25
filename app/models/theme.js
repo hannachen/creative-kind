@@ -3,8 +3,7 @@ var mongoose = require('mongoose'),
 
 var ThemeSchema = new Schema({
   name: String,
-  colors: []
-}, { collection: 'themes' });
+  colors: [{ type: Schema.Types.ObjectId, ref: 'Color'}]
+});
 
 mongoose.model('Theme', ThemeSchema);
-

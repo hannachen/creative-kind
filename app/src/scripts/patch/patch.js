@@ -103,13 +103,35 @@ var patch = (function($) {
     $saveButton.on('click', function(e) {
       console.log('SAVING...', e);
       var form = e.currentTarget.getAttribute('data-target'),
-        $form = $(form),
-        svgString = paper.project.exportSVG({asString:true}),
-        parser = new DOMParser(),
-        doc = parser.parseFromString(svgString, 'image/svg+xml'),
-        $svg = $(doc).find('#gridareas'),
-        $gridItem = $svg.find('path'),
-        data = [];
+          $form = $(form),
+          svgString = paper.project.exportSVG({asString:true}),
+          parser = new DOMParser(),
+          doc = parser.parseFromString(svgString, 'image/svg+xml'),
+          $svg = $(doc).find('#gridareas'),
+          $gridItem = $svg.find('path'),
+          data = [];
+
+      $gridItem.each(function(i, v) {
+        data.push(v.getAttribute('fill'));
+      });
+      $.post($form.attr('action'), {
+        patchData: {
+          colours: data
+        }
+      }, function() {
+        location.reload();
+      });
+    });
+    $completeButton.on('click', function(e) {
+      console.log('Completing...', e);
+      var form = e.currentTarget.getAttribute('data-target'),
+          $form = $(form),
+          svgString = paper.project.exportSVG({asString:true}),
+          parser = new DOMParser(),
+          doc = parser.parseFromString(svgString, 'image/svg+xml'),
+          $svg = $(doc).find('#gridareas'),
+          $gridItem = $svg.find('path'),
+          data = [];
 
       $gridItem.each(function(i, v) {
         data.push(v.getAttribute('fill'));

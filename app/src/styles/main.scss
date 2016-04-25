@@ -63,17 +63,21 @@ form {
 
   &.open {
     transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
   }
 }
 #account-drawer {
+  margin-left: 0;
   left: 0;
   transform: translateX(-100%);
+  transform-origin: left center;
 }
 #submenu-drawer {
-  border-left: 1px solid #dfdfdf;
   left: auto;
   right: 0;
   transform: translateX(100%);
+  transform-origin: right center;
+  border-left: 1px solid #dfdfdf;
 }
 .header-menu {
   .row {
