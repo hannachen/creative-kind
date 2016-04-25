@@ -1,0 +1,19 @@
+
+  <form class="create-quilt-form" action="/quilts/create" method="post">
+    <ul>
+      <li class="create-quilt-field">
+        <input type="text" name="title" class="input-title" placeholder="Title" />
+      </li>
+      {{#if_eq user.usertype 'admin'}}
+      <li class="create-quilt-field">
+        <input type="radio" name="type" class="input-type" id="public" value="public" checked /> <label for="public">Pubilc</label><br />
+        <input type="radio" name="type" class="input-type" id="private" value="private" /> <label for="private">Private</label>
+      </li>
+      {{else}}
+        <input type="hidden" name="type" class="input-type" id="private" value="private" />
+      {{/if_eq}}
+      <li class="create-quilt-button">
+        <input type="submit" value="Create Quilt" class="submit-create-quilt">
+      </li>
+    </ul>
+  </form>

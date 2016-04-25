@@ -1,0 +1,17 @@
+{{#if user}}
+  {{>account-menu }}
+{{/if}}
+
+<div class="container-fluid header-menu">
+  <div class="row">
+    <div class="col account-nav-toggle">
+      {{#if user}}
+        <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-controls="account-drawer">User</button>
+      {{/if}}
+    </div>
+    <div class="col title"><h1>{{title }}</h1></div>
+    <div class="col sub-menu-toggle">
+      <button class="drawer-toggle" data-toggle="drawer" data-target="#submenu-drawer" aria-controls="submenu-drawer">Menu</button>
+    </div>
+  </div>
+</div>

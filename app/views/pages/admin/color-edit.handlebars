@@ -1,0 +1,15 @@
+<form class="create-color-form" action="/qb-admin/color/edit/{{color.id}}" method="post">
+  <fieldset class="form-group">
+    <label for="color-name">Set Name</label>
+    <input type="text" class="form-control" id="color-name" name="name" placeholder="Set Name" value="{{color.name}}">
+  </fieldset>
+
+  {{#each color.colors}}
+    <fieldset class="form-group">
+      <label for="color-{{math @index "+" 1}}">Colour {{math @index "+" 1}}</label>
+      <input type="text" class="form-control" id="color-1" name="color[]" placeholder="Colour {{math @index "+" 1}}" value="{{this}}">
+    </fieldset>
+  {{/each}}
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

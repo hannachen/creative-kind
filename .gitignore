@@ -5,3 +5,8 @@ dist
 .idea
 bower_components
 test/bower_components
+data
+public/components
+.DS_Store
+db.startup.log
+tmp

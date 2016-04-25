@@ -1,0 +1,22 @@
+
+  <h1>Welcome!</h1>
+  <h2>Some are born great, some achieve greatness, and some have greatness thrust upon them.</h2>
+  <p>A creative community with a common goal.</p>
+
+
+  {{#if user}}
+
+    <h2>Welcome {{user.username}}</h2>
+    <ul>
+      <li><a href="/account">Account</a></li>
+    </ul>
+
+  {{else}}
+
+    {{>login-menu }}
+
+  {{/if}}
+
+  <ul>
+    <li><a href="/quilts">View Quilts</a></li>
+  </ul>

@@ -1,0 +1,75 @@
+.quilt-container {
+  padding: 2em;
+  background-color: #888888;
+
+  .canvas-container {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .grid-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .grid-spacer {
+    width: 100%;
+    height: auto;
+  }
+}
+.data {
+  display: none;
+}
+.quilt-list {
+  margin: 0;
+  padding: 0;
+  display: none;
+
+  .patch-list-item,
+  .patch-item-link {
+    display: block;
+    float: left;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .patch-list-item {
+    margin: 5px;
+    padding: 0;
+    list-style-type: none;
+    float: left;
+    //display: inline-block;
+    //transform: rotate(45deg);
+
+    .soft-break {
+      clear: left;
+
+      &:after {
+        content: '\A';
+        white-space: pre;
+      }
+      a {
+        background-color: #ff0000 !important;
+      }
+    }
+
+    .patch-item-link {
+      text-indent: -100px;
+      background-color: #cccccc;
+    }
+    .status-new {
+      background-color: #ffcccc;
+    }
+    .status-complete {
+      background-color: #bbffbb;
+    }
+    .status-mine {
+      background-color: #2aabd2;
+      border: 2px solid #025aa5;
+    }
+  }
+}
