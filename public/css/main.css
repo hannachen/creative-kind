@@ -1941,6 +1941,8 @@ form li {
   left: 0;
   transform: translateX(-100%);
   transform-origin: left center; }
+  #account-drawer .drawer-toggle {
+    float: right; }
 
 #submenu-drawer {
   left: auto;

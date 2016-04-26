@@ -7,6 +7,42 @@
   </li>
 </ul>
 
+<h4>Quilt Themes</h4>
+<table class="table">
+  <thead class="thead-inverse">
+  <tr>
+    <th class="name">Name</th>
+    <th>Set 1</th>
+    <th>Set 2</th>
+    <th>Set 3</th>
+    <th>Set 4</th>
+    <th>Set 5</th>
+    <th>Set 6</th>
+    <th class="actions">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each themes}}
+    <tr>
+      <th>{{name}}</th>
+      {{#each colors}}
+        <td class="colors">
+          {{#each colors}}
+            <div class="color-swatch" style="background-color: #{{this}}">&nbsp;</div>
+          {{/each}}
+        </td>
+      {{/each}}
+      <td>
+        <ul>
+          <li><a href="/qb-admin/color/edit/{{id}}">Edit</a></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+
 <h4>Colour Sets</h4>
 <table class="table">
   <thead class="thead-inverse">
@@ -26,42 +62,6 @@
       <th>{{name}}</th>
       {{#each colors}}
         <td class="color-cell" style="background-color:#{{this}};">#{{this}}</td>
-      {{/each}}
-      <td>
-        <ul>
-          <li><a href="/qb-admin/color/edit/{{id}}">Edit</a></li>
-          <li><a href="#">Delete</a></li>
-        </ul>
-      </td>
-    </tr>
-  {{/each}}
-  </tbody>
-</table>
-
-<h4>Quilt Themes</h4>
-<table class="table">
-  <thead class="thead-inverse">
-    <tr>
-      <th class="name">Name</th>
-      <th>Set 1</th>
-      <th>Set 2</th>
-      <th>Set 3</th>
-      <th>Set 4</th>
-      <th>Set 5</th>
-      <th>Set 6</th>
-      <th class="actions">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  {{#each themes}}
-    <tr>
-      <th>{{name}}</th>
-      {{#each colors}}
-        <td class="colors">
-          {{#each colors}}
-            <div class="color-swatch" style="background-color: #{{this}}">&nbsp;</div>
-          {{/each}}
-        </td>
       {{/each}}
       <td>
         <ul>
