@@ -4,10 +4,10 @@ var mongoose = require('mongoose'),
 var QuiltSchema = new Schema({
       _user : { type: Schema.Types.ObjectId, ref: 'User' },
       _patches: [{ type: Schema.Types.ObjectId, ref: 'Patch' }],
+      _theme: {type: Schema.Types.ObjectId, ref: 'Theme'},
       title: String,
       type: String,
-      status: String,
-      theme: String
+      status: String
     });
 
 QuiltSchema.virtual('date')

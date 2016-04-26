@@ -62,6 +62,7 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap/js/dist/tab.js',
       'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
+      'bower_components/bootstrap/js/dist/carousel.js',
       'bower_components/bootstrap-drawer/dist/js/drawer.js'
     ])
     .pipe(concat('vendor.min.js'))

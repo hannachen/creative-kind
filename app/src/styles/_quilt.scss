@@ -73,3 +73,38 @@
     }
   }
 }
+#theme-carousel {
+  width: 50%;
+  margin: 0 auto;
+
+  .carousel-control {
+    background-image: none;
+  }
+  .carousel-indicators {
+    li {
+      border: 1px solid #262626;
+
+      &.active {
+        background-color: #262626;
+      }
+    }
+  }
+  .theme {
+    //background-color: #262626;
+    padding: 1.5em 1.5em 3em 1.5em;
+
+    .theme-name {
+      padding: 0.5em;
+      text-align: center;
+    }
+    .row {
+      @include clearfix();
+    }
+  }
+  .swatch {
+    display: block;
+    width: 20%;
+    height: 1.5em;
+    float: left;
+  }
+}

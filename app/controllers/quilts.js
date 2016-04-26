@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     Quilt = mongoose.model('Quilt'),
-    Patch = mongoose.model('Patch');
+    Patch = mongoose.model('Patch'),
+    Theme = mongoose.model('Theme');
 
 var _ = require('lodash'),
     uuid = require('node-uuid');
@@ -64,11 +65,19 @@ router.get('/view/:id*', function (req, res, next) {
     });
 });
 
-
 router.get('/create', isAuthenticated, function (req, res, next) {
-  res.render('pages/quilts/create', {
-    title: 'Create a quilt'
-  });
+  Theme.find({})
+    .populate('colors')
+    .exec(function (err, themes) {
+      if (err) return next(err);
+      if (themes.length) {
+        themes[0]['active'] = 'active';
+      }
+      res.render('pages/quilts/create', {
+        title: 'Create a quilt',
+        themes: themes
+      });
+    });
 });
 
 router.post('/create', isAuthenticated, function (req, res, next) {

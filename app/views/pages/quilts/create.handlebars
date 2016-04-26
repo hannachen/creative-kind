@@ -1,19 +1,56 @@
+<form class="create-quilt-form" action="/quilts/create" method="post">
+  <ul>
+    <li class="create-quilt-field">
+      <input type="text" name="title" class="input-title" placeholder="Title" />
+    </li>
+    <li class="create-quilt-field">
+      <input type="text" name="theme" class="input-theme" placeholder="Theme" />
+    </li>
+    {{#if_eq user.usertype 'admin'}}
+    <li class="create-quilt-field">
+      [admin only option]<br />
+      <input type="radio" name="type" class="input-type" id="public" value="public" checked /> <label for="public">Pubilc</label><br />
+      <input type="radio" name="type" class="input-type" id="private" value="private" /> <label for="private">Private</label>
+    </li>
+    {{else}}
+      <input type="hidden" name="type" class="input-type" id="private" value="private" />
+    {{/if_eq}}
+    <li class="create-quilt-button">
+      <input type="submit" value="Create Quilt" class="submit-create-quilt">
+    </li>
+  </ul>
+</form>
 
-  <form class="create-quilt-form" action="/quilts/create" method="post">
-    <ul>
-      <li class="create-quilt-field">
-        <input type="text" name="title" class="input-title" placeholder="Title" />
-      </li>
-      {{#if_eq user.usertype 'admin'}}
-      <li class="create-quilt-field">
-        <input type="radio" name="type" class="input-type" id="public" value="public" checked /> <label for="public">Pubilc</label><br />
-        <input type="radio" name="type" class="input-type" id="private" value="private" /> <label for="private">Private</label>
-      </li>
-      {{else}}
-        <input type="hidden" name="type" class="input-type" id="private" value="private" />
-      {{/if_eq}}
-      <li class="create-quilt-button">
-        <input type="submit" value="Create Quilt" class="submit-create-quilt">
-      </li>
-    </ul>
-  </form>
+<div id="theme-carousel" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    {{#each themes}}
+      <li data-target="#theme-carousel" data-slide-to="{{@index}}" class="{{active}}"></li>
+    {{/each}}
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    {{#each themes}}
+      <div class="carousel-item {{active}}">
+        <div class="theme">
+          <div class="row theme-name">
+            <div class="col-sm-12">{{name}}</div>
+          </div>
+          {{#each colors}}
+            <ul class="row">
+              {{#each colors}}
+                <li class="swatch" style="background-color:#{{this}}">&nbsp;</li>
+              {{/each}}
+            </ul>
+          {{/each}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+  <a class="left carousel-control" href="#theme-carousel" role="button" data-slide="prev">
+    <span class="icon-prev" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#theme-carousel" role="button" data-slide="next">
+    <span class="icon-next" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
