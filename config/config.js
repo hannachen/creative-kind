@@ -26,7 +26,7 @@ var config = {
     app: {
       name: 'qb-stg'
     },
-    port: 80,
+    port: 8080,
     db: 'mongodb://localhost/quilting-bee'
   },
 
@@ -35,7 +35,7 @@ var config = {
     app: {
       name: 'qb-test'
     },
-    port: 80,
+    port: 8080,
     db: 'mongodb://localhost/quilting-bee'
   }
 };
