@@ -31,7 +31,8 @@ gulp.task('sass', function () {
 gulp.task('vendor-styles', function () {
   return gulp.src([
       'bower_components/sanitize-css/sanitize.css',
-      'bower_components/bootstrap-drawer/dist/css/bootstrap-drawer.css'
+      'bower_components/bootstrap-drawer/dist/css/bootstrap-drawer.css',
+      'bower_components/slick-carousel/slick/slick.css'
     ])
     .pipe(concat('vendor.min.css'))
     .pipe(cssmin())
@@ -62,8 +63,8 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap/js/dist/tab.js',
       'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
-      'bower_components/bootstrap/js/dist/carousel.js',
-      'bower_components/bootstrap-drawer/dist/js/drawer.js'
+      'bower_components/bootstrap-drawer/dist/js/drawer.js',
+      'bower_components/slick-carousel/slick/slick.js'
     ])
     .pipe(concat('vendor.min.js'))
     .pipe(uglify({options: {'preserveComments':'all'}}).on('error', gutil.log))

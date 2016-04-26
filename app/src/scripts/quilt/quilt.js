@@ -25,6 +25,27 @@ var quilt = (function($) {
 
   function init() {
 
+    let $carousel = $('.theme-carousel'),
+        $themes = $carousel.find('.theme'),
+        $selectedTheme = $('.selected-theme');
+    $carousel.slick();
+    $carousel.on('afterChange', function(e, slick, currentSlide) {
+      var currentTheme = $themes.get(currentSlide),
+          $input = $($carousel.data('target')),
+          themeId = currentTheme.getAttribute('data-id'),
+          themeName = currentTheme.getAttribute('data-name');
+      console.log(themeName, themeId);
+      $input.val(themeId);
+      $selectedTheme.text(themeName);
+      console.log(currentTheme);
+    });
+
+    if ($('#grid-area').length) {
+      setupCanvas();
+    }
+  }
+
+  function setupCanvas() {
     // Setup directly from canvas id:
     paper.setup('grid-area');
 
@@ -57,8 +78,8 @@ var quilt = (function($) {
             return;
           }
           let patch,
-              plus,
-              circle;
+            plus,
+            circle;
           if(group.hasChildren()) {
             _.forEach(group.children, function(item) {
               let itemType = getItemType(item);

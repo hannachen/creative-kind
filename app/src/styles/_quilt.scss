@@ -73,38 +73,37 @@
     }
   }
 }
-#theme-carousel {
-  width: 50%;
-  margin: 0 auto;
+.theme-carousel {
+  max-width: 400px;
+  position: relative;
 
-  .carousel-control {
-    background-image: none;
+  .slick-arrow {
+    position: absolute;
+    top: 19px;
+    z-index: 100;
   }
-  .carousel-indicators {
-    li {
-      border: 1px solid #262626;
-
-      &.active {
-        background-color: #262626;
-      }
-    }
+  .slick-prev {
+    left: 0;
+  }
+  .slick-next {
+    right: 0;
   }
   .theme {
     //background-color: #262626;
-    padding: 1.5em 1.5em 3em 1.5em;
+    margin: 1em 0;
 
     .theme-name {
-      padding: 0.5em;
       text-align: center;
+      padding: 0.5em 0;
     }
-    .row {
+    .swatches {
       @include clearfix();
     }
-  }
-  .swatch {
-    display: block;
-    width: 20%;
-    height: 1.5em;
-    float: left;
+    .swatch {
+      display: block;
+      width: 20%;
+      height: 1.75em;
+      float: left;
+    }
   }
 }
