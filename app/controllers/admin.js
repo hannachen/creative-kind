@@ -146,7 +146,7 @@ router.post('/theme/edit/:id?', isAuthenticated, function (req, res, next) {
         newTheme.save(function(err, theme) {
           if (err) throw err;
           console.log('Theme created successfully!');
-          res.redirect('/qb-admin/theme/create');
+          res.redirect('/qb-admin');
         });
       })
     }
