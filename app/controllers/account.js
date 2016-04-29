@@ -99,14 +99,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
         });
       },
       function(token, user, done) {
-        var options = {
-          service: 'SendGrid',
-          auth: {
-            api_key: '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'
-          }
-        };
-
-        var smtpTransport = nodemailer.createTransport(sgTransport(options));
+        var smtpTransport = nodemailer.createTransport(sgTransport(config.nodemailer));
         var mailOptions = {
           to: user.email,
           from: 'passwordreset@demo.com',
@@ -132,6 +125,62 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
   }
 });
 
+app.get('/reset/:token', function(req, res) {
+  User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    }, function(err, user) {
+    if (!user) {
+      req.flash('error', 'Password reset token is invalid or has expired.');
+      return res.redirect('/account/recover-password/');
+    }
+    res.render('pages/recover-password/reset', {
+      user: req.user
+    });
+  });
+});
+
+app.post('/reset/:token', function(req, res) {
+  async.waterfall([
+    function(done) {
+      User.findOne({
+          resetPasswordToken: req.params.token,
+          resetPasswordExpires: { $gt: Date.now() }
+        }, function(err, user) {
+        if (!user) {
+          req.flash('error', 'Password reset token is invalid or has expired.');
+          return res.redirect('back');
+        }
+
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        user.save(function(err) {
+          req.logIn(user, function(err) {
+            done(err, user);
+          });
+        });
+      });
+    },
+    function(user, done) {
+      var smtpTransport = nodemailer.createTransport(sgTransport(config.nodemailer));
+      var mailOptions = {
+        to: user.email,
+        from: 'passwordreset@demo.com',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+        'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        req.flash('success', 'Success! Your password has been changed.');
+        done(err);
+      });
+    }
+  ], function(err) {
+    res.redirect('/');
+  });
+});
 
 
 router.get('/login', function(req, res) {

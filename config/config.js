@@ -9,7 +9,13 @@ var config = {
       name: 'qb-test'
     },
     port: 3000,
-    db: 'mongodb://localhost/quilting-bee'
+    db: 'mongodb://localhost/quilting-bee',
+    nodemailer: {
+      service: 'SendGrid',
+      auth: {
+        api_key: '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'
+      }
+    }
   },
 
   test: {
@@ -18,7 +24,13 @@ var config = {
       name: 'qb-test'
     },
     port: 3000,
-    db: 'mongodb://localhost/qb-test-test'
+    db: 'mongodb://localhost/qb-test-test',
+    nodemailer: {
+      service: 'SendGrid',
+      auth: {
+        api_key: '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'
+      }
+    }
   },
 
   staging: {
@@ -27,7 +39,13 @@ var config = {
       name: 'qb-stg'
     },
     port: 8080,
-    db: 'mongodb://localhost/quilting-bee'
+    db: 'mongodb://localhost/quilting-bee',
+    nodemailer: {
+      service: 'SendGrid',
+      auth: {
+        api_key: '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'
+      }
+    }
   },
 
   production: {
@@ -36,7 +54,13 @@ var config = {
       name: 'qb-test'
     },
     port: 8080,
-    db: 'mongodb://localhost/quilting-bee'
+    db: 'mongodb://localhost/quilting-bee',
+    nodemailer: {
+      service: 'SendGrid',
+      auth: {
+        api_key: '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'
+      }
+    }
   }
 };
 
