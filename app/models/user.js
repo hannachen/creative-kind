@@ -13,6 +13,8 @@ var UserSchema = new Schema({
         required: true,
         unique: 'There is already an account with the same email, please log in or use a different email.'
       },
+      resetPasswordToken: String,
+      resetPasswordExpires: Date,
       fb: {
         id: String,
         access_token: String,

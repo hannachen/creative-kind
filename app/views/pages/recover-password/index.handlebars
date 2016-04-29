@@ -2,6 +2,10 @@
 <!--  <script src='https://www.google.com/recaptcha/api.js'></script>-->
 {{/section}}
 
+{{messages.error}}
+{{messages.info}}
+{{messages.success}}
+
 <form class="recover-password-form" action="/account/recover-password" method="post">
 
   <h1>Forgot Password</h1>
@@ -9,7 +13,7 @@
 
   <ul>
     <li class="recover-password-field">
-      <input type="forgot-email" name="user[forgot-email]" class="input-email" placeholder="E-mail" />
+      <input type="email" name="user[email]" class="input-email" placeholder="Email" />
     </li>
     <li class="recover-password-field">
       {{{captcha}}}

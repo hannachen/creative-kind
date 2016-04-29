@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 var exphbs  = require('express-handlebars');
+var flash = require('express-flash');
 
 var passport = require('passport');
 var recaptcha = require('express-recaptcha');
@@ -67,6 +68,7 @@ module.exports = function(app, config) {
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+  app.use(flash());
 
   // Initialize Passport
   var initPassport = require('../passport/init');
