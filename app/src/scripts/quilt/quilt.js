@@ -117,6 +117,7 @@ var quilt = (function($) {
           if (!_.isEmpty(user)) {
             patch.on(getPatchEvents());
           }
+          console.log(patch.data.status);
           switch (patch.data.status) {
             case 'progress':
               patch.off(getPatchEvents());
