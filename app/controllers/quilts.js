@@ -3,7 +3,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     Quilt = mongoose.model('Quilt'),
     Patch = mongoose.model('Patch'),
-    Theme = mongoose.model('Theme');
+    Theme = mongoose.model('Theme'),
+    Color = mongoose.model('Color');
 
 var _ = require('lodash'),
     uuid = require('node-uuid');
@@ -37,8 +38,11 @@ router.get('/', function (req, res, next) {
 router.get('/view/:id*', function (req, res, next) {
   Quilt.findOne({'_id':req.params.id})
     .populate('_user')
+    .populate('_theme')
+    .deepPopulate('_theme.colors')
     .exec(function (err, quilt) {
       if (err) return next(err);
+      console.log(quilt);
       Patch.find({'_quilt': quilt.id}, function(err, patches) {
         if (err) return next(err);
         var simplePatchData = new Array();
@@ -84,6 +88,7 @@ router.post('/create', isAuthenticated, function (req, res, next) {
   console.log('creating quilt');
   var quiltData = {
     '_user': req.user.id,
+    '_theme': req.body.theme,
     'title': req.body.title,
     'type': req.body.type
   };

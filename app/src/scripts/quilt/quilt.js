@@ -26,23 +26,29 @@ var quilt = (function($) {
   function init() {
 
     let $carousel = $('.theme-carousel'),
+        $input = $($carousel.data('target')),
         $themes = $carousel.find('.theme'),
         $selectedTheme = $('.selected-theme');
-    $carousel.slick();
-    $carousel.on('afterChange', function(e, slick, currentSlide) {
-      var currentTheme = $themes.get(currentSlide),
-          $input = $($carousel.data('target')),
-          themeId = currentTheme.getAttribute('data-id'),
-          themeName = currentTheme.getAttribute('data-name');
-      console.log(themeName, themeId);
-      $input.val(themeId);
-      $selectedTheme.text(themeName);
-      console.log(currentTheme);
+    $carousel.on('init', function(e, slick) {
+      setActiveTheme($input, $selectedTheme, $themes.get(slick.currentSlide));
     });
+    $carousel.on('afterChange', function(e, slick, currentSlide) {
+      setActiveTheme($input, $selectedTheme, $themes.get(currentSlide));
+    });
+    $carousel.slick();
 
     if ($('#grid-area').length) {
       setupCanvas();
     }
+  }
+
+  function setActiveTheme($input, $selectedTheme, currentTheme) {
+    let themeId = currentTheme.getAttribute('data-id'),
+        themeName = currentTheme.getAttribute('data-name');
+    console.log(themeName, themeId);
+    $input.val(themeId);
+    $selectedTheme.text(themeName);
+    console.log(currentTheme);
   }
 
   function setupCanvas() {
@@ -110,26 +116,31 @@ var quilt = (function($) {
 
           if (!_.isEmpty(user)) {
             patch.on(getPatchEvents());
-            switch (patch.data.status) {
-              case 'progress':
+          }
+          switch (patch.data.status) {
+            case 'progress':
+              patch.off(getPatchEvents());
+              patch.fillColor = '#cccccc';
+              break;
+            case 'mine':
+              patch.fillColor = '#aab0ff';
+              break;
+            case 'complete':
+              project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
+                svg.rotate(-45);
+                svg.fitBounds(patch.bounds);
+                patch.addChild(svg);
+              });
+              patch.fillColor = '#ffcccc';
+              break;
+            case 'new':
+            default:
+              if (myPatch.length) {
                 patch.off(getPatchEvents());
-                patch.fillColor = '#cccccc';
-                break;
-              case 'mine':
-                patch.fillColor = '#aab0ff';
-                break;
-              case 'complete':
-                patch.fillColor = '#ffcccc';
-                break;
-              case 'new':
-              default:
-                if (myPatch.length) {
-                  patch.off(getPatchEvents());
-                } else {
-                  plus.visible = true;
-                }
-                break;
-            }
+              } else {
+                plus.visible = !_.isEmpty(user);
+              }
+              break;
           }
         });
       }

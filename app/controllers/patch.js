@@ -38,12 +38,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/view/:uid*', function (req, res, next) {
+  console.log('viewing');
   Patch.findOne({'uid':req.params.uid })
     .populate('_user')
     .populate('_quilt')
     .exec(function (err, patch) {
-      console.log('ID?? ', req.params.uid);
-      console.log(patch);
       if (err) return next(err);
       if (patch._user) {
         res.render('pages/patch/view', {
@@ -59,12 +58,12 @@ router.get('/view/:uid*', function (req, res, next) {
 router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
-      console.log('ID?? ', req.params.uid);
-      console.log(patch);
       if (err) return next(err);
+      if (patch.status === 'complete') {
+        res.redirect('/patch/view/'+patch.uid);
+        return;
+      }
       if (patch && patch._user) {
-        console.log("PATCH USER???????:", patch._user);
-        console.log("USER???????:", req.user._id);
         if (String(req.user.id) === String(patch._user)) {
           res.render('pages/patch/edit', {
             title: 'Edit Patch',
@@ -72,6 +71,7 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
           });
         } else {
           res.redirect('/quilts/view/'+patch._quilt);
+          return;
         }
       } else {
         res.render('pages/patch/start', {
@@ -82,19 +82,23 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
     });
 });
 
-router.post('/edit/:uid*', isAuthenticated, function (req, res, next) {
+router.post('/edit/:uid/:status?', isAuthenticated, function (req, res, next) {
   var patchData = req.body.patchData;
-  console.log(patchData);
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
       if (isMine(req, res, patch)) {
         patch.svg = patchData.colours;
+        patch.status = req.params.status || 'progress';
         patch.save(function(err) {
           if (err) throw err;
-          res.redirect('/quilts/view/'+patch._quilt);
+          if (patch.status === 'progress') {
+            res.redirect('/patch/edit/'+patch.uid);
+            return;
+          }
         });
       }
+      res.redirect('/patch/view/'+patch.uid);
     });
 });
 
@@ -116,24 +120,30 @@ router.post('/start/:uid*', isAuthenticated, function (req, res, next) {
     });
 });
 
-router.post('/save/:uid*', isAuthenticated, function (req, res, next) {
-  console.log('hkhgjh');
+
+router.get('/svg/:uid', function (req, res, next) {
+  res.setHeader('content-type', 'image/svg+xml; charset=utf-8');
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
-      if (isMine(req, res, patch)) {
-        console.log(req.svgData);
-        patch._user = req.user.id;
-        // patch.status = 'progress';
-        // patch.save(function(err) {
-        //   if (err) throw err;
-        //   console.log('patch saved.');
-        //   res.redirect('/patch/edit/'+patch.uid);
-        // });
-        res.redirect('/patch/edit/'+patch.uid);
+      var svg = [],
+          svgArray = patch.svg.split(',');
+      if (svgArray.length) {
+        svg = svgArray;
       } else {
-        res.redirect('/quilts/view/'+patch._quilt.id);
+        for (var i=0; i<248; i++) {
+          svg.push('#828282');
+        }
       }
+      // Offset array with one additional item: view is using count value instead of index, oops
+      svg.unshift('#828282');
+      res.render('partials/svg/patch', {
+        title: 'View Patch',
+        layout: 'svg',
+        lines: false,
+        patch: patch,
+        svg: svg
+      });
     });
 });
 

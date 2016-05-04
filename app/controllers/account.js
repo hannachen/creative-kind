@@ -72,7 +72,7 @@ router.get('/recover-password', recaptcha.middleware.render, function(req, res) 
   res.render('pages/recover-password/index', { captcha:req.recaptcha });
 });
 
-router.post('/recover-password', recaptcha.middleware.verify, function(req, res, next) {
+router.post('/recover-password', recaptcha.middleware.verify, function(req, res, next, config) {
   console.log(req.body.user.email);
   if (!req.recaptcha.error) {
     console.log('captcha success');
@@ -125,7 +125,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
   }
 });
 
-app.get('/reset/:token', function(req, res) {
+router.get('/reset/:token', function(req, res) {
   User.findOne({
       resetPasswordToken: req.params.token,
       resetPasswordExpires: { $gt: Date.now() }
@@ -140,7 +140,7 @@ app.get('/reset/:token', function(req, res) {
   });
 });
 
-app.post('/reset/:token', function(req, res) {
+router.post('/reset/:token', function(req, res, config) {
   async.waterfall([
     function(done) {
       User.findOne({

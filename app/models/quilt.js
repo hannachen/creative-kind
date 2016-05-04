@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    deepPopulate = require('mongoose-deep-populate')(mongoose),
     Schema = mongoose.Schema;
 
 var QuiltSchema = new Schema({
@@ -14,6 +15,8 @@ QuiltSchema.virtual('date')
   .get(function(){
     return this._id.getTimestamp();
   });
+
+QuiltSchema.plugin(deepPopulate);
 
 mongoose.model('Quilt', QuiltSchema);
 

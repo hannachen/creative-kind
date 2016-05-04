@@ -3,6 +3,7 @@ var patch = (function($) {
 
   var containerEl = document.getElementById('canvas-container'),
       saveData = document.getElementById('saveData'),
+      canvasArea = document.getElementById('coloring-area'),
       patchData = [],
       selectedItems = [],
       grid,
@@ -12,7 +13,7 @@ var patch = (function($) {
       $colorPalette,
       $lineToggleButton;
 
-  function init() {
+  function setupCanvas() {
 
     // Setup directly from canvas id:
     paper.setup('coloring-area');
@@ -32,13 +33,7 @@ var patch = (function($) {
           if (shapeArea === undefined) {
             return;
           }
-          shapeArea.strokeScaling = false;
-          if (!Modernizr.touch) {
-            shapeArea.onMouseEnter = enterArea;
-            shapeArea.onMouseLeave = leaveArea;
-          }
-          shapeArea.onClick = clickArea;
-          shapeArea.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
+          attachShapeEvents(shapeArea);
           if (patchData[i]) {
             shapeArea.fillColor = patchData[i];
           }
@@ -58,6 +53,23 @@ var patch = (function($) {
 
     // Setup form handler
     initFormActions();
+  }
+
+  function init() {
+
+    if (canvasArea) {
+      setupCanvas();
+    }
+  }
+
+  function attachShapeEvents(shape) {
+    shape.strokeScaling = false;
+    if (!Modernizr.touch) {
+      shape.onMouseEnter = enterArea;
+      shape.onMouseLeave = leaveArea;
+    }
+    shape.onClick = clickArea;
+    shape.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
   }
 
   function initToolbars() {
@@ -92,58 +104,41 @@ var patch = (function($) {
     });
   }
 
+  function onActionButtonClick(e) {
+    console.log('SAVING...', e);
+    var form = e.currentTarget.getAttribute('data-target'),
+        $form = $(form),
+        svgString = paper.project.exportSVG({asString:true}),
+        parser = new DOMParser(),
+        doc = parser.parseFromString(svgString, 'image/svg+xml'),
+        $svg = $(doc).find('#gridareas'),
+        $gridItem = $svg.find('path'),
+        data = [],
+        status = e.currentTarget.value.toLowerCase(),
+        postUrl = $form.attr('action') + '/' + status;
+
+    console.log(postUrl);
+
+    $gridItem.each(function(i, v) {
+      data.push(v.getAttribute('fill'));
+    });
+
+    $.post(postUrl, {
+      patchData: {
+        colours: data
+      }
+    }, function() {
+      location.reload();
+    });
+  }
+
   function initFormActions() {
     console.log('starting form action listeners....');
-    var $actionsForm = $('#formActions'),
-        $saveButton = $actionsForm.find('input[name="saveAction"]'),
-        $completeButton =  $actionsForm.find('input[name="completeAction"]');
+    var $actionsForm = $('#formActions');
     $actionsForm.on('submit', function(e) {
       e.preventDefault();
     });
-    $saveButton.on('click', function(e) {
-      console.log('SAVING...', e);
-      var form = e.currentTarget.getAttribute('data-target'),
-          $form = $(form),
-          svgString = paper.project.exportSVG({asString:true}),
-          parser = new DOMParser(),
-          doc = parser.parseFromString(svgString, 'image/svg+xml'),
-          $svg = $(doc).find('#gridareas'),
-          $gridItem = $svg.find('path'),
-          data = [];
-
-      $gridItem.each(function(i, v) {
-        data.push(v.getAttribute('fill'));
-      });
-      $.post($form.attr('action'), {
-        patchData: {
-          colours: data
-        }
-      }, function() {
-        location.reload();
-      });
-    });
-    $completeButton.on('click', function(e) {
-      console.log('Completing...', e);
-      var form = e.currentTarget.getAttribute('data-target'),
-          $form = $(form),
-          svgString = paper.project.exportSVG({asString:true}),
-          parser = new DOMParser(),
-          doc = parser.parseFromString(svgString, 'image/svg+xml'),
-          $svg = $(doc).find('#gridareas'),
-          $gridItem = $svg.find('path'),
-          data = [];
-
-      $gridItem.each(function(i, v) {
-        data.push(v.getAttribute('fill'));
-      });
-      $.post($form.attr('action'), {
-        patchData: {
-          colours: data
-        }
-      }, function() {
-        location.reload();
-      });
-    });
+    $actionsForm.on('click', '[type=button]', onActionButtonClick)
   }
 
   function changeSelectionColor(newColor) {
