@@ -126,7 +126,9 @@ var quilt = (function($) {
               patch.fillColor = '#aab0ff';
               break;
             case 'complete':
+              console.log('/patch/svg/'+patch.data.uid);
               project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
+                console.log(svg);
                 svg.rotate(-45);
                 svg.fitBounds(patch.bounds);
                 patch.addChild(svg);
