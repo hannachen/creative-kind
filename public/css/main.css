@@ -1797,7 +1797,7 @@ input[type="checkbox"].disabled {
     width: 900px; } }
 .quilt-container {
   padding: 2em;
-  background-color: #888888; }
+  background-color: #ececec; }
   .quilt-container .canvas-container {
     width: 100%;
     height: auto;
@@ -1960,6 +1960,21 @@ input[type="checkbox"].disabled {
       border: 1px solid #cccccc; }
   .patch-container #saveData {
     display: none !important; }
+
+.patch-start-form .theme {
+  margin: 1em 0; }
+  .patch-start-form .theme .theme-name {
+    text-align: center;
+    padding: 0.5em 0; }
+  .patch-start-form .theme .swatches::after {
+    content: "";
+    display: table;
+    clear: both; }
+  .patch-start-form .theme .swatch {
+    display: block;
+    width: 20%;
+    height: 2.75em;
+    float: left; }
 
 html,
 body {

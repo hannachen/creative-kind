@@ -86,3 +86,24 @@
     display: none !important;
   }
 }
+.patch-start-form {
+
+  .theme {
+    //background-color: #262626;
+    margin: 1em 0;
+
+    .theme-name {
+      text-align: center;
+      padding: 0.5em 0;
+    }
+    .swatches {
+      @include clearfix();
+    }
+    .swatch {
+      display: block;
+      width: 20%;
+      height: 2.75em;
+      float: left;
+    }
+  }
+}

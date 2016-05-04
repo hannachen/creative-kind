@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    deepPopulate = require('mongoose-deep-populate')(mongoose),
     Schema = mongoose.Schema;
 
 var PatchSchema = new Schema({
@@ -15,6 +16,8 @@ PatchSchema.virtual('date')
   .get(function(){
     return this._id.getTimestamp();
   });
+
+PatchSchema.plugin(deepPopulate);
 
 mongoose.model('Patch', PatchSchema);
 

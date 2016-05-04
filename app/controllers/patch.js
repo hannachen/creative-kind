@@ -57,6 +57,7 @@ router.get('/view/:uid*', function (req, res, next) {
 
 router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
+    .deepPopulate('_quilt._theme.colors')
     .exec(function (err, patch) {
       if (err) return next(err);
       if (patch.status === 'complete') {
@@ -74,9 +75,11 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
           return;
         }
       } else {
+
         res.render('pages/patch/start', {
           title: 'Start Patch',
-          patch: patch
+          patch: patch,
+          theme: patch._quilt._theme
         });
       }
     });

@@ -1,4 +1,19 @@
+<form action="/patch/start/{{patch.uid}}" method="post" class="start-patch-form">
 
-<form action="/patch/start/{{patch.uid}}" method="post">
+  <!-- Colour set selection carousel -->
+  <div class="carousel theme-carousel" data-target=".input-colour-set">
+    <div class="theme" data-id="{{theme.id}}" data-name="{{theme.name}}">
+      <div class="theme-name">{{theme.name}}</div>
+      {{#each theme.colors}}
+        <ul class="swatches">
+          {{#each colors}}
+            <li class="swatch" style="background-color:#{{this}}">&nbsp;</li>
+          {{/each}}
+        </ul>
+      {{/each}}
+    </div>
+  </div>
+
   <input type="submit" value="Start" />
+
 </form>

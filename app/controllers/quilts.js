@@ -78,7 +78,7 @@ router.get('/create', isAuthenticated, function (req, res, next) {
         themes[0]['active'] = 'active';
       }
       res.render('pages/quilts/create', {
-        title: 'Create a quilt',
+        title: 'Create your own',
         themes: themes
       });
     });

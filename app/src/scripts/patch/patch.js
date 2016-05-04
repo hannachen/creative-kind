@@ -11,7 +11,8 @@ var patch = (function($) {
       colourAreas = [],
       multipleSelection = true, // initial state for multiple selection
       $colorPalette,
-      $lineToggleButton;
+      $lineToggleButton,
+      $startPatchForm;
 
   function setupCanvas() {
 
@@ -57,8 +58,13 @@ var patch = (function($) {
 
   function init() {
 
+    initVariables();
+
     if (canvasArea) {
       setupCanvas();
+    }
+    if ($('.start-patch-form').length) {
+
     }
   }
 
@@ -70,6 +76,10 @@ var patch = (function($) {
     }
     shape.onClick = clickArea;
     shape.selectedColor = multipleSelection ? '#00ecde' : '#009dec';
+  }
+
+  function initVariables() {
+    $startPatchForm = $('.start-patch-form');
   }
 
   function initToolbars() {
