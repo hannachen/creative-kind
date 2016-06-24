@@ -4,13 +4,13 @@ module.exports = function(passport) {
 
   passport.serializeUser(function(user, done) {
     done(null, user.id);
-  }); // if you are using sessions
+  });
 
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       done(err, user);
     });
-  }); // if you are using sessions
+  });
 
   passport.use('local-login', new LocalStrategy({
       usernameField : 'email',
@@ -18,9 +18,8 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, email, password, done) {
-      // mongodb example - you have to query for user,
-      // check password, and return user if successful
-      User.findOne({ 'local.email' : email }, function(err, user) {
+      // query for user, check password, and return user if successful
+      User.findOne({'email' : email }, function(err, user) {
         if (err) {
           return done(err);
         }
@@ -34,5 +33,5 @@ module.exports = function(passport) {
         }
       });
     }
-  );
+  ));
 };

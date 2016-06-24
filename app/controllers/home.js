@@ -1,13 +1,20 @@
 var express = require('express'),
     router = express.Router(),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    Quilt = mongoose.model('Quilt');
 
 module.exports = function (app) {
   app.use('/', router);
 };
 
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Quilting Bee'
+  console.log('INDEX');
+
+  Quilt.find({}, function (err, quilts) {
+    if (err) return next(err);
+    res.render('index', {
+      title: 'Quilting Bee',
+      quilts: quilts
+    });
   });
 });

@@ -64,7 +64,8 @@ var patch = (function($) {
       setupCanvas();
     }
     if ($('.start-patch-form').length) {
-
+      console.log('start patch');
+      $('.carousel').slick();
     }
   }
 

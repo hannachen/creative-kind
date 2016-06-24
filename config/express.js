@@ -22,13 +22,9 @@ module.exports = function(app, config) {
   app.engine('handlebars', exphbs({
     helpers: {
       'if_eq': function(a, b, opts) { return (a == b) ? opts.fn(this) : opts.inverse(this); },
-      'math': function(lvalue, operator, rvalue, options) {
-        console.log(lvalue);
-        console.log(rvalue);
+      'math': function(lvalue, operator, rvalue) {
         lvalue = parseFloat(lvalue);
         rvalue = parseFloat(rvalue);
-
-        console.log('MATHING');
 
         return {
           "+": lvalue + rvalue,
@@ -77,6 +73,7 @@ module.exports = function(app, config) {
   // Make the user object available to all views provided that req.user is available.
   app.use(function(req, res, next) {
     res.locals.user = req.user;
+    req.config = config;
     next();
   });
 
@@ -94,7 +91,7 @@ module.exports = function(app, config) {
     next(err);
   });
 
-  if(app.get('env') === 'development'){
+  if(app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
       res.render('error', {

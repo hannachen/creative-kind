@@ -1,0 +1,9 @@
+<h3>My Quilts</h3>
+
+{{#if quilts}}
+  <ul>
+    {{#each quilts}}
+      <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
+    {{/each}}
+  </ul>
+{{/if}}

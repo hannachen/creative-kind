@@ -1,0 +1,43 @@
+<h2>{{quilt.title}} [{{quilt.type}}]</h2>
+
+{{#if_eq quilt.type "private"}}
+  <h5>By: {{quilt._user.username}}</h5>
+{{/if_eq}}
+
+{{#if quilt._theme}}
+  <div class="theme-preview">
+    {{#each quilt._theme}}
+      {{#if colors}}
+        <ul class="theme">
+          <li class="theme-name">
+            {{name}}
+          </li>
+          {{#each colors}}
+            <li class="color-set">
+              <ul>
+                {{#each colors}}
+                  <li class="swatch" style="background-color:#{{this}}">&nbsp;</li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{/each}}
+  </div>
+{{/if}}
+
+{{#if patches}}
+  <div class="data" id="quilt-data">
+    {{quiltData}}
+  </div>
+  <div class="data" id="user-data">
+    {{userData}}
+  </div>
+  <div class="quilt-container">
+    <div id="canvas-container" class="canvas-container">
+      <img src="/img/spacer.png" class="grid-spacer" id="grid-spacer" />
+      <canvas id="grid-area" class="grid-area"></canvas>
+    </div>
+  </div>
+{{/if}}

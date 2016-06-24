@@ -1,9 +1,11 @@
 var express = require('express'),
     router = express.Router(),
+    moment = require('moment'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     recaptcha = require('express-recaptcha'),
     async = require('async'),
+    fs = require('fs'),
     nodemailer = require('nodemailer'),
     sgTransport = require('nodemailer-sendgrid-transport'),
     crypto = require('crypto'),
@@ -21,7 +23,7 @@ var isAuthenticated = function (req, res, next) {
   res.redirect('/');
 }
 
-module.exports = function (app, config) {
+module.exports = function (app) {
   app.use('/account', router);
 };
 
@@ -44,12 +46,36 @@ router.get('/', isAuthenticated, function (req, res, next) {
 });
 
 
+router.get('/patches', isAuthenticated, function(req, res) {
+  Patch
+    .find({'_user': req.user.id})
+    .populate('_quilt')
+    .exec(function(err, patches) {
+      if (err) return next(err);
+      res.render('pages/account/patches', {
+        title: 'My Squares',
+        patches: patches
+      });
+    });
+});
+
+router.get('/quilts', isAuthenticated, function(req, res) {
+
+  Quilt.find({'_user': req.user.id}, function(err, quilts) {
+    if (err) return next(err);
+
+    res.render('pages/account/quilts', {
+      title: 'My Quilts',
+      quilts: quilts
+    });
+  });
+});
+
 router.get('/register', function(req, res) {
   res.redirect('/login-signup/#signup');
 });
 
 router.post('/register', function(req, res, next) {
-  console.log('registering user');
   var userdata = {
     'username': req.body.user.username,
     'email': req.body.user.email
@@ -60,53 +86,50 @@ router.post('/register', function(req, res, next) {
       return next(err);
     }
 
-    console.log('user registered!');
-
     res.redirect('/account');
   });
 });
 
-
-
 router.get('/recover-password', recaptcha.middleware.render, function(req, res) {
-  res.render('pages/recover-password/index', { captcha:req.recaptcha });
+  res.render('pages/recover-password/index', {
+    title: 'Forgot Password',
+    captcha:req.recaptcha
+  });
 });
 
-router.post('/recover-password', recaptcha.middleware.verify, function(req, res, next, config) {
-  console.log(req.body.user.email);
+router.post('/recover-password', recaptcha.middleware.verify, function(req, res, next) {
+
   if (!req.recaptcha.error) {
-    console.log('captcha success');
     async.waterfall([
       function(done) {
-        crypto.randomBytes(20, function(err, buf) {
-          var token = buf.toString('hex');
-          done(err, token);
-        });
-      },
-      function(token, done) {
-        User.findOne({ email: req.body.user.email }, function(err, user) {
-          if (!user) {
+        User.findOne({ email: req.body.user.email }, 'email hash', function(err, user) {
+          if (!user || !user.hash) {
             req.flash('error', 'No account with that email address exists.');
             return res.redirect('/account/recover-password/');
           }
-
-          user.resetPasswordToken = token;
-          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-          user.save(function(err) {
-            done(err, token, user);
-          });
+          done(err, user);
         });
       },
-      function(token, user, done) {
-        var smtpTransport = nodemailer.createTransport(sgTransport(config.nodemailer));
+      function(user, done) {
+        var pwdHash = crypto.createHash('sha256').update(user.hash),
+            oldPwd = pwdHash.digest('hex').substring(0, 15),
+            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
+            sign = crypto.createHmac('sha256', config.secret);
+        sign.update(queryString);
+
+        var token = sign.digest('hex'),
+            url = queryString + '&token=' + token;
+        done(null, url, user);
+      },
+      function(url, user, done) {
+        var smtpTransport = nodemailer.createTransport(sgTransport(req.config.nodemailer));
         var mailOptions = {
           to: user.email,
           from: 'passwordreset@demo.com',
           subject: 'Quilting Bee Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/account/reset/' + token + '\n\n' +
+          'http://' + req.headers.host + '/account/reset/?' + url + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         smtpTransport.sendMail(mailOptions, function(err) {
@@ -125,38 +148,51 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
   }
 });
 
-router.get('/reset/:token', function(req, res) {
-  User.findOne({
-      resetPasswordToken: req.params.token,
-      resetPasswordExpires: { $gt: Date.now() }
-    }, function(err, user) {
-    if (!user) {
-      req.flash('error', 'Password reset token is invalid or has expired.');
-      return res.redirect('/account/recover-password/');
-    }
-    res.render('pages/recover-password/reset', {
-      user: req.user
+router.get('/reset', function(req, res) {
+  var queryString = 'email=' + encodeURIComponent(req.query.email) + '&old=' + req.query.old + '&expire=' + req.query.expire,
+      token = req.query.token,
+      verifier = crypto.createVerify('RSA-SHA256');
+  verifier.update(queryString);
+
+  // Verify token
+  console.log('not expired', parseInt(req.query.expire) < parseInt(moment().unix()));
+  console.log('expire:', parseInt(req.query.expire));
+  console.log('date:', parseInt(moment().unix()));
+
+  // No good
+  if (!verifier.verify(fs.readFileSync(req.config.public_key), token, 'hex') || // Verification failed
+    parseInt(req.query.expire) < parseInt(moment().unix())) { // Expired
+
+    req.flash('error', 'Password reset token expired or invalie token.');
+    return res.redirect('/account/recover-password/');
+
+    // Continue on
+  } else {
+
+    User.findOne({email: req.body.email}, function(err, user) {
+      if (!user) {
+        req.flash('error', 'Password reset token is invalid or has expired.');
+        return res.redirect('back');
+      }
+      res.render('pages/recover-password/reset', {
+        user: user
+      });
     });
-  });
+  }
 });
 
-router.post('/reset/:token', function(req, res, config) {
+router.post('/reset', function(req, res) {
+  console.log(req.body);
+  console.log('email', req.body.email);
   async.waterfall([
     function(done) {
-      User.findOne({
-          resetPasswordToken: req.params.token,
-          resetPasswordExpires: { $gt: Date.now() }
-        }, function(err, user) {
+      User.findOne({email: req.body.email}, function(err, user) {
         if (!user) {
           req.flash('error', 'Password reset token is invalid or has expired.');
           return res.redirect('back');
         }
-
-        user.password = req.body.password;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-
         user.save(function(err) {
+          if (err) return next(err);
           req.logIn(user, function(err) {
             done(err, user);
           });
@@ -164,18 +200,8 @@ router.post('/reset/:token', function(req, res, config) {
       });
     },
     function(user, done) {
-      var smtpTransport = nodemailer.createTransport(sgTransport(config.nodemailer));
-      var mailOptions = {
-        to: user.email,
-        from: 'passwordreset@demo.com',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-        'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
-        done(err);
-      });
+      req.flash('success', 'Success! Your password has been changed.');
+      done(err);
     }
   ], function(err) {
     res.redirect('/');

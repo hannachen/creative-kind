@@ -17,6 +17,14 @@
 
   {{/if}}
 
+  <div id="quilt-container">
+
+  </div>
+
   <ul>
-    <li><a href="/quilts">View Quilts</a></li>
+    {{#each quilts}}
+      {{#if_eq type 'public'}}
+        <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
+      {{/if_eq}}
+    {{/each}}
   </ul>
