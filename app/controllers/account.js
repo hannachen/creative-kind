@@ -49,7 +49,6 @@ router.get('/', isAuthenticated, function (req, res, next) {
 router.get('/patches', isAuthenticated, function(req, res) {
   Patch
     .find({'_user': req.user.id})
-    .populate('_quilt')
     .exec(function(err, patches) {
       if (err) return next(err);
       res.render('pages/account/patches', {
