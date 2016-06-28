@@ -1,0 +1,25 @@
+/* Keyframes for the fade-in */
+@keyframes fadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@mixin fadeAnimation() {
+  animation: fadeIn ease-in 1;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@mixin fadeIn($delay: 0) {
+  @include fadeAnimation;
+  opacity: 0;
+  opacity: 1 \9; /*just in case ie*/
+}
+
+@mixin fadeOut($delay: 0) {
+  @include fadeAnimation;
+  opacity: 1;
+  opacity: 0 \9; /*just in case ie*/
+  animation-direction: reverse;
+  animation-delay: $delay;
+}

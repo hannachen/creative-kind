@@ -138,9 +138,10 @@ var patch = (function($) {
       patchData: {
         colours: data
       }
-    }, function() {
-      location.reload();
-    });
+    }, function(data) {
+      console.log(data);
+      window.location = data.url;
+    }, 'json');
   }
 
   function initFormActions() {

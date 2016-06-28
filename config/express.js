@@ -53,18 +53,18 @@ module.exports = function(app, config) {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+  app.use(cookieParser());
   app.use(session({
     secret: 'beeline',
     resave: true,
     saveUninitialized: true
   }));
-  app.use(cookieParser());
+  app.use(flash());
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
-  app.use(flash());
 
   // Initialize Passport
   var initPassport = require('../passport/init');

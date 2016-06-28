@@ -63,7 +63,8 @@ router.get('/view/:id*', function (req, res, next) {
           quilt: quilt,
           quiltData: JSON.stringify(simplePatchData),
           userData: JSON.stringify(req.user),
-          patches: patches
+          patches: patches,
+          expressFlash: req.flash('message')
         });
       });
     });
