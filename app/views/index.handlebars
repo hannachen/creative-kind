@@ -1,8 +1,24 @@
 
-  <h1>Welcome!</h1>
+  <h1>Quilting Bee</h1>
   <h2>Some are born great, some achieve greatness, and some have greatness thrust upon them.</h2>
   <p>A creative community with a common goal.</p>
 
+  <div id="quilt-container">
+    <ul>
+      {{#each quilts}}
+        {{#if_eq type 'public'}}
+          <li class="quilt" data-title="{{title}}" data-uid="{{id}}">
+            <a href="/quilts/view/{{id}}">{{title}}</a>
+            {{#if quiltData}}
+              <div class="data" id="quilt-data">
+                {{quiltData}}
+              </div>
+            {{/if}}
+          </li>
+        {{/if_eq}}
+      {{/each}}
+    </ul>
+  </div>
 
   {{#if user}}
 
@@ -16,15 +32,3 @@
     {{>login-menu }}
 
   {{/if}}
-
-  <div id="quilt-container">
-
-  </div>
-
-  <ul>
-    {{#each quilts}}
-      {{#if_eq type 'public'}}
-        <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
-      {{/if_eq}}
-    {{/each}}
-  </ul>

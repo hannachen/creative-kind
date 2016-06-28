@@ -33,7 +33,12 @@
     <h3>My Squares</h3>
     <ul>
       {{#each patches}}
-        <li>Square in <a href="/patch/edit/{{uid}}">{{_quilt.title}}</a> [{{status}}]</li>
+        {{#if_eq status 'complete'}}
+          <li>Square in <a href="/patch/view/{{uid}}">{{_quilt.title}}</a> [{{status}}]</li>
+        {{/if_eq}}
+        {{#if_eq status 'progress'}}
+          <li>Square in <a href="/patch/edit/{{uid}}">{{_quilt.title}}</a> [{{status}}]</li>
+        {{/if_eq}}
       {{/each}}
     </ul>
   {{/if}}

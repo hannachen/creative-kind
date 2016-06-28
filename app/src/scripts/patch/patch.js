@@ -149,7 +149,7 @@ var patch = (function($) {
     $actionsForm.on('submit', function(e) {
       e.preventDefault();
     });
-    $actionsForm.on('click', '[type=button]', onActionButtonClick)
+    $actionsForm.on('click', '.action-button', onActionButtonClick)
   }
 
   function changeSelectionColor(newColor) {

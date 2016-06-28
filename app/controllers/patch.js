@@ -61,7 +61,8 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
     .exec(function (err, patch) {
       if (err) return next(err);
       if (patch.status === 'complete') {
-        res.redirect('/patch/view/'+patch.uid);
+        req.flash('message', 'Thank you');
+        res.redirect('/quilts/view/'+patch._quilt);
         return;
       }
       if (patch && patch._user) {
@@ -88,6 +89,7 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
 router.post('/edit/:uid/:status?', isAuthenticated, function (req, res, next) {
   var patchData = req.body.patchData;
   Patch.findOne({'uid':req.params.uid })
+    .populate('_quilt')
     .exec(function (err, patch) {
       if (err) return next(err);
       if (isMine(req, res, patch)) {
@@ -96,7 +98,8 @@ router.post('/edit/:uid/:status?', isAuthenticated, function (req, res, next) {
         patch.save(function(err) {
           if (err) throw err;
           if (patch.status === 'progress') {
-            res.redirect('/patch/edit/'+patch.uid);
+            req.flash('message', 'See you soon');
+            res.redirect('/quilt/view/'+patch._quilt);
             return;
           }
         });

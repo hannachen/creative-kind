@@ -28,8 +28,8 @@
     {{patch.svg}}
   </div>
   <form action="/patch/edit/{{patch.uid}}" method="post" id="formActions">
-    <input type="button" name="saveAction" data-target="#formActions" value="Save" />
-    <input type="button" name="completeAction" data-target="#formActions" value="Complete" />
+    <button class="action-button" name="saveAction" data-target="#formActions" value="progress">Save</button>
+    <button class="action-button" name="completeAction" data-target="#formActions" value="complete">Complete</button>
   </form>
 
 </div>
