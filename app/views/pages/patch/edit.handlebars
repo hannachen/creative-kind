@@ -4,10 +4,11 @@
 <div class="patch-container" data-mode="edit">
 
   <ul class="toolbar">
-    <li class="tool">
+    <li class="tool multiple">
       <span class="label">Select Multiple</span>
       <input class="select-multiple" type="checkbox" checked>
     </li>
+    <li class="tool"><button data-tool="line-toggle">Toggle Lines</button></li>
     <li class="tool"><button data-tool="clear">Clear Selection</button></li>
   </ul>
   <div id="canvas-container" class="canvas-container select">
@@ -21,9 +22,24 @@
     <li class="color"><button class="color-button" data-color="#D96459" style="background-color:#D96459;"></button></li>
     <li class="color"><button class="color-button" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
   </ul>
-  <div class="utils">
-    <button class="line-toggle">Toggle Lines</button>
-  </div>
+  <form action="/patch/edit/{{patch.uid}}/colors" class="palette-selector" method="post" id="paletteSelector">
+    <input type="hidden" class="selected-set" value="{{patch.colorSet}}" />
+    <ul class="color-sets">
+      {{#each patch._quilt._theme.colors}}
+      <li class="color-set">
+        Colour set {{@index}}
+        <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}" />
+        <label class="label" for="set{{@index}}">
+          <ul class="swatches">
+            {{#each colors}}
+              <li class="swatch" style="background-color:#{{this}}" data-hex="#{{this}}">&nbsp;</li>
+            {{/each}}
+          </ul>
+        </label>
+      </li>
+      {{/each}}
+    </ul>
+  </form>
   <div id="saveData">
     {{patch.svg}}
   </div>

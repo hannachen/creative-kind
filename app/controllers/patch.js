@@ -143,6 +143,7 @@ router.get('/svg/:uid', function (req, res, next) {
         }
       }
       // Offset array with one additional item: view is using count value instead of index, oops
+      // TODO: fix this shit
       svg.unshift('#828282');
       res.render('partials/svg/patch', {
         title: 'View Patch',

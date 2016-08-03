@@ -1911,6 +1911,8 @@ input[type="checkbox"].disabled {
       list-style-type: none;
       float: left;
       box-sizing: border-box; }
+      .patch-container .toolbar .tool.multiple {
+        display: none; }
       .patch-container .toolbar .tool .label {
         color: #000000;
         font-size: 11px;
@@ -1919,8 +1921,9 @@ input[type="checkbox"].disabled {
         display: block; }
       .patch-container .toolbar .tool button {
         width: 100%;
-        padding: 20px;
-        font-size: 13px; }
+        padding: 1.5em;
+        font-size: 13px;
+        border: 1px solid #cccccc; }
     .patch-container .toolbar .switch {
       list-style-type: none; }
   .patch-container .canvas-container {
@@ -1955,14 +1958,38 @@ input[type="checkbox"].disabled {
       height: 60px;
       border: 0;
       border-radius: 0; }
-  .patch-container .utils {
-    text-align: center; }
-    .patch-container .utils .line-toggle {
-      width: 100%;
-      height: 60px;
-      border: 1px solid #cccccc; }
+  .patch-container .palette-selector {
+    padding: 1em;
+    border: 1px solid #cccccc;
+    margin: 3em 0 5em; }
+    .patch-container .palette-selector .color-sets li,
+    .patch-container .palette-selector .color-sets .swatches {
+      overflow: hidden; }
+    .patch-container .palette-selector .color-sets li {
+      list-style-type: none; }
+    .patch-container .palette-selector .color-sets .swatches {
+      margin: .5em 0; }
+      .patch-container .palette-selector .color-sets .swatches .swatch {
+        width: 20%;
+        float: left;
+        height: 3em; }
+    .patch-container .palette-selector .color-sets .selection,
+    .patch-container .palette-selector .color-sets .label {
+      float: left; }
+    .patch-container .palette-selector .color-sets .selection {
+      width: 10%; }
+    .patch-container .palette-selector .color-sets .label {
+      width: 90%; }
   .patch-container #saveData {
     display: none !important; }
+  .patch-container #formActions {
+    overflow: hidden; }
+    .patch-container #formActions .action-button {
+      width: 50%;
+      padding: 1.5em;
+      font-size: 13px;
+      border: 1px solid #cccccc;
+      float: left; }
 
 .patch-start-form .theme {
   margin: 1em 0; }
@@ -2030,7 +2057,8 @@ form li {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5); }
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1030; }
 
 .contents {
   padding: 2.5% 5% 5%; }

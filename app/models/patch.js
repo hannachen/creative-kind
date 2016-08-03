@@ -6,10 +6,12 @@ var PatchSchema = new Schema({
       _user : { type: Schema.Types.ObjectId, ref: 'User' },
       _quilt: { type: Schema.Types.ObjectId, ref: 'Quilt' },
       uid: String,
-      colors: [],
       status: String,
-      svg: String,
-      theme: String
+      colorSet: {
+        type: Number, // Index of the colour set within a theme, keep it vague so that a quilt's theme may be switched
+        default: 0
+      },
+      svg: String
     }, { collection: 'patches' });
 
 PatchSchema.virtual('date')

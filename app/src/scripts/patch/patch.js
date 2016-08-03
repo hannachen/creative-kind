@@ -10,8 +10,7 @@ var patch = (function($) {
       linesGroup,
       colourAreas = [],
       multipleSelection = true, // initial state for multiple selection
-      $colorPalette,
-      $lineToggleButton,
+      $colorPalette = $('.color-palette .color-button'),
       $startPatchForm;
 
   function setupCanvas() {
@@ -93,24 +92,27 @@ var patch = (function($) {
       clearSelected();
     });
 
+    // Line toggle button
+    $toolbar.find('[data-tool="line-toggle"]').on('touchstart click', function() {
+      if (linesGroup) {
+        linesGroup.visible = linesGroup.visible ? false : true;
+        view.draw();
+      }
+    });
+
     // Colour palette
-    $colorPalette = $('.color-palette .color-button');
+    initColorPalette();
+  }
+
+  function initColorPalette() {
     $colorPalette.on('touchstart click', function(e) {
+      console.log(e.currentTarget);
       if (selectedItems.length) {
         _.forEach(selectedItems, function(selectedItem) {
           selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
         });
         view.draw();
         clearSelected();
-      }
-    });
-
-    // Line toggle button
-    $lineToggleButton = $('.line-toggle');
-    $lineToggleButton.on('click', function() {
-      if (linesGroup) {
-        linesGroup.visible = linesGroup.visible ? false : true;
-        view.draw();
       }
     });
   }

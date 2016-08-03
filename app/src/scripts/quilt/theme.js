@@ -23,6 +23,8 @@ var theme = (function($) {
   }
 
   function initEvents() {
+
+    // TODO: only admin/owner of quilt can use this feature
     $('.theme-form').on('submit', function(e) {
       e.preventDefault();
       var form = e.currentTarget,
