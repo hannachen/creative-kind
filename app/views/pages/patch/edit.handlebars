@@ -24,21 +24,24 @@
   </ul>
   <form action="/patch/edit/{{patch.uid}}/colors" class="palette-selector" method="post" id="paletteSelector">
     <input type="hidden" class="selected-set" value="{{patch.colorSet}}" />
-    <ul class="color-sets">
-      {{#each patch._quilt._theme.colors}}
-      <li class="color-set">
-        Colour set {{@index}}
-        <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}" />
-        <label class="label" for="set{{@index}}">
-          <ul class="swatches">
-            {{#each colors}}
-              <li class="swatch" style="background-color:#{{this}}" data-hex="#{{this}}">&nbsp;</li>
-            {{/each}}
-          </ul>
-        </label>
-      </li>
-      {{/each}}
-    </ul>
+    <fieldset class="form-group">
+      <legend>Change colour palette</legend>
+      <ul class="color-sets">
+        {{#each patch._quilt._theme.colors}}
+        <li class="color-set">
+          <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}" />
+          <label class="label" for="set{{@index}}">
+            Colour set {{@index}}
+            <ul class="swatches">
+              {{#each colors}}
+                <li class="swatch" style="background-color:#{{this}}" data-hex="#{{this}}">&nbsp;</li>
+              {{/each}}
+            </ul>
+          </label>
+        </li>
+        {{/each}}
+      </ul>
+    </fieldset>
   </form>
   <div id="saveData">
     {{patch.svg}}

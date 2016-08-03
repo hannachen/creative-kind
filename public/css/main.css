@@ -1959,9 +1959,9 @@ input[type="checkbox"].disabled {
       border: 0;
       border-radius: 0; }
   .patch-container .palette-selector {
-    padding: 1em;
-    border: 1px solid #cccccc;
-    margin: 3em 0 5em; }
+    margin: 2.5em 0 5em; }
+    .patch-container .palette-selector .form-group {
+      padding: 1em; }
     .patch-container .palette-selector .color-sets li,
     .patch-container .palette-selector .color-sets .swatches {
       overflow: hidden; }

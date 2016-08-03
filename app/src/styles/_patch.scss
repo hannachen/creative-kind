@@ -78,10 +78,11 @@
     }
   }
   .palette-selector {
-    padding: 1em;
-    border: 1px solid #cccccc;
-    margin: 3em 0 5em;
+    margin: 2.5em 0 5em;
 
+    .form-group {
+      padding: 1em;
+    }
     .color-sets {
       li,
       .swatches {
