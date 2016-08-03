@@ -43,31 +43,59 @@ router.get('/view/:id*', function (req, res, next) {
     .exec(function (err, quilt) {
       if (err) return next(err);
       console.log(quilt);
-      Patch.find({'_quilt': quilt.id}, function(err, patches) {
-        if (err) return next(err);
-        var simplePatchData = new Array();
-        _.forEach(patches, function(patch) {
-          if (patch._user && req.user &&
-              String(req.user.id) === String(patch._user) &&
-              patch.status === 'progress') {
-            patch.status = 'mine';
+      Theme.find({})
+        .populate('colors')
+        .exec(function (err, themes) {
+          if (err) return next(err);
+          if (themes.length) {
+            themes[0]['active'] = 'active';
           }
-          var simplePatch = {
-            uid: patch.uid,
-            status: patch.status
-          };
-          simplePatchData.push(simplePatch);
+          Patch.find({'_quilt': quilt.id}, function(err, patches) {
+            if (err) return next(err);
+            var simplePatchData = new Array();
+            _.forEach(patches, function(patch) {
+              if (patch._user && req.user &&
+                String(req.user.id) === String(patch._user) &&
+                patch.status === 'progress') {
+                patch.status = 'mine';
+              }
+              var simplePatch = {
+                uid: patch.uid,
+                status: patch.status
+              };
+              simplePatchData.push(simplePatch);
+            });
+            res.render('pages/quilts/view', {
+              title: 'View Quilt',
+              quilt: quilt,
+              quiltData: JSON.stringify(simplePatchData),
+              userData: JSON.stringify(req.user),
+              patches: patches,
+              themes: themes,
+              expressFlash: req.flash('message')
+            });
+          });
         });
-        res.render('pages/quilts/view', {
-          title: 'View Quilt',
-          quilt: quilt,
-          quiltData: JSON.stringify(simplePatchData),
-          userData: JSON.stringify(req.user),
-          patches: patches,
-          expressFlash: req.flash('message')
-        });
-      });
     });
+});
+
+/**
+ * Update the theme of a quilt. AJAX.
+ */
+router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
+  var query = {'_id':req.params.id},
+      update = {'_theme':req.body.theme},
+      options = {'muti': false};
+  console.log(req.body);
+  Quilt.update(query, update, options, function(err, quilt) {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      var data = {};
+      res.sendStatus(200);
+      // res.send(data);
+    }
+  });
 });
 
 router.get('/create', isAuthenticated, function (req, res, next) {

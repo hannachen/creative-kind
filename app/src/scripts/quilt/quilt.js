@@ -25,30 +25,9 @@ var quilt = (function($) {
 
   function init() {
 
-    let $carousel = $('.theme-carousel'),
-        $input = $($carousel.data('target')),
-        $themes = $carousel.find('.theme'),
-        $selectedTheme = $('.selected-theme');
-    $carousel.on('init', function(e, slick) {
-      setActiveTheme($input, $selectedTheme, $themes.get(slick.currentSlide));
-    });
-    $carousel.on('afterChange', function(e, slick, currentSlide) {
-      setActiveTheme($input, $selectedTheme, $themes.get(currentSlide));
-    });
-    $carousel.slick();
-
     if ($('#grid-area').length) {
       setupCanvas();
     }
-  }
-
-  function setActiveTheme($input, $selectedTheme, currentTheme) {
-    let themeId = currentTheme.getAttribute('data-id'),
-        themeName = currentTheme.getAttribute('data-name');
-    console.log(themeName, themeId);
-    $input.val(themeId);
-    $selectedTheme.text(themeName);
-    console.log(currentTheme);
   }
 
   function setupCanvas() {

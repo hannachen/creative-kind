@@ -1815,9 +1815,6 @@ input[type="checkbox"].disabled {
     top: 0;
     left: 0;
     z-index: 1; }
-  .quilt-container .grid-spacer {
-    width: 100%;
-    height: auto; }
 
 .data {
   display: none; }
@@ -2084,3 +2081,8 @@ form li {
 .header-menu .title {
   width: 66.66667%;
   text-align: center; }
+
+.grid-spacer {
+  width: 100%;
+  height: 0;
+  padding-top: 100%; }
