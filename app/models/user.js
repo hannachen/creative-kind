@@ -35,4 +35,9 @@ UserSchema.virtual('date')
     return this._id.getTimestamp();
   });
 
+UserSchema.virtual('isAdmin')
+  .get(function() {
+    return (this.usertype === 'admin');
+  });
+
 mongoose.model('User', UserSchema);

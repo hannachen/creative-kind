@@ -2,15 +2,22 @@
 var patch = (function($) {
 
   var containerEl = document.getElementById('canvas-container'),
-      saveData = document.getElementById('saveData'),
       canvasArea = document.getElementById('coloring-area'),
       patchData = [],
+      colorIndexData = [],
       selectedItems = [],
+      colorSet = [],
+      selectedSet = document.getElementById('selectedSet'),
       grid,
       linesGroup,
+      selectedAlpha = 0.8,
       colourAreas = [],
       multipleSelection = true, // initial state for multiple selection
-      $colorPalette = $('.color-palette .color-button'),
+      $paletteSelectons = $('.color-sets .selection'),
+      $colorPalette = $('.color-palette'),
+      $saveData = $('#saveData'),
+      $colorButtons = $colorPalette.find('.color-button'),
+      $applyColorButton = $('#apply-color'),
       $startPatchForm;
 
   function setupCanvas() {
@@ -18,30 +25,24 @@ var patch = (function($) {
     // Setup directly from canvas id:
     paper.setup('coloring-area');
 
-    var saveDataString = saveData.innerHTML.trim();
-    if (saveDataString) {
-      patchData = saveDataString.split(',');
+    // Read save data
+    var colorDataString = $saveData.find('.color-data').text().trim(),
+        colorIndexDataString = $saveData.find('.color-index-data').text().trim();
+
+    // Convert save data string into arrays
+    if (colorDataString) {
+      patchData = colorDataString.split(',');
+    }
+
+    console.log('data count', patchData.length);
+    if (colorIndexDataString) {
+      colorIndexData = colorIndexDataString.split(',');
     }
 
     // Add grid SVG
-    project.importSVG('/img/grid-1.svg', function(item) {
-      grid = item;
-      fitToContainer(item);
-      if (item.hasChildren() && item.children.gridareas) {
-        colourAreas = item.children.gridareas.children;
-        _.forEach(colourAreas, function(shapeArea, i) {
-          if (shapeArea === undefined) {
-            return;
-          }
-          attachShapeEvents(shapeArea);
-          if (patchData[i]) {
-            shapeArea.fillColor = patchData[i];
-          }
-        });
-      }
-      if (item.hasChildren() && item.children.lines) {
-        linesGroup = item.children.lines;
-      }
+    project.importSVG('/img/grid-1.svg', {
+      expandShapes: false,
+      onLoad: onSvgLoaded
     });
     view.draw();
 
@@ -53,6 +54,32 @@ var patch = (function($) {
 
     // Setup form handler
     initFormActions();
+  }
+
+  function onSvgLoaded(item) {
+    grid = item;
+    fitToContainer(item);
+    if (item.hasChildren() && item.children.gridareas) {
+      console.log(item.firstChild);
+      item.firstChild.remove(); // Remove document root element of svg, prevents an undefined item error when saving
+      console.log('item svg', item.children);
+      colourAreas = item.children.gridareas.children;
+
+      // Get color map from colour set
+      _.forEach(colourAreas, function(shapeArea, i) {
+        shapeArea.data.colorIndex = colorIndexData[i]; // colorIndexData[i];
+        attachShapeEvents(shapeArea);
+      });
+    }
+    if (item.hasChildren() && item.children.lines) {
+      linesGroup = item.children.lines;
+    }
+
+    // Initialize colour palette ONLY after the canvas is set up
+    initColorPalette();
+
+    // Init colour set selector
+    colors.init();
   }
 
   function init() {
@@ -99,22 +126,63 @@ var patch = (function($) {
         view.draw();
       }
     });
-
-    // Colour palette
-    initColorPalette();
   }
 
+  /**
+   * Initialize the colour palette using patch's colour set within the quilt's theme.
+   */
   function initColorPalette() {
-    $colorPalette.on('touchstart click', function(e) {
-      console.log(e.currentTarget);
-      if (selectedItems.length) {
-        _.forEach(selectedItems, function(selectedItem) {
-          selectedItem.fillColor = e.currentTarget.getAttribute('data-color');
-        });
-        view.draw();
-        clearSelected();
-      }
+    $colorButtons.on('touchstart click', applyColor);
+    $applyColorButton.on('touchstart click', clearSelected);
+    $colorPalette.on('changeSet', function(e) {
+      // Update color set
+      colorSet = e.colorData;
+      selectedSet.value = $paletteSelectons.filter(':checked').val();
+      _.forEach(colourAreas, setColor);
+      view.draw();
     });
+  }
+
+  function setColor(shapeArea, i) {
+    console.log(shapeArea.data.colorIndex);
+    console.log(colorSet[shapeArea.data.colorIndex]);
+    if (shapeArea === undefined) {
+      return;
+    }
+    if (patchData[i] &&
+        (colorIndexData[i] !== null ||
+        colorIndexData[i] === undefined)) {
+
+      var currentColor = shapeArea.fillColor.toCSS(true), // Convert Paper.js Color object into hex
+          newColor = colorSet[shapeArea.data.colorIndex];
+      // console.log('current:', currentColor);
+      // console.log('new:', newColor);
+      if (newColor && newColor !== currentColor) {
+        shapeArea.fillColor = newColor;
+      }
+    }
+  }
+
+  /**
+   * Apply current colour to selected areas.
+   * @param e
+   */
+  function applyColor(e) {
+    var colorIndex = e.currentTarget.getAttribute('data-index'),
+        colorToApply = colorSet[colorIndex];
+    _.forEach(selectedItems, function(selectedItem) {
+      selectedItem.fillColor = colorToApply;
+      selectedItem.fillColor.alpha = selectedAlpha;
+      selectedItem.data.colorIndex = colorIndex;
+    });
+
+    // Clear palette if only one area is selected
+    if (selectedItems.length <= 1) {
+      // clearSelected();
+    }
+
+    console.log('colorindex', colorIndex);
+    view.draw();
   }
 
   function onActionButtonClick(e) {
@@ -127,18 +195,29 @@ var patch = (function($) {
         $svg = $(doc).find('#gridareas'),
         $gridItem = $svg.find('path'),
         data = [],
+        colorData = [],
         status = e.currentTarget.value.toLowerCase(),
         postUrl = $form.attr('action') + '/' + status;
 
     console.log(postUrl);
 
+    // Collect color index
+    _.forEach(colourAreas, function(shapeArea) {
+      colorData.push(shapeArea.data.colorIndex);
+    });
+
+    // Collect shape colors
     $gridItem.each(function(i, v) {
+      console.log(v);
       data.push(v.getAttribute('fill'));
     });
 
+    // Post the data
     $.post(postUrl, {
       patchData: {
-        colours: data
+        colors: data,
+        colorIndexData: colorData,
+        colorSet: selectedSet.value
       }
     }, function(data) {
       console.log(data);
@@ -163,23 +242,27 @@ var patch = (function($) {
   }
 
   function clickArea(e) {
-    var selectItem = true;
     if (multipleSelection) {
       if (_.includes(selectedItems, e.target)) {
-        selectItem = false;
-        e.target.selected = false;
-        _.remove(selectedItems, e.target);
+        clearTarget(e.target);
+      } else {
+        selectTarget(e.target);
+      }
+      console.log('HII', selectedItems.length);
+      // Enable/disable the "apply color" button based on number of selected areas.
+      if (selectedItems.length > 1) {
+        $applyColorButton.prop('disabled', false);
+      } else {
+        $applyColorButton.prop('disabled', true);
       }
     } else {
       clearSelected();
     }
-    if (selectItem) {
-      selectTarget(e.target);
-    }
+    view.draw();
   }
 
   function enterArea(e) {
-    e.target.opacity = 0.8;
+    e.target.opacity = selectedAlpha;
   }
 
   function leaveArea(e) {
@@ -190,19 +273,33 @@ var patch = (function($) {
    * Remove selection indicator for all selected areas.
    */
   function clearSelected() {
-    _.forEach(selectedItems, function(selected) {
-      selected.selected = false;
-    });
-    view.draw();
+    _.forEach(selectedItems, clearTarget);
     selectedItems = [];
+    $applyColorButton.prop('disabled', true);
+    view.draw();
   }
 
   /**
    * Select the current target.
+   * @param target PaperJs shape
    */
   function selectTarget(target) {
     selectedItems.push(target);
     target.selected = true;
+    target.fillColor.alpha = selectedAlpha;
+  }
+
+  /**
+   * Clear selected target.
+   * @param target PaperJs shape
+   */
+  function clearTarget(target) {
+    console.log('clearing..', target);
+    target.selected = false;
+    target.fillColor.alpha = 1;
+    console.log(selectedItems);
+    _.remove(selectedItems, target);
+    console.log(selectedItems);
   }
 
   function htmlEncode(value){

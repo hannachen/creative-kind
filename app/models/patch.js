@@ -11,7 +11,8 @@ var PatchSchema = new Schema({
         type: Number, // Index of the colour set within a theme, keep it vague so that a quilt's theme may be switched
         default: 0
       },
-      svg: String
+      colorIndex: String,
+      colors: String
     }, { collection: 'patches' });
 
 PatchSchema.virtual('date')

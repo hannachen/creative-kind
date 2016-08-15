@@ -53,81 +53,86 @@ var quilt = (function($) {
     }
 
     // Add grid SVG
-    project.importSVG('/img/quilt-grid.svg', function(svg) {
-      grid = svg;
-      fitToContainer(svg);
-      if (svg.hasChildren()) {
-        let patches = svg.children;
-        _.forEach(patches, function(group, i) {
-          if (group === undefined) {
-            return;
-          }
-          let patch,
-            plus,
-            circle;
-          if(group.hasChildren()) {
-            _.forEach(group.children, function(item) {
-              let itemType = getItemType(item);
-              switch(itemType) {
-                case 'rectangle':
-                  patch = item;
-                  break;
-                case 'path':
-                  plus = item;
-                  break;
-                case 'circle':
-                  circle = item;
-                  break;
-              }
-            });
-          }
-
-          plus.locked = true;
-          plus.visible = false;
-
-          circle.locked = true;
-          circle.visible = false;
-
-          patch.strokeScaling = false;
-          patch.fillColor = '#ffffff';
-          patch.data.uid = patchStatus[i].uid;
-          patch.data.status = patchStatus[i].status;
-
-          if (!_.isEmpty(user)) {
-            patch.on(getPatchEvents());
-          }
-          switch (patch.data.status) {
-            case 'progress':
-              patch.off(getPatchEvents());
-              patch.fillColor = '#cccccc';
-              break;
-            case 'mine':
-              patch.fillColor = '#aab0ff';
-              break;
-            case 'complete':
-              project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
-                svg.rotate(-45);
-                svg.fitBounds(patch.bounds);
-                patch.addChild(svg);
-              });
-              patch.fillColor = '#ffffff';
-              break;
-            case 'new':
-            default:
-              if (myPatch.length) {
-                patch.off(getPatchEvents());
-              } else {
-                plus.visible = !_.isEmpty(user);
-              }
-              break;
-          }
-        });
-      }
+    project.importSVG('/img/quilt-grid.svg', {
+      expandShapes: false,
+      onLoad: onSvgLoaded
     });
     view.draw();
 
     // Setup viewport events
     viewportEvents();
+  }
+
+  function onSvgLoaded(svg) {
+    grid = svg;
+    fitToContainer(svg);
+    if (svg.hasChildren()) {
+      let patches = svg.children;
+      _.forEach(patches, function(group, i) {
+        if (group === undefined || group.hasChildren() === undefined) {
+          return;
+        }
+        let patch,
+            plus,
+            circle;
+        if(group.hasChildren()) {
+          _.forEach(group.children, function(item) {
+            let itemType = getItemType(item);
+            switch(itemType) {
+              case 'rectangle':
+                patch = item;
+                break;
+              case 'path':
+                plus = item;
+                break;
+              case 'circle':
+                circle = item;
+                break;
+            }
+          });
+        }
+
+        plus.locked = true;
+        plus.visible = false;
+
+        circle.locked = true;
+        circle.visible = false;
+
+        patch.strokeScaling = false;
+        patch.fillColor = '#ffffff';
+        patch.data.uid = patchStatus[i].uid;
+        patch.data.status = patchStatus[i].status;
+
+        if (!_.isEmpty(user)) {
+          patch.on(getPatchEvents());
+        }
+        switch (patch.data.status) {
+          case 'progress':
+            patch.off(getPatchEvents());
+            patch.fillColor = '#cccccc';
+            break;
+          case 'mine':
+            patch.fillColor = '#aab0ff';
+            break;
+          case 'complete':
+            project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
+              svg.rotate(-45);
+              svg.fitBounds(patch.bounds);
+              patch.addChild(svg);
+            });
+            patch.fillColor = '#ffffff';
+            break;
+          case 'new':
+          default:
+            if (myPatch.length) {
+              patch.off(getPatchEvents());
+            } else {
+              plus.visible = !_.isEmpty(user);
+            }
+            break;
+        }
+      });
+    }
   }
 
   /**
@@ -138,6 +143,7 @@ var quilt = (function($) {
    */
   function getItemType(item) {
     var itemType = '';
+    console.log(item.className);
     switch (item.className) {
       case 'Shape':
         itemType = item.type;

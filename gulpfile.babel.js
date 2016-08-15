@@ -6,10 +6,10 @@ import path from 'path';
 import babel from 'gulp-babel';
 import gutil from 'gulp-util';
 import nodemon from 'gulp-nodemon';
-import plumber from 'gulp-plumber';
 import concat from 'gulp-concat';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
+import sourcemaps from 'gulp-sourcemaps';
 import cssmin from 'gulp-cssmin';
 import livereload from 'gulp-livereload';
 import modernizr from 'modernizr';
@@ -67,16 +67,20 @@ gulp.task('js:vendor', function() {
       'bower_components/slick-carousel/slick/slick.js',
       'bower_components/Materialize/js/leanModal.js'
     ])
+    .pipe(sourcemaps.init())
     .pipe(concat('vendor.min.js'))
     .pipe(uglify({options: {'preserveComments':'all'}}).on('error', gutil.log))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
 });
 gulp.task('js:main', function() {
   return gulp.src('app/src/scripts/*.js')
     .pipe(babel())
+    .pipe(sourcemaps.init())
     .pipe(concat('main.min.js'))
     .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
+    .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
 });

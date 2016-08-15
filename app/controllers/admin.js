@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     Color = mongoose.model('Color'),
-    Theme = mongoose.model('Theme');
+    Theme = mongoose.model('Theme'),
+    Patch = mongoose.model('Patch');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -36,6 +37,21 @@ router.get('/', isAuthenticated, function (req, res, next) {
             colors: colors
           });
         });
+    });
+});
+
+router.get('/patches/view', isAuthenticated, function (req, res, next) {
+  Patch
+    .find({ status: { $in: ['complete', 'progress'] }, colors: {$exists: true} })
+    .populate('_quilt')
+    .exec(function(err, patches) {
+      if (err) return next(err);
+      console.log(patches);
+      res.render('pages/admin/patches-view', {
+        layout: 'admin',
+        title: 'Patches',
+        patches: patches
+      });
     });
 });
 

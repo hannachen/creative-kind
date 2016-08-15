@@ -1,4 +1,4 @@
-<h3>My Patches</h3>
+<h3>Complete and In-progress Patches</h3>
 
 {{#if patches}}
   <ul class="patch-list">
@@ -8,8 +8,8 @@
           <a href="/patch/view/{{uid}}" class="thumb"><img src="/patch/svg/{{uid}}" /></a>
         </div>
         <div class="patch-info">
-          <h4><a href="/quilts/view/{{_quilt._id}}">{{_quilt.title}}</a></h4>
-          {{status}} {{#if_eq status 'progress'}} [<a href="/patch/edit/{{uid}}">Edit</a>]{{/if_eq}}
+          <h4><a href="/quilts/view/{{_quilt}}">{{_quilt.title}}</a></h4>
+          {{status}} [<a href="/patch/edit/{{uid}}">Edit</a>]
         </div>
       </li>
     {{/each}}

@@ -4,21 +4,24 @@ var colors = (function($) {
   var $colorSetSelector = $('.palette-selector'),
       $colorSets = $colorSetSelector.find('.selection'),
       $colorPalette = $('.color-palette'),
-      $colorButtons = $colorPalette.find('.color-button');
+      $colorButtons = $colorPalette.find('.color-button'),
+      selectedSet = document.getElementById('selectedSet');
 
   function init() {
 
     if ($colorSetSelector.length > 0) {
-      var selectedSet = $colorSetSelector.find('.selected-set').val(),
+      var selectedSetValue = parseInt($colorSetSelector.find('.selected-set').val()),
 
           // Get radio element by value
-          $selectedSet = $colorSets.filter('[value='+selectedSet+']'),
+          $selectedSet = $colorSets.filter('[value='+selectedSetValue+']'),
 
           // Get radio option label
           $selectedSetLabel = $colorSetSelector.find('[for='+$selectedSet.attr('id')+']'),
 
           // Get radio option colours
           $swatches = $selectedSetLabel.find('.swatch');
+
+      selectedSet.value = selectedSetValue;
 
       // Set element as checked
       $selectedSet.attr('checked', true);
@@ -28,11 +31,19 @@ var colors = (function($) {
   }
 
   function updateColors($paletteColors, $swatches) {
+    var colorData = [];
     $paletteColors.each(function(i) {
       var $color = $(this),
-        newColor = $swatches.eq(i).data('hex');
+          newColor = $swatches.eq(i).data('hex');
       $color.attr('data-color', newColor); // Using jQuery 'attr' to set the data instead of data() to prevent value caching
       $color.css('background-color', newColor);
+      colorData.push(newColor);
+    });
+
+    // Trigger custom event to the color palette
+    $colorPalette.trigger({
+      type: 'changeSet',
+      colorData: colorData
     });
   }
 

@@ -16,14 +16,31 @@
     <canvas id="coloring-area" class="coloring-area"></canvas>
   </div>
   <ul class="color-palette">
-    <li class="color"><button class="color-button" data-color="#588C7E" style="background-color:#588C7E;"></button></li>
-    <li class="color"><button class="color-button" data-color="#F2E394" style="background-color:#F2E394;"></button></li>
-    <li class="color"><button class="color-button" data-color="#F2AE72" style="background-color:#F2AE72;"></button></li>
-    <li class="color"><button class="color-button" data-color="#D96459" style="background-color:#D96459;"></button></li>
-    <li class="color"><button class="color-button" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
+    {{#each patch._quilt._theme.colors}}
+      {{!--NOW {{../../../../colorSet}} --}}
+      {{#if_eq @index patch.colorSet}}
+        {{#each colors}}
+          <li class="color"><button class="color-button" data-index="0" data-color="#{{this}}" style="background-color:#{{this}};"></button></li>
+        {{/each}}
+      {{/if_eq}}
+    {{/each}}
+    <li class="color"><button class="color-button" data-index="0" data-color="#588C7E" style="background-color:#588C7E;"></button></li>
+    <li class="color"><button class="color-button" data-index="1" data-color="#F2E394" style="background-color:#F2E394;"></button></li>
+    <li class="color"><button class="color-button" data-index="2" data-color="#F2AE72" style="background-color:#F2AE72;"></button></li>
+    <li class="color"><button class="color-button" data-index="3" data-color="#D96459" style="background-color:#D96459;"></button></li>
+    <li class="color"><button class="color-button" data-index="4" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
   </ul>
-  <form action="/patch/edit/{{patch.uid}}/colors" class="palette-selector" method="post" id="paletteSelector">
-    <input type="hidden" class="selected-set" value="{{patch.colorSet}}" />
+  <div class="buttons-container">
+    <div class="apply-button">
+      <button type="button" class="btn btn-secondary" id="apply-color" disabled>Apply Colour</button>
+    </div>
+    <form class="complete-form" action="/patch/save/{{patch.uid}}" method="post" id="formActions">
+      <button class="action-button" name="saveAction" data-target="#formActions" value="progress">Save</button>
+      <button class="action-button" name="completeAction" data-target="#formActions" value="complete">Complete</button>
+    </form>
+  </div>
+  <form class="palette-selector" method="post" id="paletteSelector">
+    <input type="hidden" class="selected-set" id="selectedSet" value="{{patch.colorSet}}" />
     <fieldset class="form-group">
       <legend>Change colour palette</legend>
       <ul class="color-sets">
@@ -34,7 +51,7 @@
             Colour set {{@index}}
             <ul class="swatches">
               {{#each colors}}
-                <li class="swatch" style="background-color:#{{this}}" data-hex="#{{this}}">&nbsp;</li>
+                <li class="swatch" style="background-color:#{{this}}" data-index="{{@index}}" data-hex="#{{this}}">&nbsp;</li>
               {{/each}}
             </ul>
           </label>
@@ -44,11 +61,8 @@
     </fieldset>
   </form>
   <div id="saveData">
-    {{patch.svg}}
+    <span class="color-data">{{patch.colors}}</span>
+    <span class="color-index-data">{{patch.colorIndex}}</span>
   </div>
-  <form action="/patch/edit/{{patch.uid}}" method="post" id="formActions">
-    <button class="action-button" name="saveAction" data-target="#formActions" value="progress">Save</button>
-    <button class="action-button" name="completeAction" data-target="#formActions" value="complete">Complete</button>
-  </form>
 
 </div>

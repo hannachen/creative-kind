@@ -15,3 +15,7 @@
 .color-swatch {
   width: 20%;
   float: left; }
+
+.thumb {
+  display: block;
+  float: left; }

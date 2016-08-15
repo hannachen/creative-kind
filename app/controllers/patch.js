@@ -38,12 +38,12 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/view/:uid*', function (req, res, next) {
-  console.log('viewing');
   Patch.findOne({'uid':req.params.uid })
     .populate('_user')
     .populate('_quilt')
     .exec(function (err, patch) {
       if (err) return next(err);
+      console.log('EDIT PATCH');
       if (patch._user) {
         res.render('pages/patch/view', {
           title: 'View Patch',
@@ -57,15 +57,16 @@ router.get('/view/:uid*', function (req, res, next) {
 
 router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
+    .populate('_quilt')
     .deepPopulate('_quilt._theme.colors')
     .exec(function (err, patch) {
       if (err) return next(err);
-      if (patch.status === 'complete') {
+      if (patch.status === 'complete' && !req.user.isAdmin) {
         res.redirect('/quilts/view/'+patch._quilt);
         return;
       }
       if (patch && patch._user) {
-        if (String(req.user.id) === String(patch._user)) {
+        if (String(req.user.id) === String(patch._user) || req.user.isAdmin) {
           res.render('pages/patch/edit', {
             title: 'Edit Patch',
             patch: patch
@@ -85,27 +86,38 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
     });
 });
 
-router.post('/edit/:uid/:status?', isAuthenticated, function (req, res, next) {
+router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
   var patchData = req.body.patchData;
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
-      if (isMine(req, res, patch)) {
-        patch.svg = patchData.colours;
+      if (isMine(req, res, patch) ||
+          req.user.usertype === 'admin') {
+        console.log('COLORSET', patchData.colorSet);
+        patch.colors = patchData.colors;
+        patch.colorIndex = patchData.colorIndexData;
+        patch.colorSet = patchData.colorSet;
         patch.status = req.params.status || 'progress';
         patch.save(function(err) {
           if (err) throw err;
+          console.log('STATUS', patch.status);
+          var url = '/';
           switch(patch.status) {
             case 'progress':
               req.flash('message', 'See you soon');
+              url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':
               req.flash('message', 'Thank you');
+              url = '/quilts/view/'+patch._quilt;
               break;
           }
+          res.json({ url: url });
+          return;
         });
+      } else {
+        res.json({ url: '/' });
       }
-      res.json({ url: '/quilts/view/'+patch._quilt });
     });
 });
 
@@ -133,24 +145,21 @@ router.get('/svg/:uid', function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
-      var svg = [],
-          svgArray = patch.svg.split(',');
-      if (svgArray.length) {
-        svg = svgArray;
+      var colors = [],
+          colorArray = patch.colors.split(',');
+      if (colorArray.length) {
+        colors = colorArray;
       } else {
-        for (var i=0; i<248; i++) {
-          svg.push('#828282');
+        for (var i=0; i<200; i++) {
+          colors.push('#828282');
         }
       }
-      // Offset array with one additional item: view is using count value instead of index, oops
-      // TODO: fix this shit
-      svg.unshift('#828282');
       res.render('partials/svg/patch', {
         title: 'View Patch',
         layout: 'svg',
         lines: false,
         patch: patch,
-        svg: svg
+        colors: colors
       });
     });
 });

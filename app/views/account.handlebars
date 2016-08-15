@@ -21,7 +21,7 @@
   {{/if}}
 
   {{#if quilts}}
-  <h3>My Quilts</h3>
+  <h3><a href="/account/quilts">My Quilts</a></h3>
   <ul>
     {{#each quilts}}
       <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
@@ -30,11 +30,11 @@
   {{/if}}
 
   {{#if patches}}
-    <h3>My Squares</h3>
+    <h3><a href="/account/patches">My Squares</a></h3>
     <ul>
       {{#each patches}}
         {{#if_eq status 'complete'}}
-          <li>Square in <a href="/patch/view/{{uid}}">{{_quilt.title}}</a> [{{status}}]</li>
+          <li>Square in <a href="/patch/view/{{uid}}">{{_quilt.title}}</a> [{{status}}] <a href="/patch/edit/{{uid}}">Edit</a></li>
         {{/if_eq}}
         {{#if_eq status 'progress'}}
           <li>Square in <a href="/patch/edit/{{uid}}">{{_quilt.title}}</a> [{{status}}]</li>

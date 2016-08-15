@@ -4,6 +4,5 @@ paper.install(window);
 
   $(function() {
     patch.init();
-    colors.init();
   });
 })(jQuery,window);

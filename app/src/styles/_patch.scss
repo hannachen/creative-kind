@@ -115,6 +115,19 @@
   #saveData {
     display: none !important;
   }
+  .buttons-container {
+    @include make-container();
+    .apply-button,
+    .complete-form {
+      @include make-col();
+    }
+    .apply-button {
+      @include make-col-span(4);
+    }
+    .complete-form {
+      @include make-col-span(8);
+    }
+  }
   #formActions {
     overflow: hidden; // TODO: replace this with actual clearfix
 
@@ -130,7 +143,6 @@
 .patch-start-form {
 
   .theme {
-    //background-color: #262626;
     margin: 1em 0;
 
     .theme-name {
@@ -148,11 +160,31 @@
     }
   }
 }
-.patch-thumb {
-  padding: 5px;
+.patch-list {
+  @include make-row();
+  list-style-type: none;
 
-  img {
-    width: 25%;
-    height: auto;
+  .patch-item {
+    @include make-col();
+    @include make-col-span(4);
+    padding-bottom: 25px;
+  }
+
+  .patch-thumb,
+  .patch-info {
+  }
+  .patch-thumb {
+  }
+  .patch-thumb {
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+.view-patch {
+  .grid-spacer {
+    padding-top: 0;
   }
 }
