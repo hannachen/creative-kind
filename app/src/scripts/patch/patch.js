@@ -245,10 +245,10 @@ var patch = (function($) {
     if (multipleSelection) {
       if (_.includes(selectedItems, e.target)) {
         clearTarget(e.target);
+        _.remove(selectedItems, e.target);
       } else {
         selectTarget(e.target);
       }
-      console.log('HII', selectedItems.length);
       // Enable/disable the "apply color" button based on number of selected areas.
       if (selectedItems.length > 1) {
         $applyColorButton.prop('disabled', false);
@@ -297,9 +297,6 @@ var patch = (function($) {
     console.log('clearing..', target);
     target.selected = false;
     target.fillColor.alpha = 1;
-    console.log(selectedItems);
-    _.remove(selectedItems, target);
-    console.log(selectedItems);
   }
 
   function htmlEncode(value){
