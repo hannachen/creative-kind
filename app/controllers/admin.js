@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
+    Quilt = mongoose.model('Quilt'),
     Color = mongoose.model('Color'),
     Theme = mongoose.model('Theme'),
     Patch = mongoose.model('Patch');
@@ -51,6 +52,18 @@ router.get('/patches/view', isAuthenticated, function (req, res, next) {
         layout: 'admin',
         title: 'Patches',
         patches: patches
+      });
+    });
+});
+
+router.get('/quilts/view', isAuthenticated, function (req, res, next) {
+  Quilt.find({})
+    .exec(function(err, quilts) {
+      if (err) return next(err);
+      res.render('pages/quilts/list', {
+        layout: 'admin',
+        title: 'Quilts',
+        quilts: quilts
       });
     });
 });
