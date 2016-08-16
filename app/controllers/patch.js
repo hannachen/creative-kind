@@ -16,7 +16,8 @@ var isAuthenticated = function (req, res, next) {
 
 var isMine = function (req, res, patch) {
   if (patch._user && req.user &&
-    String(req.user.id) === String(patch._user)) {
+    String(req.user.id) === String(patch._user) ||
+    req.user.isAdmin) {
     return true;
   } else {
     res.redirect('/quilts/view/'+patch._quilt);
@@ -91,32 +92,29 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
-      if (isMine(req, res, patch) ||
-          req.user.usertype === 'admin') {
+      if (isMine(req, res, patch) || req.user.isAdmin) {
         console.log('COLORSET', patchData.colorSet);
         patch.colors = patchData.colors;
         patch.colorIndex = patchData.colorIndexData;
         patch.colorSet = patchData.colorSet;
         patch.status = req.params.status || 'progress';
         patch.save(function(err) {
-          if (err) throw err;
+          if (err) return next(err);
           console.log('STATUS', patch.status);
           var url = '/';
           switch(patch.status) {
             case 'progress':
-              req.flash('message', 'See you soon');
+              req.flash('success', 'Patch saved, see you soon.');
               url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':
-              req.flash('message', 'Thank you');
+              req.flash('success', 'Patch complete, thank you.');
               url = '/quilts/view/'+patch._quilt;
               break;
           }
+          console.log('URL', url);
           res.json({ url: url });
-          return;
         });
-      } else {
-        res.json({ url: '/' });
       }
     });
 });

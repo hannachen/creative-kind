@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 var exphbs  = require('express-handlebars');
-var flash = require('express-flash');
+var flash = require('connect-flash');
 
 var passport = require('passport');
 var recaptcha = require('express-recaptcha');
@@ -73,6 +73,7 @@ module.exports = function(app, config) {
   // Make the user object available to all views provided that req.user is available.
   app.use(function(req, res, next) {
     res.locals.user = req.user;
+    res.locals.flash = req.flash();
     req.config = config;
     next();
   });

@@ -45,6 +45,7 @@ router.get('/patches/view', isAuthenticated, function (req, res, next) {
   Patch
     .find({ status: { $in: ['complete', 'progress'] }, colors: {$exists: true} })
     .populate('_quilt')
+    .populate('_user')
     .exec(function(err, patches) {
       if (err) return next(err);
       console.log(patches);
