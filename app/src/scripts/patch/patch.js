@@ -178,7 +178,7 @@ var patch = (function($) {
 
     // Clear palette if only one area is selected
     if (selectedItems.length <= 1) {
-      // clearSelected();
+      clearSelected();
     }
 
     console.log('colorindex', colorIndex);

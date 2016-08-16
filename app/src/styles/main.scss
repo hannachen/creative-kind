@@ -82,6 +82,13 @@ form {
 
   .drawer-toggle {
     float: right;
+    position: relative;
+    z-index: 1;
+  }
+  .drawer-contents {
+    position: absolute;
+    background-color: transparent;
+    z-index: 0;
   }
 }
 #submenu-drawer {
@@ -92,6 +99,10 @@ form {
   border-left: 1px solid #dfdfdf;
 }
 .header-menu {
+  @include make-container(0);
+  @include make-container-max-widths(0);
+  border-bottom: 1px solid #eeeeee;
+
   .row {
     @include make-row(0);
   }
@@ -112,6 +123,22 @@ form {
     text-align: center;
   }
 }
+.drawer-toggle,
+.drawer {
+  .icon,
+  .drawer-toggle {
+    display: inline-block;
+    font-size: 2.5em;
+    border: 1px solid #eeeeee;
+    vertical-align: middle;
+  }
+}
+.drawer {
+  .drawer-toggle {
+    padding: 0 10px;
+  }
+}
+
 .grid-spacer { // Responsive square
   width: 100%;
   height: 0;

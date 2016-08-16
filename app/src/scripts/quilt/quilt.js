@@ -180,7 +180,7 @@ var quilt = (function($) {
     if (!_.isEmpty(user)) {
       if (clickedPatch.status === 'mine') {
         window.location.href = targetUrl;
-      } else {
+      } else if (clickedPatch.status === 'new') {
         if (myPatch.length) {
           $alertModal.modal('show');
         } else {

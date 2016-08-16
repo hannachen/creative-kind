@@ -1,6 +1,7 @@
 .patch-container {
   width: 100%;
   max-width: 800px;
+  @include make-container(0);
 
   .toolbar {
     margin: 0 0 25px 0;
@@ -116,7 +117,8 @@
     display: none !important;
   }
   .buttons-container {
-    @include make-container();
+    @include make-row();
+    
     .apply-button,
     .complete-form {
       @include make-col();
@@ -167,6 +169,9 @@
   .patch-item {
     @include make-col();
     @include make-col-span(4);
+    @include media-breakpoint-down(sm) {
+      @include make-col-span(6);
+    }
     padding-bottom: 25px;
   }
 

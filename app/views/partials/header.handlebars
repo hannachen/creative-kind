@@ -6,12 +6,16 @@
   <div class="row">
     <div class="col account-nav-toggle">
       {{#if user}}
-        <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-controls="account-drawer">User</button>
+        <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-controls="account-drawer">
+          <span class="icon icon-user"></span>
+        </button>
       {{/if}}
     </div>
     <div class="col title"><h1>{{title }}</h1></div>
     <div class="col sub-menu-toggle">
-      <button class="drawer-toggle" data-toggle="drawer" data-target="#submenu-drawer" aria-controls="submenu-drawer">Menu</button>
+      <button class="drawer-toggle" data-toggle="drawer" data-target="#submenu-drawer" aria-controls="submenu-drawer">
+        <span class="icon icon-menu"></span>
+      </button>
     </div>
   </div>
 </div>
