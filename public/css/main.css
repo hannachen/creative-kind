@@ -2293,7 +2293,8 @@ input[type="button"].btn-block {
     opacity: 1; } }
 .quilt-container {
   padding: 2em;
-  background-color: #ececec; }
+  background-color: #ececec;
+  position: relative; }
   .quilt-container .canvas-container {
     width: 100%;
     height: auto;
@@ -2305,6 +2306,17 @@ input[type="button"].btn-block {
     top: 0;
     left: 0;
     z-index: 1; }
+  .quilt-container .patch-preview {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10; }
+    .quilt-container .patch-preview img {
+      width: 100%;
+      height: auto; }
 
 .data {
   display: none; }

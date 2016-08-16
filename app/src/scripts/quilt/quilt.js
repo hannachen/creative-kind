@@ -5,6 +5,7 @@ var quilt = (function($) {
       $confirmationModal = $('#confirmation-modal').modal('hide'),
       $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
+      $patchPreview = $('#patch-preview'),
       clickedPatch;
 
   $donationModal.on('hidden.bs.modal', function() {
@@ -67,11 +68,17 @@ var quilt = (function($) {
     grid = svg;
     fitToContainer(svg);
     if (svg.hasChildren()) {
-      let patches = svg.children;
+      let patches = svg.children,
+          indexOffset = 0;
+      console.log('LENGTH', patches.length);
       _.forEach(patches, function(group, i) {
-        if (group === undefined || group.hasChildren() === undefined) {
+        if (group === undefined || group.hasChildren() === undefined || !patchStatus[i-indexOffset]) {
+          indexOffset++;
+          console.log("SKIP", group);
           return;
         }
+        console.log('PATCH INDEX', i-indexOffset);
+        console.log('PATCH STATUS', patchStatus[i-indexOffset]);
         let patch,
             plus,
             circle;
@@ -100,12 +107,10 @@ var quilt = (function($) {
 
         patch.strokeScaling = false;
         patch.fillColor = '#ffffff';
-        patch.data.uid = patchStatus[i].uid;
-        patch.data.status = patchStatus[i].status;
+        patch.data.uid = patchStatus[i-indexOffset].uid;
+        patch.data.status = patchStatus[i-indexOffset].status;
 
-        if (!_.isEmpty(user)) {
-          patch.on(getPatchEvents());
-        }
+        patch.on(getPatchEvents());
         switch (patch.data.status) {
           case 'progress':
             patch.off(getPatchEvents());
@@ -118,7 +123,9 @@ var quilt = (function($) {
             project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
               svg.rotate(-45);
               svg.fitBounds(patch.bounds);
-              patch.addChild(svg);
+              svg.on(getPatchEvents());
+              svg.data = patch.data;
+              group.addChild(svg);
             });
             patch.fillColor = '#ffffff';
             break;
@@ -131,6 +138,7 @@ var quilt = (function($) {
             }
             break;
         }
+
       });
     }
   }
@@ -169,16 +177,43 @@ var quilt = (function($) {
   function clickPatch(e) {
     clickedPatch = e.target.data;
     var targetUrl = '/patch/edit/' + clickedPatch.uid;
-    if (clickedPatch.status === 'mine') {
-      window.location.href = targetUrl;
-    } else {
-      if (myPatch.length) {
-        $alertModal.modal('show');
+    if (!_.isEmpty(user)) {
+      if (clickedPatch.status === 'mine') {
+        window.location.href = targetUrl;
       } else {
-        $confirmationButton.attr('href', targetUrl);
-        $donationModal.modal('show');
+        if (myPatch.length) {
+          $alertModal.modal('show');
+        } else {
+          $confirmationButton.attr('href', targetUrl);
+          $donationModal.modal('show');
+        }
       }
     }
+    // console.log('clicked', clickedPatch);
+    if (clickedPatch.status === 'complete') {
+      //window.location.href = '/patch/view/' + clickedPatch.uid;
+      showPatch(clickedPatch.uid);
+    }
+  }
+
+  function showPatch(patchId) {
+    console.log(patchId);
+    $patchPreview.css('display', 'block');
+    var $preview = $('<img src="/patch/svg/'+patchId+'">');
+    $preview.on('click', function() {
+      $preview.off('click');
+      $patchPreview.css('display', 'none');
+      $patchPreview.empty();
+    });
+    $patchPreview.append($preview);
+    // var symbol = new Symbol(item);
+    // placed = symbol.place(item.center);
+    // placed.rotate(45);
+    // placed.fitBounds(grid.bounds);
+    // console.log(patchId);
+    // $.get('/patch/json/'+patchId, function(e) {
+    //   console.log(e);
+    // });
   }
 
   function enterArea(e) {
@@ -213,7 +248,7 @@ var quilt = (function($) {
 
   function viewportEvents() {
     setViewport();
-    window.onresize = function(e) {
+    window.onresize = function() {
       setViewport();
       fitToContainer(grid);
     };

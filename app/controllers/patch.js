@@ -56,6 +56,23 @@ router.get('/view/:uid*', function (req, res, next) {
     });
 });
 
+router.get('/json/:uid*', function (req, res, next) {
+  console.log(req.params.uid);
+  Patch.findOne({'uid':req.params.uid })
+    .populate('_user')
+    .populate('_quilt')
+    .exec(function (err, patch) {
+      if (err) return next(err);
+      console.log('PATCH DATA JSON', patch);
+      // Make sure this patch has been initialized by checking for an owner
+      if (patch && patch._user) {
+        res.json({ patch: patch });
+      } else {
+        res.sendStatus(400);
+      }
+    });
+});
+
 router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .populate('_quilt')
