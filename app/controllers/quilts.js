@@ -42,7 +42,6 @@ router.get('/view/:id*', function (req, res, next) {
     .deepPopulate('_theme.colors')
     .exec(function (err, quilt) {
       if (err) return next(err);
-      console.log(quilt);
       Theme.find({})
         .populate('colors')
         .exec(function (err, themes) {

@@ -1,11 +1,13 @@
 'use strict';
-var quilt = (function($) {
+var quiltsList = (function($) {
 
   var $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
       $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
       $patchPreview = $('#patch-preview'),
+      $quilts = $('.quilt-list .quilt'),
+      $activeQuilt = $quilts.filter('.active').length > 0 ? $quilts.filter('.active') : $quilts.first(),
       clickedPatch;
 
   $donationModal.on('hidden.bs.modal', function() {
@@ -17,12 +19,8 @@ var quilt = (function($) {
   });
 
   var containerEl = document.getElementById('canvas-container'),
-      quiltData = document.getElementById('quilt-data'),
-      userData = document.getElementById('user-data'),
       grid,
-      patches = [],
-      patchStatus,
-      myPatch = '',
+      quilts = [],
       user = {};
 
   function init() {
@@ -32,33 +30,9 @@ var quilt = (function($) {
     }
   }
 
-  function disable() {
-    _.forEach(patches, function(patch) {
-      patch.off(getPatchEvents());
-    });
-  }
-
   function setupCanvas() {
     // Setup directly from canvas id:
     paper.setup('grid-area');
-
-    if (quiltData) {
-      var quiltDataString = quiltData.innerHTML;
-    }
-    if (quiltDataString) {
-      patchStatus = JSON.parse(quiltDataString);
-      _.forEach(patchStatus, function(patch) {
-        if (patch.status === 'mine') {
-          myPatch = patch.uid;
-        }
-      });
-    }
-    if (userData) {
-      var userDataString = userData.innerHTML.trim();
-      if (!_.isEmpty(userDataString)) {
-        user = JSON.parse(userDataString);
-      }
-    }
 
     // Add grid SVG
     project.importSVG('/img/quilt-grid.svg', {
@@ -71,24 +45,32 @@ var quilt = (function($) {
     viewportEvents();
   }
 
-  function onSvgLoaded(svg) {
-    grid = svg;
-    fitToContainer(svg);
-    if (svg.hasChildren()) {
-      let patches = svg.children,
+  function setupQuilt(i, v) {
+    var $target = $(v),
+        targetSvg = $target.is($activeQuilt) ? grid : grid.clone(),
+        patchDataString = $target.find('.patch-data').text(),
+        patchData = patchDataString ? JSON.parse(patchDataString) : [],
+        newPos = new Point(grid.bounds.width * i, 0);
+
+    targetSvg.pivot = new Point(0, 0);
+    targetSvg.position = newPos;
+    populateQuilt(targetSvg, patchData);
+
+    if (!$target.is($activeQuilt)) {
+      quilts.push(targetSvg);
+    }
+  }
+
+  function populateQuilt(targetSvg, patchData) {
+    if (targetSvg.hasChildren()) {
+      let patches = targetSvg.children,
           indexOffset = 0;
-      console.log('LENGTH', patches.length);
       _.forEach(patches, function(group, i) {
-        if (group === undefined || group.hasChildren() === undefined || !patchStatus[i-indexOffset]) {
+        if (group === undefined || group.hasChildren() === undefined || !patchData[i-indexOffset]) {
           indexOffset++;
-          console.log("SKIP", group);
           return;
         }
-        console.log('PATCH INDEX', i-indexOffset);
-        console.log('PATCH STATUS', patchStatus[i-indexOffset]);
-        let patch,
-            plus,
-            circle;
+        let patch, plus, circle;
         if(group.hasChildren()) {
           _.forEach(group.children, function(item) {
             let itemType = getItemType(item);
@@ -114,8 +96,8 @@ var quilt = (function($) {
 
         patch.strokeScaling = false;
         patch.fillColor = '#ffffff';
-        patch.data.uid = patchStatus[i-indexOffset].uid;
-        patch.data.status = patchStatus[i-indexOffset].status;
+        patch.data.uid = patchData[i-indexOffset].uid;
+        patch.data.status = patchData[i-indexOffset].status;
 
         patch.on(getPatchEvents());
         switch (patch.data.status) {
@@ -127,27 +109,37 @@ var quilt = (function($) {
             patch.fillColor = '#aab0ff';
             break;
           case 'complete':
-            project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
-              svg.rotate(-45);
-              svg.fitBounds(patch.bounds);
-              svg.on(getPatchEvents());
-              svg.data = patch.data;
-              group.addChild(svg);
+            project.importSVG('/patch/svg/'+patch.data.uid, function(patchSvg) {
+              patchSvg.rotate(-45);
+              patchSvg.fitBounds(patch.bounds);
+              patchSvg.data = patch.data;
+              group.addChild(patchSvg);
+              patch.off(getPatchEvents());
+              patch.visible = false;
             });
-            patch.fillColor = '#ffffff';
             break;
           case 'new':
           default:
-            if (myPatch.length) {
-              patch.off(getPatchEvents());
-            } else {
-              plus.visible = !_.isEmpty(user);
-            }
+            patch.off(getPatchEvents());
+            plus.visible = !_.isEmpty(user);
             break;
         }
-        patches.push(patch);
       });
     }
+  }
+
+  function onSvgLoaded(svg) {
+    grid = svg;
+    fitToContainer(svg);
+    quilts.push(svg);
+    $quilts.each(setupQuilt);
+
+    // Attach drag event to navigate between quilts
+    view.onMouseDrag = function(e) {
+      _.forEach(quilts, function(quilt) {
+        quilt.position.x += e.delta.x;
+      });
+    };
   }
 
   /**
@@ -158,7 +150,7 @@ var quilt = (function($) {
    */
   function getItemType(item) {
     var itemType = '';
-    console.log(item.className);
+    // console.log(item.className);
     switch (item.className) {
       case 'Shape':
         itemType = item.type;
@@ -213,14 +205,6 @@ var quilt = (function($) {
       $patchPreview.empty();
     });
     $patchPreview.append($preview);
-    // var symbol = new Symbol(item);
-    // placed = symbol.place(item.center);
-    // placed.rotate(45);
-    // placed.fitBounds(grid.bounds);
-    // console.log(patchId);
-    // $.get('/patch/json/'+patchId, function(e) {
-    //   console.log(e);
-    // });
   }
 
   function enterArea(e) {
@@ -231,13 +215,13 @@ var quilt = (function($) {
     e.target.opacity = 1;
   }
 
-  function htmlEncode(value){
+  function htmlEncode(value) {
     //create a in-memory div, set it's inner text(which jQuery automatically encodes)
     //then grab the encoded contents back out.  The div never exists on the page.
     return $('<div/>').text(value).html();
   }
 
-  function htmlDecode(value){
+  function htmlDecode(value) {
     return $('<div/>').html(value).text();
   }
 
@@ -277,7 +261,7 @@ var quilt = (function($) {
    */
   function getContainerW() {
     let computedStyle = getComputedStyle(containerEl),
-        containerWidth = containerEl.clientWidth;
+      containerWidth = containerEl.clientWidth;
 
     containerWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
     containerWidth -= parseFloat(computedStyle.marginLeft) + parseFloat(computedStyle.marginRight);
@@ -291,7 +275,7 @@ var quilt = (function($) {
    */
   function getContainerH() {
     let computedStyle = getComputedStyle(containerEl),
-        containerHeight = containerEl.clientHeight;
+      containerHeight = containerEl.clientHeight;
 
     containerHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
     containerHeight -= parseFloat(computedStyle.marginTop) + parseFloat(computedStyle.marginBottom);

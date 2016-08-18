@@ -1,5 +1,6 @@
 'use strict';
 (function($,window) {
+  paper.install(window);
 
   var Home = {
     init: function() {
@@ -12,6 +13,8 @@
     initEvents: function() {
     },
     initPage: function() {
+      console.log('INIT');
+      quiltsList.init();
     }
   };
 

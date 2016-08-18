@@ -1,6 +1,6 @@
 'use strict';
-paper.install(window);
 (function($,window) {
+  paper.install(window);
 
   $(function() {
     quilt.init();

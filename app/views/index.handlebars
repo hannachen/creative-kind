@@ -1,32 +1,31 @@
-  <h2>Some are born great, some achieve greatness, and some have greatness thrust upon them.</h2>
-  <p>A creative community with a common goal.</p>
+{{#section 'footer'}}
+  <script src="/js/home.min.js"></script>
+{{/section}}
 
-  <div id="quilt-container">
-    <ul>
-      {{#each quilts}}
-        {{#if_eq type 'public'}}
-          <li class="quilt" data-title="{{title}}" data-uid="{{id}}">
-            <a href="/quilts/view/{{id}}">{{title}}</a>
-            {{#if quiltData}}
-              <div class="data" id="quilt-data">
-                {{quiltData}}
-              </div>
-            {{/if}}
-          </li>
-        {{/if_eq}}
-      {{/each}}
-    </ul>
+<h2>Some are born great, some achieve greatness, and some have greatness thrust upon them.</h2>
+<p>A creative community with a common goal.</p>
+
+<div id="quilt-container">
+  <div class="quilt-container">
+    <div id="canvas-container" class="canvas-container">
+      <div class="grid-spacer" id="grid-spacer"></div>
+      <canvas id="grid-area" class="grid-area"></canvas>
+    </div>
   </div>
+  <ul class="quilt-list">
+    {{#each quilts}}
+      {{>quilt-data this }}
+    {{/each}}
+  </ul>
+</div>
 
-  {{#if user}}
+{{#if user}}
 
-    <h2>Welcome {{user.username}}</h2>
-    <ul>
-      <li><a href="/account">Account</a></li>
-    </ul>
+  <h2>Welcome {{user.username}}</h2>
+  <ul>
+    <li><a href="/account">Account</a></li>
+  </ul>
 
-  {{else}}
-
-    {{>login-menu }}
-
-  {{/if}}
+{{else}}
+  {{>login-menu }}
+{{/if}}

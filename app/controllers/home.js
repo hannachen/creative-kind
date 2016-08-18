@@ -13,27 +13,23 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
   console.log('INDEX');
 
-  Quilt.find()
+  Quilt.find({'type': 'public'})
+    .populate('_theme')
+    .deepPopulate('_theme.colors')
     .exec(function (err, quilts) {
       if (err) return next(err);
 
       _.forEach(quilts, function(quilt) {
         Patch.find({'_quilt': quilt.id}, function(err, patches) {
           if (err) return next(err);
-          var simplePatchData = new Array();
           _.forEach(patches, function(patch) {
             if (patch._user && req.user &&
               String(req.user.id) === String(patch._user) &&
               patch.status === 'progress') {
               patch.status = 'mine';
             }
-            var simplePatch = {
-              uid: patch.uid,
-              status: patch.status
-            };
-            simplePatchData.push(simplePatch);
           });
-          quilt.quiltData = JSON.stringify(simplePatchData);
+          quilt.patchData = JSON.stringify(patches);
         });
       });
 
