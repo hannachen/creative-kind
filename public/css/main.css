@@ -2295,6 +2295,8 @@ input[type="button"].btn-block {
   padding: 2em;
   background-color: #ececec;
   position: relative; }
+  .home .quilt-container {
+    padding: 0; }
   .quilt-container .canvas-container {
     width: 100%;
     height: auto;
@@ -2609,7 +2611,10 @@ form li {
   z-index: 1030; }
 
 .contents {
-  padding: 2.5% 5% 5%; }
+  padding: 0; }
+  @media (min-width: 768px) {
+    .contents {
+      padding: 2.5% 5% 5%; } }
 
 #account-drawer,
 #submenu-drawer {
@@ -2686,7 +2691,53 @@ form li {
 .drawer .drawer-toggle {
   padding: 0 10px; }
 
+.quilt-nav,
+.quilt-name,
+.data {
+  display: none; }
+
 .grid-spacer {
   width: 100%;
   height: 0;
   padding-top: 100%; }
+
+#quilt-nav-container {
+  margin-left: 0;
+  margin-right: 0; }
+  #quilt-nav-container::after {
+    content: "";
+    display: table;
+    clear: both; }
+  #quilt-nav-container .quilt-nav,
+  #quilt-nav-container .quilt-list {
+    position: relative;
+    float: left;
+    min-height: 1px;
+    padding-left: 0;
+    padding-right: 0; }
+  #quilt-nav-container .quilt-nav,
+  #quilt-nav-container .quilt-name {
+    text-align: center;
+    color: #666666; }
+  #quilt-nav-container .quilt-nav {
+    width: 16.66667%;
+    display: block;
+    border: 1px solid #000000;
+    padding: .5em;
+    font-size: 1.75em; }
+  #quilt-nav-container .quilt-list {
+    width: 66.66667%;
+    display: block;
+    list-style-type: none; }
+  #quilt-nav-container .quilt-name {
+    font-weight: bold;
+    line-height: 130%; }
+  #quilt-nav-container .active .quilt-nav,
+  #quilt-nav-container .active .quilt-name {
+    min-height: 1em;
+    display: block; }
+  #quilt-nav-container .active .quilt-name:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 4.25em; }

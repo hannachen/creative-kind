@@ -7,8 +7,20 @@ var quiltsList = (function($) {
       $alertModal = $('#alert-modal').modal('hide'),
       $patchPreview = $('#patch-preview'),
       $quilts = $('.quilt-list .quilt'),
+      $quiltNavContainer = $('#quilt-nav-container'),
+      $quiltNames = $quiltNavContainer.find('.quilt'),
+      $quiltNav = $quiltNavContainer.find('.quilt-nav'),
       $activeQuilt = $quilts.filter('.active').length > 0 ? $quilts.filter('.active') : $quilts.first(),
-      clickedPatch;
+      breakpoint = utils.breakpoint(window.mobileMq),
+      clickedPatch,
+      padding = breakpoint === 'mobile' ? 12 : 32,
+      quiltGroup,
+      dragThreshold = 20, // Threshold in %
+      dragStartMousePos,
+      dragStartQuiltPos,
+      dragDirection,
+      currentQuiltIndex = 0,
+      initialPosition = new Point(0, 0);
 
   $donationModal.on('hidden.bs.modal', function() {
     $confirmationModal.modal('show');
@@ -28,6 +40,7 @@ var quiltsList = (function($) {
     if ($('#grid-area').length) {
       setupCanvas();
     }
+    $activeQuilt.addClass('active');
   }
 
   function setupCanvas() {
@@ -50,9 +63,11 @@ var quiltsList = (function($) {
         targetSvg = $target.is($activeQuilt) ? grid : grid.clone(),
         patchDataString = $target.find('.patch-data').text(),
         patchData = patchDataString ? JSON.parse(patchDataString) : [],
-        newPos = new Point(grid.bounds.width * i, 0);
+        offset = padding * i,
+        newPosX = grid.bounds.width * i + grid.bounds.width / 2 + offset * 2 + padding,
+        newPos = new Point(newPosX, grid.bounds.height / 2 + padding);
 
-    targetSvg.pivot = new Point(0, 0);
+    // targetSvg.pivot = initialPosition;
     targetSvg.position = newPos;
     populateQuilt(targetSvg, patchData);
 
@@ -128,18 +143,116 @@ var quiltsList = (function($) {
     }
   }
 
+  function onNavClick(e) {
+    e.preventDefault();
+    var $target = $(e.currentTarget),
+        direction = $target.data('value');
+    if (direction === 'next') {
+      goToNextIndex();
+    } else {
+      goToPrevIndex();
+    }
+    $quiltNames.removeClass('active');
+    var setActive = $quiltNames.filter(':eq('+currentQuiltIndex+')');
+    setActive.addClass('active');
+    setButtonState();
+  }
+
+  function setButtonState() {
+    $quiltNav.prop('disabled', false);
+    $quiltNav.each(function(i, v) {
+      var $el = $(v),
+          direction = $el.data('value');
+      if (direction === 'prev' && currentQuiltIndex === 0 ||
+        direction === 'next' && currentQuiltIndex === quilts.length - 1) {
+        $el.prop('disabled', true);
+      }
+    });
+  }
+
   function onSvgLoaded(svg) {
-    grid = svg;
+    // svg.pivot = initialPosition;
     fitToContainer(svg);
+    grid = svg;
     quilts.push(svg);
     $quilts.each(setupQuilt);
+    quiltGroup = new Group(quilts);
+    quiltGroup.pivot = initialPosition;
+    quiltGroup.clipped = false;
+
+    $quiltNav.on('click', onNavClick);
+    setButtonState();
 
     // Attach drag event to navigate between quilts
-    view.onMouseDrag = function(e) {
-      _.forEach(quilts, function(quilt) {
-        quilt.position.x += e.delta.x;
-      });
-    };
+    if (quilts.length > 1) {
+      // Record starting position on mouse down
+      view.onMouseDown = function(e) {
+        dragStartMousePos = e.point;
+        dragStartQuiltPos = quilts[0].position;
+      };
+      // Reset starting position on mouse up
+      view.onMouseUp = function() {
+        var dragDistance = quilts[0].position.x - dragStartQuiltPos.x,
+            dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold;
+        if (dragDistance < 0) {
+          dragDirection = 'left';
+        } else {
+          dragDirection = 'right';
+        }
+        if (Math.abs(dragDistance) > dragThresholdValue) {
+          if (dragDirection === 'left') {
+            if (currentQuiltIndex + 1 >= quilts.length) {
+              currentQuiltIndex = quilts.length - 1;
+            } else {
+              currentQuiltIndex++;
+            }
+          } else {
+            if (currentQuiltIndex - 1 < 0) {
+              currentQuiltIndex = 0;
+            } else {
+              currentQuiltIndex--;
+            }
+          }
+        }
+        scrollToIndex(currentQuiltIndex);
+        dragStartMousePos = null;
+        dragStartQuiltPos = null;
+      };
+      view.onMouseDrag = function(e) {
+        quiltGroup.position.x += e.delta.x;
+      };
+    }
+  }
+
+  function goToNextIndex() {
+    currentQuiltIndex++;
+    jumpToIndex(currentQuiltIndex, true);
+  }
+
+  function goToPrevIndex() {
+    currentQuiltIndex--;
+    jumpToIndex(currentQuiltIndex, true);
+  }
+
+  function scrollToIndex(targetIndex) {
+    jumpToIndex(targetIndex, true);
+  }
+
+  function jumpToIndex(index, scroll) {
+    var width = getContainerW(),
+        targetIndex = index || 0,
+        targetWidth = width * quilts.length,
+        targetPos = -Math.abs(width * targetIndex),
+        scale = targetWidth / quiltGroup.bounds.width;
+
+    quiltGroup.scale = scale;
+    quiltGroup.pivot = new Point(quiltGroup.bounds.x - padding, quiltGroup.bounds.y);
+
+    if (scroll) {
+      TweenMax.to(quiltGroup.position, 0.5, {x: targetPos, ease: Expo.easeInOut});
+    } else {
+      quiltGroup.position.x = targetPos;
+    }
   }
 
   /**
@@ -225,24 +338,38 @@ var quiltsList = (function($) {
     return $('<div/>').html(value).text();
   }
 
-  function fitToContainer(item) {
-    let width = item.bounds.x + item.bounds.width,
-        height = item.bounds.y + item.bounds.height,
-        scale = getContainerW() / width,
-        newPosX = getContainerW() / 2,
-        newPosY = height * scale / 2;
+  function fitToContainer(item, i) {
+    let width = item.bounds.width,
+        index = i || 0,
+        newWidth = getContainerW() - padding * 2,
+        offset = padding * index,
+        scale = newWidth / width,
+        newPosX = newWidth * index + newWidth / 2 + offset * 2 + padding;
 
+    console.log(offset);
     item.scale(scale);
-    item.position = [newPosX, newPosY];
-    view.draw();
+    item.position = [newPosX, item.bounds.height / 2 + padding];
+    // Last quilt item
+    if (i === quilts.length - 1) {
+      jumpToIndex(currentQuiltIndex);
+    }
+  }
+
+  function onFrame(event) {
+    // Your animation code goes in here
   }
 
   function viewportEvents() {
     setViewport();
-    window.onresize = function() {
-      setViewport();
-      fitToContainer(grid);
-    };
+    window.addEventListener('resize', _.debounce(onResize, 250));
+  }
+
+  function onResize(e) {
+    e.preventDefault();
+    setViewport();
+    _.forEach(quilts, function(quilt, i) {
+      fitToContainer(quilt, i);
+    });
   }
 
   function setViewport() {
@@ -261,7 +388,7 @@ var quiltsList = (function($) {
    */
   function getContainerW() {
     let computedStyle = getComputedStyle(containerEl),
-      containerWidth = containerEl.clientWidth;
+        containerWidth = containerEl.clientWidth;
 
     containerWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
     containerWidth -= parseFloat(computedStyle.marginLeft) + parseFloat(computedStyle.marginRight);
@@ -275,7 +402,7 @@ var quiltsList = (function($) {
    */
   function getContainerH() {
     let computedStyle = getComputedStyle(containerEl),
-      containerHeight = containerEl.clientHeight;
+        containerHeight = containerEl.clientHeight;
 
     containerHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
     containerHeight -= parseFloat(computedStyle.marginTop) + parseFloat(computedStyle.marginBottom);

@@ -61,7 +61,10 @@ form {
   z-index: 1030;
 }
 .contents {
-  padding: 2.5% 5% 5%;
+  padding: 0;
+  @include media-breakpoint-up(md) {
+    padding: 2.5% 5% 5%;
+  }
 }
 #account-drawer,
 #submenu-drawer {
@@ -139,8 +142,60 @@ form {
   }
 }
 
+.quilt-nav,
+.quilt-name,
+.data {
+  display: none;
+}
+
 .grid-spacer { // Responsive square
   width: 100%;
   height: 0;
   padding-top: 100%;
+}
+
+#quilt-nav-container {
+  @include make-row(0);
+
+
+  .quilt-nav,
+  .quilt-list {
+    @include make-col(0);
+  }
+  .quilt-nav,
+  .quilt-name {
+    text-align: center;
+    color: #666666;
+  }
+  .quilt-nav {
+    @include make-col-span(2);
+    display: block;
+    border: 1px solid #000000;
+    padding: .5em;
+    font-size: 1.75em;
+  }
+  .quilt-list {
+    @include make-col-span(8);
+    display: block;
+    list-style-type: none;
+  }
+  .quilt-name {
+    font-weight: bold;
+    line-height: 130%;
+  }
+  .active {
+    .quilt-nav,
+    .quilt-name {
+      min-height: 1em;
+      display: block;
+    }
+    .quilt-name {
+      &:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        height: 4.25em;
+      }
+    }
+  }
 }

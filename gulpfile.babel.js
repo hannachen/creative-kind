@@ -64,8 +64,7 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
       'bower_components/bootstrap-drawer/dist/js/drawer.js',
-      'bower_components/slick-carousel/slick/slick.js',
-      'bower_components/Materialize/js/leanModal.js'
+      'bower_components/gsap/src/uncompressed/TweenMax.js'
     ])
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.min.js'))

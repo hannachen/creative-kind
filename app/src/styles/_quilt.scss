@@ -3,6 +3,9 @@
   background-color: #ececec;
   position: relative;
 
+  .home & {
+    padding: 0;
+  }
   .canvas-container {
     width: 100%;
     height: auto;
