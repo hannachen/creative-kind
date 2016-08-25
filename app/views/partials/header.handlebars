@@ -1,15 +1,15 @@
-{{#if user}}
-  {{>account-menu }}
-{{/if}}
-
 <div class="container-fluid header-menu">
   <div class="row">
     <div class="col account-nav-toggle">
-      {{#if user}}
+      {{#if_eq pageId 'login-signup'}}
+        <a class="drawer-toggle signup-menu" href="/">
+          <span class="icon icon-chevron-left"></span>
+        </a>
+      {{else}}
         <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-controls="account-drawer">
           <span class="icon icon-user"></span>
         </button>
-      {{/if}}
+      {{/if_eq}}
     </div>
     <div class="col title"><h1>{{title }}</h1></div>
     <div class="col sub-menu-toggle">

@@ -1,24 +1,29 @@
-{{#if user}}
 <div id="account-drawer" class="drawer dw-xs-8 dw-sm-6 dw-md-3 fold" aria-labelledby="account-drawer">
   <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-foldedopen="false" aria-controls="account-drawer">&times;</button>
   <div class="drawer-contents">
-    <h2>
-      <span class="account-username">{{user.username}}</span>
-      {{#if user.usertype}}
-        <span class="account-type">{{user.usertype}}</span>
-      {{/if}}
-    </h2>
-    <ul>
-      {{#if_eq user.usertype 'admin'}}
-        <li><a href="/qb-admin">Admin</a></li>
-      {{/if_eq}}
-      <li><a href="/account/patches">My Squares</a></li>
-      <li><a href="/account/quilts">My Quilts</a></li>
-      <li>Notifications</li>
-      <li><a href="/quilts/create">Create a quilt</a></li>
-      <li><a href="/account">My Profile</a></li>
-      <li><a href="/account/logout">Logout</a></li>
-    </ul>
+    {{#if user}}
+      <h2>
+        <span class="account-username">{{user.username}}</span>
+        {{#if user.usertype}}
+          <span class="account-type">{{user.usertype}}</span>
+        {{/if}}
+      </h2>
+      <ul>
+        {{#if_eq user.usertype 'admin'}}
+          <li><a href="/qb-admin">Admin</a></li>
+        {{/if_eq}}
+        <li><a href="/account/patches">My Squares</a></li>
+        <li><a href="/account/quilts">My Quilts</a></li>
+        <li>Notifications</li>
+        <li><a href="/quilts/create">Create a quilt</a></li>
+        <li><a href="/account">My Profile</a></li>
+        <li><a href="/account/logout">Logout</a></li>
+      </ul>
+    {{else}}
+      <ul>
+        <li><a href="/account/login">Sign In</a></li>
+      </ul>
+    {{/if}}
+
   </div>
 </div>
-{{/if}}

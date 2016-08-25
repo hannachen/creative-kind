@@ -1,0 +1,14 @@
+#login-signup {
+  @include dark-background();
+
+  a,
+  button {
+    color: $white;
+  }
+  .header-menu {
+    border-bottom: none;
+  }
+  .login-signup {
+    padding: 1em;
+  }
+}

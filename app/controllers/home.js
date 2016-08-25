@@ -39,3 +39,23 @@ router.get('/', function (req, res, next) {
       });
     });
 });
+
+router.get('/about', function (req, res, next) {
+  console.log('ABOUT');
+
+  res.render('pages/static/about', {
+    title: 'About',
+    pageId: 'about',
+    pageClass: 'static-page'
+  });
+});
+
+router.get('/terms-conditions', function (req, res, next) {
+  console.log('TERMS');
+
+  res.render('pages/static/terms', {
+    title: 'Terms',
+    pageId: 'terms',
+    pageClass: 'static-page'
+  });
+});

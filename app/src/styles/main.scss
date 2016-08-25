@@ -10,9 +10,20 @@
 @import "../../../bower_components/bootstrap/scss/modal";
 @import "../../../bower_components/bootstrap/scss/buttons";
 @import "../../../bower_components/bootstrap/scss/button-group";
+@import "../../../bower_components/materialize/sass/components/color";
+@import "../../../bower_components/materialize/sass/components/variables";
+@import "../../../bower_components/materialize/sass/components/normalize";
+@import "../../../bower_components/materialize/sass/components/global";
+@import "../../../bower_components/materialize/sass/components/typography";
+@import "../../../bower_components/materialize/sass/components/forms/input-fields";
+@import "./variables";
+@import "./mixins";
 @import "./utils";
+@import "./forms";
+@import "./menu";
 @import "./quilt";
 @import "./patch";
+@import "./pages/login-signup";
 
 html,
 body {
@@ -23,6 +34,9 @@ body {
   margin: 0;
   padding: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+h1 {
+  font-size: 1.5em;
 }
 button {
   border: 0;
@@ -41,6 +55,9 @@ form {
   li {
     list-style-type: none;
   }
+}
+footer {
+  display: none;
 }
 .browserupgrade {
   margin: 0.2em 0;
@@ -62,49 +79,52 @@ form {
 }
 .contents {
   padding: 0;
+  height: 100%;
   @include media-breakpoint-up(md) {
-    padding: 2.5% 5% 5%;
+    padding: 0 5% 5%;
   }
 }
-#account-drawer,
-#submenu-drawer {
-  top: 0;
+.modal-dialog {
+  padding: 0 1em 1em;
   bottom: 0;
-  transition: transform 0.3s ease-in-out;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  pointer-events: none;
+  @include media-breakpoint-up(sm) {
+    width: 100%;
+    max-width: 560px;
+  }
+  @include media-breakpoint-up(md) {
+    max-width: 620px;
+  }
+  @include media-breakpoint-up(lg) {
+    max-width: 750px;
+  }
 
-  &.open {
-    transform: translateX(0);
-    transition: transform 0.3s ease-in-out;
+  .modal-content {
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
   }
-}
-#account-drawer {
-  margin-left: 0;
-  left: 0;
-  transform: translateX(-100%);
-  transform-origin: left center;
-
-  .drawer-toggle {
-    float: right;
-    position: relative;
-    z-index: 1;
+  .modal-header {
+    border-bottom: 0;
   }
-  .drawer-contents {
-    position: absolute;
-    background-color: transparent;
-    z-index: 0;
+  .modal-title {
+    text-align: center;
+    text-transform: uppercase;
   }
-}
-#submenu-drawer {
-  left: auto;
-  right: 0;
-  transform: translateX(100%);
-  transform-origin: right center;
-  border-left: 1px solid #dfdfdf;
+  .modal-body {
+    padding: .5em 2.5em 1.5em;
+  }
+  .modal-footer {
+    text-align: center;
+  }
 }
 .header-menu {
   @include make-container(0);
   @include make-container-max-widths(0);
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid $gray;
 
   .row {
     @include make-row(0);
@@ -113,6 +133,9 @@ form {
     @include make-col(0);
     @include media-breakpoint-up(md) { // Tablet and above
     }
+  }
+  .drawer-toggle {
+    display: inline-block;
   }
   .account-nav-toggle,
   .sub-menu-toggle {
@@ -124,6 +147,11 @@ form {
   .title {
     @include make-col-span(8);
     text-align: center;
+    color: $primary-brand-color;
+
+    h1 {
+      margin: .75em 0;
+    }
   }
 }
 .drawer-toggle,
@@ -132,8 +160,14 @@ form {
   .drawer-toggle {
     display: inline-block;
     font-size: 2.5em;
-    border: 1px solid #eeeeee;
     vertical-align: middle;
+  }
+}
+.drawer-toggle {
+  color: $gray;
+
+  .icon {
+    padding: .05em .25em .2em;
   }
 }
 .drawer {
@@ -157,7 +191,6 @@ form {
 #quilt-nav-container {
   @include make-row(0);
 
-
   .quilt-nav,
   .quilt-list {
     @include make-col(0);
@@ -170,32 +203,48 @@ form {
   .quilt-nav {
     @include make-col-span(2);
     display: block;
-    border: 1px solid #000000;
-    padding: .5em;
+    border: 1px solid $gray;
+    border-top: 0;
+    padding: .25em 0 0;
     font-size: 1.75em;
+    border-radius: 0;
+    margin: 0;
   }
   .quilt-list {
     @include make-col-span(8);
     display: block;
     list-style-type: none;
+    position: relative;
   }
   .quilt-name {
     font-weight: bold;
     line-height: 130%;
   }
   .active {
+    height: 3em;
+
     .quilt-nav,
     .quilt-name {
-      min-height: 1em;
       display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
     .quilt-name {
-      &:before {
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        height: 4.25em;
-      }
+      padding: 0 1em;
     }
+  }
+}
+.static-page {
+  .contents {
+    margin-top: -1em;
+    position: relative;
+  }
+  footer {
+    display: block;
+    position: absolute;
+    bottom: 0;
   }
 }

@@ -10,7 +10,8 @@ router.get('/login-signup', function (req, res, next) {
     res.redirect('/account');
   } else {
     res.render('login-signup', {
-      title: 'Quilting Bee'
+      title: 'Quilting Bee',
+      pageId: 'login-signup'
     });
   }
 });

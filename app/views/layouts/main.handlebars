@@ -13,7 +13,7 @@
     <script src="http://localhost:35729/livereload.js"></script>
   {{/if}}
 </head>
-<body class="has-canvas">
+<body class="has-canvas{{#if pageClass}} {{pageClass}}{{/if}}"{{#if pageId}} id="{{pageId}}"{{/if}}>
   <!--[if lt IE 10]>
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
@@ -26,11 +26,15 @@
 
   {{>header}}
 
+  {{>account-menu }}
+
   <div class="container contents">
     {{{body}}}
   </div><!-- end .contents -->
 
   {{>sub-menu}}
+
+  {{>footer}}
 
   {{>fb-js}}
 

@@ -1,0 +1,47 @@
+form {
+  .input-field {
+    text-align: center;
+
+    label {
+      font-size: 1.5em;
+      left: 50%;
+      transform: translateX(-50%);
+      transform-origin: center center;
+
+      &.active {
+        transform: translateX(-50%) translateY(-140%);
+      }
+    }
+    input[type=email],
+    input[type=password],
+    input[type=text] {
+      font-size: 1.5em;
+      height: 2.5em;
+    }
+  }
+  .button-facebook,
+  .button-twitter {
+    @extend .btn;
+    width: 100%;
+    margin: .5em 0;
+    font-size: 1.5em;
+    color: $white;
+  }
+  .button-facebook {
+    background-color: $facebook-blue;
+  }
+  .button-twitter {
+    background-color: $twitter-blue;
+  }
+  .or {
+    text-align: center;
+    padding: 1em 0;
+  }
+  .btn-submit {
+    @extend .btn;
+    width: 100%;
+    font-size: 1.5em;
+    color: $primary-brand-color;
+    background-color: $white;
+  }
+}

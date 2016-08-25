@@ -1,25 +1,28 @@
 <form class="signup-form" action="/account/register" method="post">
   <ul>
-    <li class="signup-field">
-      <input type="email" name="user[email]" class="input-email" placeholder="E-mail" />
+    <li class="input-field signup-field">
+      <input type="email" name="user[email]" id="user-email" class="input-email" />
+      <label for="user-email">E-mail</label>
     </li>
-    <li class="signup-field">
-      <input type="text" name="user[username]" class="input-username" placeholder="Username" />
+    <li class="input-field signup-field">
+      <input type="text" name="user[username]" id="user-username" class="input-username" autocomplete="off" />
+      <label for="user-username">Username</label>
     </li>
-    <li class="signup-field">
-      <input type="password" name="user[password]" class="input-password" placeholder="Password" />
+    <li class="input-field signup-field">
+      <input type="password" name="user[password]" id="user-password" class="input-password" autocomplete="off" />
+      <label for="user-password">Password</label>
     </li>
     <li class="signup-button">
-      <input type="submit" value="Register" class="submit-signup">
+      <input type="submit" value="Register" class="btn-submit submit-signup">
     </li>
     <li class="or">
       or connect with
     </li>
     <li class="signup">
-      <a href="/account/login/facebook" class="signup-facebook">Facebook</a>
+      <a href="/account/login/facebook" class="signup-facebook button-facebook">Facebook</a>
     </li>
     <li class="signup">
-      <a href="/account/login/twitter" class="signup-twitter">Twitter</a>
+      <a href="/account/login/twitter" class="signup-twitter button-twitter">Twitter</a>
     </li>
     </ul>
   </form>

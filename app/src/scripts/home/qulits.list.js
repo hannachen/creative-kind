@@ -1,7 +1,8 @@
 'use strict';
 var quiltsList = (function($) {
 
-  var $donationModal = $('#donation-modal').modal('hide'),
+  var $document = $(document),
+      $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
       $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
@@ -29,6 +30,8 @@ var quiltsList = (function($) {
   $confirmationModal.on('hide.bs.modal', function () {
     $confirmationButton.attr('href', '');
   });
+
+  $document.on('scroll.canvas', scrollCanvas);
 
   var containerEl = document.getElementById('canvas-container'),
       grid,
@@ -152,6 +155,11 @@ var quiltsList = (function($) {
     } else {
       goToPrevIndex();
     }
+    setActiveName(currentQuiltIndex);
+  }
+
+  function setActiveName(index) {
+    var currentQuiltIndex = index || 0;
     $quiltNames.removeClass('active');
     var setActive = $quiltNames.filter(':eq('+currentQuiltIndex+')');
     setActive.addClass('active');
@@ -171,7 +179,6 @@ var quiltsList = (function($) {
   }
 
   function onSvgLoaded(svg) {
-    // svg.pivot = initialPosition;
     fitToContainer(svg);
     grid = svg;
     quilts.push(svg);
@@ -193,7 +200,8 @@ var quiltsList = (function($) {
       // Reset starting position on mouse up
       view.onMouseUp = function() {
         var dragDistance = quilts[0].position.x - dragStartQuiltPos.x,
-            dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold;
+            dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
+            scroll = false;
         if (dragDistance < 0) {
           dragDirection = 'left';
         } else {
@@ -205,16 +213,25 @@ var quiltsList = (function($) {
               currentQuiltIndex = quilts.length - 1;
             } else {
               currentQuiltIndex++;
+              scroll = true;
             }
           } else {
             if (currentQuiltIndex - 1 < 0) {
               currentQuiltIndex = 0;
             } else {
               currentQuiltIndex--;
+              scroll = true;
             }
           }
         }
         scrollToIndex(currentQuiltIndex);
+        if (scroll) {
+          $document.trigger({
+            type: 'scroll.canvas',
+            direction: dragDirection,
+            index: currentQuiltIndex
+          });
+        }
         dragStartMousePos = null;
         dragStartQuiltPos = null;
       };
@@ -236,6 +253,10 @@ var quiltsList = (function($) {
 
   function scrollToIndex(targetIndex) {
     jumpToIndex(targetIndex, true);
+  }
+
+  function scrollCanvas(e) {
+    setActiveName(e.index);
   }
 
   function jumpToIndex(index, scroll) {

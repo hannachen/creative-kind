@@ -3,7 +3,7 @@
 {{/section}}
 
 <div id="quilt-nav-container">
-  <button class="quilt-nav nav-prev" data-value="prev">
+  <button class="btn btn-outline-primary quilt-nav nav-prev" data-value="prev">
     <span class="icon icon-chevron-left"></span>
   </button>
   <ul class="quilt-list">
@@ -11,13 +11,10 @@
       {{>quilt-data this }}
     {{/each}}
   </ul>
-  <button class="quilt-nav nav-next" data-value="next">
+  <button class="btn btn-outline-primary quilt-nav nav-next" data-value="next">
     <span class="icon icon-chevron-right"></span>
   </button>
 </div>
-
-<h2>Some are born great, some achieve greatness, and some have greatness thrust upon them.</h2>
-<p>A creative community with a common goal.</p>
 
 <div id="quilt-container" class="home">
   <div class="quilt-container">
@@ -27,6 +24,8 @@
     </div>
   </div>
 </div>
+
+{{>modal/welcome }}
 
 {{#if user}}
 

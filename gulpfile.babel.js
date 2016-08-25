@@ -58,12 +58,15 @@ gulp.task('lodash:autobuild', function (cb) {
 gulp.task('js:vendor', function() {
   return gulp.src([
       '.tmp/scripts/vendor/lodash.custom.js',
+      'bower_components/js-cookie/src/js.cookie.js',
       'bower_components/paper/dist/paper-full.js',
       'bower_components/bootstrap/js/dist/util.js',
       'bower_components/bootstrap/js/dist/tab.js',
       'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
       'bower_components/bootstrap-drawer/dist/js/drawer.js',
+      'bower_components/materialize/js/global.js',
+      'bower_components/materialize/js/forms.js',
       'bower_components/gsap/src/uncompressed/TweenMax.js'
     ])
     .pipe(sourcemaps.init())

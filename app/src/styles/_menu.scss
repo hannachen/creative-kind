@@ -1,0 +1,50 @@
+#account-drawer,
+#submenu-drawer {
+  top: 0;
+  bottom: 0;
+  border: 0;
+  transition: transform 0.3s ease-in-out;
+
+  &.open {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  .drawer-contents {
+    background-color: transparent;
+  }
+}
+#account-drawer {
+  color: $white;
+  background-color: $primary-brand-color;
+  margin-left: 0;
+  left: 0;
+  transform: translateX(-100%);
+  transform-origin: left center;
+
+  a,
+  button {
+    color: $white;
+  }
+  .drawer-toggle {
+    float: right;
+    position: relative;
+    z-index: 1;
+  }
+  .drawer-contents {
+    position: absolute;
+    z-index: 0;
+  }
+}
+
+#submenu-drawer {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+  transform-origin: right center;
+  background-color: $secondary-brand-color;
+
+  a,
+  button {
+    color: $primary-brand-color;
+  }
+}
