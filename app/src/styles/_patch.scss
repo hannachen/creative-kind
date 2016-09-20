@@ -45,6 +45,10 @@
     min-height: 100%;
     box-sizing: border-box;
     position: relative;
+    @include media-breakpoint-up(md) {
+      height: 90vh;
+      max-width:90vh;
+    }
   }
   .grid-spacer {
     display: block;

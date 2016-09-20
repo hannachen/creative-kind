@@ -5602,8 +5602,13 @@ form .btn-submit {
 
 .quilt-container {
   padding: 2em;
-  background-color: #ececec;
-  position: relative; }
+  position: relative;
+  height: 100%;
+  box-sizing: border-box; }
+  @media (min-width: 768px) {
+    .quilt-container {
+      height: auto;
+      text-align: center; } }
   .home .quilt-container {
     padding: 0; }
   .quilt-container .canvas-container {
@@ -5611,7 +5616,19 @@ form .btn-submit {
     height: auto;
     min-height: 100%;
     box-sizing: border-box;
-    position: relative; }
+    position: relative;
+    background-color: #ececec;
+    border-bottom: 1px solid #b2b2b2; }
+    .quilt-container .canvas-container::after {
+      content: "";
+      display: table;
+      clear: both; }
+    @media (min-width: 768px) {
+      .quilt-container .canvas-container {
+        display: inline-block;
+        min-height: 0;
+        width: auto;
+        border: 1px solid #ff0000; } }
   .quilt-container .grid-area {
     position: absolute;
     top: 0;
@@ -5753,6 +5770,10 @@ form .btn-submit {
     min-height: 100%;
     box-sizing: border-box;
     position: relative; }
+    @media (min-width: 768px) {
+      .patch-container .canvas-container {
+        height: 90vh;
+        max-width: 90vh; } }
   .patch-container .grid-spacer {
     display: block;
     width: 100%;
@@ -6036,10 +6057,16 @@ footer {
   width: 100%;
   height: 0;
   padding-top: 100%; }
+  @media (min-width: 768px) {
+    .grid-spacer {
+      height: 90vh;
+      width: 90vh;
+      padding-top: 0; } }
 
 #quilt-nav-container {
   margin-left: 0;
-  margin-right: 0; }
+  margin-right: 0;
+  border-bottom: 1px solid #b2b2b2; }
   #quilt-nav-container::after {
     content: "";
     display: table;
@@ -6059,6 +6086,7 @@ footer {
     width: 16.66667%;
     display: block;
     border: 1px solid #b2b2b2;
+    border-bottom: 0;
     border-top: 0;
     padding: .25em 0 0;
     font-size: 1.75em;

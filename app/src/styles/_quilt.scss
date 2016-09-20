@@ -1,7 +1,14 @@
+#quilt-container {
+}
 .quilt-container {
   padding: 2em;
-  background-color: #ececec;
   position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  @include media-breakpoint-up(md) {
+    height: auto;
+    text-align: center;
+  }
 
   .home & {
     padding: 0;
@@ -12,6 +19,15 @@
     min-height: 100%;
     box-sizing: border-box;
     position: relative;
+    background-color: #ececec;
+    border-bottom: 1px solid $gray;
+    @include clearfix();
+    @include media-breakpoint-up(md) {
+      display: inline-block;
+      min-height: 0;
+      width: auto;
+      border: 1px solid #ff0000;
+    }
   }
   .grid-area {
     position: absolute;
