@@ -210,11 +210,17 @@ router.post('/reset', function(req, res) {
 
 
 router.get('/login', function(req, res) {
-  res.redirect('/login-signup/#login');
+  var cb = req.query.cb;
+  res.redirect('/login-signup/'+(cb?'?cb='+cb:'')+'#login');
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/account/');
+  var cb = req.body.cb;
+  if (cb) {
+    res.redirect(cb);
+  } else {
+    res.redirect('/account/');
+  }
 });
 
 

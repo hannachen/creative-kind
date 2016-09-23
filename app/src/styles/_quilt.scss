@@ -5,7 +5,7 @@
   position: relative;
   height: 100%;
   box-sizing: border-box;
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     height: auto;
     text-align: center;
   }
@@ -22,7 +22,7 @@
     background-color: #ececec;
     border-bottom: 1px solid $gray;
     @include clearfix();
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       display: inline-block;
       min-height: 0;
       width: auto;

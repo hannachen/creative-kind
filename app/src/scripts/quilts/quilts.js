@@ -16,6 +16,82 @@ var quilts = (function($) {
     });
   }
 
+  function onSvgLoaded(svg) {
+    grid = svg;
+    // fitToContainer(svg);
+    if (svg.hasChildren()) {
+      let patches = svg.children,
+        indexOffset = 0;
+      _.forEach(patches, function(group, i) {
+        if (group === undefined || group.hasChildren() === undefined || !patchStatus[i-indexOffset]) {
+          indexOffset++;
+          console.log("SKIP", group);
+          return;
+        }
+        let patch,
+          plus,
+          circle;
+        if(group.hasChildren()) {
+          _.forEach(group.children, function(item) {
+            let itemType = getItemType(item);
+            switch(itemType) {
+              case 'rectangle':
+                patch = item;
+                break;
+              case 'path':
+                plus = item;
+                break;
+              case 'circle':
+                circle = item;
+                break;
+            }
+          });
+        }
+
+        plus.locked = true;
+        plus.visible = false;
+
+        circle.locked = true;
+        circle.visible = false;
+
+        patch.strokeScaling = false;
+        patch.fillColor = '#ffffff';
+        patch.data.uid = patchStatus[i].uid;
+        patch.data.status = patchStatus[i].status;
+
+        if (!_.isEmpty(user)) {
+          patch.on(getPatchEvents());
+        }
+        switch (patch.data.status) {
+          case 'progress':
+            patch.off(getPatchEvents());
+            patch.fillColor = '#cccccc';
+            break;
+          case 'mine':
+            patch.fillColor = '#aab0ff';
+            break;
+          case 'complete':
+            project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
+              svg.rotate(-45);
+              svg.fitBounds(patch.bounds);
+              patch.addChild(svg);
+            });
+            patch.fillColor = '#ffffff';
+            break;
+          case 'new':
+          default:
+            if (myPatch.length) {
+              patch.off(getPatchEvents());
+            } else {
+              plus.visible = !_.isEmpty(user);
+            }
+            break;
+        }
+        patches.push(patch);
+      });
+    }
+  }
+
   function setupCanvas(quiltContainer) {
 
     var quiltPaper = new paper.PaperScope(),
@@ -35,76 +111,9 @@ var quilts = (function($) {
     }
 
     // Add grid SVG
-    quiltPaper.project.importSVG('/img/quilt-grid.svg', function(svg) {
-      grid = svg;
-      // fitToContainer(svg);
-      if (svg.hasChildren()) {
-        let patches = svg.children;
-        _.forEach(patches, function(group, i) {
-          if (group === undefined) {
-            return;
-          }
-          let patch,
-            plus,
-            circle;
-          if(group.hasChildren()) {
-            _.forEach(group.children, function(item) {
-              let itemType = getItemType(item);
-              switch(itemType) {
-                case 'rectangle':
-                  patch = item;
-                  break;
-                case 'path':
-                  plus = item;
-                  break;
-                case 'circle':
-                  circle = item;
-                  break;
-              }
-            });
-          }
-
-          plus.locked = true;
-          plus.visible = false;
-
-          circle.locked = true;
-          circle.visible = false;
-
-          patch.strokeScaling = false;
-          patch.fillColor = '#ffffff';
-          patch.data.uid = patchStatus[i].uid;
-          patch.data.status = patchStatus[i].status;
-
-          if (!_.isEmpty(user)) {
-            patch.on(getPatchEvents());
-          }
-          switch (patch.data.status) {
-            case 'progress':
-              patch.off(getPatchEvents());
-              patch.fillColor = '#cccccc';
-              break;
-            case 'mine':
-              patch.fillColor = '#aab0ff';
-              break;
-            case 'complete':
-              project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
-                svg.rotate(-45);
-                svg.fitBounds(patch.bounds);
-                patch.addChild(svg);
-              });
-              patch.fillColor = '#ffffff';
-              break;
-            case 'new':
-            default:
-              if (myPatch.length) {
-                patch.off(getPatchEvents());
-              } else {
-                plus.visible = !_.isEmpty(user);
-              }
-              break;
-          }
-        });
-      }
+    quiltPaper.project.importSVG('/img/quilt-grid.svg', {
+      expandShapes: false,
+      onLoad: onSvgLoaded
     });
     quiltPaper.view.draw();
 
@@ -132,6 +141,16 @@ var quilts = (function($) {
     return itemType;
   }
 
+  function getPatchEvents() {
+    var events = {};
+    events.click = clickPatch;
+    if (!Modernizr.touch) {
+      events.mouseenter = enterArea;
+      events.mouseleave = leaveArea;
+    }
+    return events;
+  }
+
   function enterArea(e) {
     e.target.opacity = 0.8;
   }
@@ -140,7 +159,7 @@ var quilts = (function($) {
     e.target.opacity = 1;
   }
 
-  function htmlEncode(value){
+  function htmlEncode(value) {
     //create a in-memory div, set it's inner text(which jQuery automatically encodes)
     //then grab the encoded contents back out.  The div never exists on the page.
     return $('<div/>').text(value).html();

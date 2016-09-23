@@ -5605,7 +5605,7 @@ form .btn-submit {
   position: relative;
   height: 100%;
   box-sizing: border-box; }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     .quilt-container {
       height: auto;
       text-align: center; } }
@@ -5623,7 +5623,7 @@ form .btn-submit {
       content: "";
       display: table;
       clear: both; }
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       .quilt-container .canvas-container {
         display: inline-block;
         min-height: 0;
@@ -5737,8 +5737,11 @@ form .btn-submit {
     content: "";
     display: table;
     clear: both; }
+  @media (min-width: 768px) {
+    .patch-container {
+      text-align: center; } }
   .patch-container .toolbar {
-    margin: 0 0 25px 0;
+    margin: 0 0 5px 0;
     padding: 0;
     overflow: hidden; }
     .patch-container .toolbar .selected {
@@ -5772,18 +5775,15 @@ form .btn-submit {
     position: relative; }
     @media (min-width: 768px) {
       .patch-container .canvas-container {
-        height: 90vh;
-        max-width: 90vh; } }
-  .patch-container .grid-spacer {
-    display: block;
-    width: 100%;
-    height: auto;
-    position: relative;
-    z-index: 0; }
+        height: 80vh;
+        width: 80vh;
+        display: inline-block; } }
   .patch-container .coloring-area {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 1; }
   .patch-container .color-palette {
     margin: 25px 0;
@@ -5958,8 +5958,7 @@ footer {
   z-index: 1030; }
 
 .contents {
-  padding: 0;
-  height: 100%; }
+  padding: 0; }
   @media (min-width: 768px) {
     .contents {
       padding: 0 5% 5%; } }
@@ -6056,8 +6055,10 @@ footer {
 .grid-spacer {
   width: 100%;
   height: 0;
-  padding-top: 100%; }
-  @media (min-width: 768px) {
+  padding-top: 100%;
+  position: relative;
+  z-index: 0; }
+  @media (min-width: 992px) {
     .grid-spacer {
       height: 90vh;
       width: 90vh;

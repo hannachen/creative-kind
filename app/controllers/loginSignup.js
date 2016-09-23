@@ -9,9 +9,11 @@ router.get('/login-signup', function (req, res, next) {
   if (req.isAuthenticated()) {
     res.redirect('/account');
   } else {
+    var cb = req.query.cb;
     res.render('login-signup', {
       title: 'Quilting Bee',
-      pageId: 'login-signup'
+      pageId: 'login-signup',
+      cb: cb
     });
   }
 });

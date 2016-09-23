@@ -1,4 +1,7 @@
 <form class="login-form" action="/account/login" method="post">
+  {{#if cb}}
+    <input type="hidden" name="cb" value="{{cb}}" />
+  {{/if}}
   <ul class="form-group">
     <li class="input-field login-field ">
       <input type="text" name="username" class="input-username" placeholder="Username" />

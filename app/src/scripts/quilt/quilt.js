@@ -72,8 +72,8 @@ var quilt = (function($) {
   }
 
   function onSvgLoaded(svg) {
-    grid = svg;
     fitToContainer(svg);
+    grid = svg;
     if (svg.hasChildren()) {
       let patches = svg.children,
           indexOffset = 0;
@@ -84,11 +84,7 @@ var quilt = (function($) {
           console.log("SKIP", group);
           return;
         }
-        console.log('PATCH INDEX', i-indexOffset);
-        console.log('PATCH STATUS', patchStatus[i-indexOffset]);
-        let patch,
-            plus,
-            circle;
+        let patch, plus, circle;
         if(group.hasChildren()) {
           _.forEach(group.children, function(item) {
             let itemType = getItemType(item);
@@ -127,21 +123,22 @@ var quilt = (function($) {
             patch.fillColor = '#aab0ff';
             break;
           case 'complete':
-            project.importSVG('/patch/svg/'+patch.data.uid, function(svg) {
-              svg.rotate(-45);
-              svg.fitBounds(patch.bounds);
-              svg.on(getPatchEvents());
-              svg.data = patch.data;
-              group.addChild(svg);
+            project.importSVG('/patch/svg/'+patch.data.uid, function(patchSvg) {
+              patchSvg.rotate(-45);
+              patchSvg.fitBounds(patch.bounds);
+              patchSvg.data = patch.data;
+              group.addChild(patchSvg);
+              patch.off(getPatchEvents());
+              patchSvg.on(getPatchEvents());
+              patch.visible = false;
             });
-            patch.fillColor = '#ffffff';
             break;
           case 'new':
           default:
             if (myPatch.length) {
               patch.off(getPatchEvents());
             } else {
-              plus.visible = !_.isEmpty(user);
+              plus.visible = true;
             }
             break;
         }
@@ -158,7 +155,6 @@ var quilt = (function($) {
    */
   function getItemType(item) {
     var itemType = '';
-    console.log(item.className);
     switch (item.className) {
       case 'Shape':
         itemType = item.type;
@@ -183,23 +179,27 @@ var quilt = (function($) {
 
   function clickPatch(e) {
     clickedPatch = e.target.data;
-    var targetUrl = '/patch/edit/' + clickedPatch.uid;
-    if (!_.isEmpty(user)) {
-      if (clickedPatch.status === 'mine') {
-        window.location.href = targetUrl;
-      } else if (clickedPatch.status === 'new') {
-        if (myPatch.length) {
-          $alertModal.modal('show');
-        } else {
-          $confirmationButton.attr('href', targetUrl);
-          $donationModal.modal('show');
-        }
-      }
-    }
-    // console.log('clicked', clickedPatch);
     if (clickedPatch.status === 'complete') {
-      //window.location.href = '/patch/view/' + clickedPatch.uid;
+      console.log(clickedPatch);
       showPatch(clickedPatch.uid);
+    } else {
+
+      var targetUrl = '/patch/edit/' + clickedPatch.uid;
+      if (!_.isEmpty(user)) {
+        if (clickedPatch.status === 'mine') {
+          window.location.href = targetUrl;
+        } else if (clickedPatch.status === 'new') {
+          if (myPatch.length) {
+            $alertModal.modal('show');
+          } else {
+            $confirmationButton.attr('href', targetUrl);
+            $donationModal.modal('show');
+          }
+        }
+      } else {
+        var targetUrl = '/account/login/?cb=' + targetUrl;
+        window.location.href = targetUrl;
+      }
     }
   }
 

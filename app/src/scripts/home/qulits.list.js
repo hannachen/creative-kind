@@ -117,6 +117,11 @@ var quiltsList = (function($) {
         patch.data.uid = patchData[i-indexOffset].uid;
         patch.data.status = patchData[i-indexOffset].status;
 
+        let myPatch = '';
+        if (patch.status === 'mine') {
+          myPatch = patchData[i-indexOffset].uid;
+        }
+
         patch.on(getPatchEvents());
         switch (patch.data.status) {
           case 'progress':
@@ -133,13 +138,17 @@ var quiltsList = (function($) {
               patchSvg.data = patch.data;
               group.addChild(patchSvg);
               patch.off(getPatchEvents());
+              patchSvg.on(getPatchEvents());
               patch.visible = false;
             });
             break;
           case 'new':
           default:
-            patch.off(getPatchEvents());
-            plus.visible = !_.isEmpty(user);
+            if (myPatch.length) {
+              patch.off(getPatchEvents());
+            } else {
+              plus.visible = true;
+            }
             break;
         }
       });
@@ -178,19 +187,10 @@ var quiltsList = (function($) {
     });
   }
 
-  function onSvgLoaded(svg) {
-    fitToContainer(svg);
-    grid = svg;
-    quilts.push(svg);
-    $quilts.each(setupQuilt);
-    quiltGroup = new Group(quilts);
-    quiltGroup.pivot = initialPosition;
-    quiltGroup.clipped = false;
-
-    $quiltNav.on('click', onNavClick);
-    setButtonState();
-
-    // Attach drag event to navigate between quilts
+  /**
+   * Attach drag event to navigate between quilts if there are more than one.
+   */
+  function initQuiltListEvents() {
     if (quilts.length > 1) {
       // Record starting position on mouse down
       view.onMouseDown = function(e) {
@@ -200,8 +200,8 @@ var quiltsList = (function($) {
       // Reset starting position on mouse up
       view.onMouseUp = function() {
         var dragDistance = quilts[0].position.x - dragStartQuiltPos.x,
-            dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
-            scroll = false;
+          dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
+          scroll = false;
         if (dragDistance < 0) {
           dragDirection = 'left';
         } else {
@@ -239,6 +239,21 @@ var quiltsList = (function($) {
         quiltGroup.position.x += e.delta.x;
       };
     }
+  }
+
+  function onSvgLoaded(svg) {
+    fitToContainer(svg);
+    grid = svg;
+    quilts.push(svg);
+    $quilts.each(setupQuilt);
+    quiltGroup = new Group(quilts);
+    quiltGroup.pivot = initialPosition;
+    quiltGroup.clipped = false;
+
+    $quiltNav.on('click', onNavClick);
+
+    setButtonState();
+    initQuiltListEvents();
   }
 
   function goToNextIndex() {
@@ -309,23 +324,27 @@ var quiltsList = (function($) {
 
   function clickPatch(e) {
     clickedPatch = e.target.data;
-    var targetUrl = '/patch/edit/' + clickedPatch.uid;
-    if (!_.isEmpty(user)) {
-      if (clickedPatch.status === 'mine') {
-        window.location.href = targetUrl;
-      } else if (clickedPatch.status === 'new') {
-        if (myPatch.length) {
-          $alertModal.modal('show');
-        } else {
-          $confirmationButton.attr('href', targetUrl);
-          $donationModal.modal('show');
-        }
-      }
-    }
-    // console.log('clicked', clickedPatch);
     if (clickedPatch.status === 'complete') {
-      //window.location.href = '/patch/view/' + clickedPatch.uid;
+      console.log(clickedPatch);
       showPatch(clickedPatch.uid);
+    } else {
+
+      var targetUrl = '/patch/edit/' + clickedPatch.uid;
+      if (!_.isEmpty(user)) {
+        if (clickedPatch.status === 'mine') {
+          window.location.href = targetUrl;
+        } else if (clickedPatch.status === 'new') {
+          if (myPatch.length) {
+            $alertModal.modal('show');
+          } else {
+            $confirmationButton.attr('href', targetUrl);
+            $donationModal.modal('show');
+          }
+        }
+      } else {
+        var targetUrl = '/account/login/?cb=' + targetUrl;
+        window.location.href = targetUrl;
+      }
     }
   }
 
