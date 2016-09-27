@@ -1,3 +1,24 @@
+.drawer-toggle,
+.drawer {
+  .icon,
+  .drawer-toggle {
+    display: inline-block;
+    font-size: 2.5em;
+    vertical-align: middle;
+  }
+}
+.drawer-toggle {
+  color: $gray;
+
+  .icon {
+    padding: .05em .25em .2em;
+  }
+}
+.drawer {
+  .drawer-toggle {
+    padding: 0 10px;
+  }
+}
 #account-drawer,
 #submenu-drawer {
   top: 0;
@@ -11,6 +32,20 @@
   }
   .drawer-contents {
     background-color: transparent;
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+  .list-group {
+    border-top: 2px solid rgba($white, .25);
+
+    .list-group-item {
+      background-color: transparent;
+      border: 0;
+      border-radius: 0;
+      border-bottom: 1px solid rgba($white, .25);
+    }
   }
 }
 #account-drawer {
@@ -26,7 +61,6 @@
     color: $white;
   }
   .drawer-toggle {
-    float: right;
     position: relative;
     z-index: 1;
   }
@@ -46,5 +80,8 @@
   a,
   button {
     color: $primary-brand-color;
+  }
+  .drawer-toggle {
+    float: right;
   }
 }

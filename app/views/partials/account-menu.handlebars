@@ -8,20 +8,20 @@
           <span class="account-type">{{user.usertype}}</span>
         {{/if}}
       </h2>
-      <ul>
+      <ul class="list-group">
         {{#if_eq user.usertype 'admin'}}
-          <li><a href="/qb-admin">Admin</a></li>
+          <li class="list-group-item"><a href="/qb-admin">Admin</a></li>
         {{/if_eq}}
-        <li><a href="/account/patches">My Squares</a></li>
-        <li><a href="/account/quilts">My Quilts</a></li>
-        <li>Notifications</li>
-        <li><a href="/quilts/create">Create a quilt</a></li>
-        <li><a href="/account">My Profile</a></li>
-        <li><a href="/account/logout">Logout</a></li>
+        <li class="list-group-item"><a href="/account/patches">My Squares</a></li>
+        <li class="list-group-item"><a href="/account/quilts">My Quilts</a></li>
+        <li class="list-group-item">Notifications</li>
+        <li class="list-group-item"><a href="/quilts/create">Create a quilt</a></li>
+        <li class="list-group-item"><a href="/account">My Profile</a></li>
+        <li class="list-group-item"><a href="/account/logout">Logout</a></li>
       </ul>
     {{else}}
-      <ul>
-        <li><a href="/account/login">Sign In</a></li>
+      <ul class="list-group">
+        <li class="list-group-item"><a href="/account/login">Sign In</a></li>
       </ul>
     {{/if}}
 

@@ -1,17 +1,21 @@
-<h3>My Patches</h3>
-
 {{#if patches}}
   <ul class="patch-list">
     {{#each patches}}
-      <li class="patch-item">
-        <div class="patch-thumb">
-          <a href="/patch/view/{{uid}}" class="thumb"><img src="/patch/svg/{{uid}}" /></a>
-        </div>
-        <div class="patch-info">
-          <h4><a href="/quilts/view/{{_quilt._id}}">{{_quilt.title}}</a></h4>
-          {{status}} {{#if_eq status 'progress'}} [<a href="/patch/edit/{{uid}}">Edit</a>]{{/if_eq}}
-        </div>
+      <li class="patch-head">
+        <h3>{{@key}}</h3>
       </li>
+      {{#each this}}
+        <li class="patch-item">
+          <div class="patch-thumb">
+            <a href="/patch/view/{{uid}}" class="thumb"><img src="/patch/svg/{{uid}}" /></a>
+          </div>
+          <div class="patch-info">
+            <h4><a href="/quilts/view/{{_quilt._id}}">{{_quilt.title}}</a></h4>
+            <span class="status">{{status}}</span>
+            {{#if_eq status 'progress'}} [<a href="/patch/edit/{{uid}}">Edit</a>]{{/if_eq}}
+          </div>
+        </li>
+      {{/each}}
     {{/each}}
   </ul>
 {{/if}}

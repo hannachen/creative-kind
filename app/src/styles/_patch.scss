@@ -169,25 +169,55 @@
   @include make-row();
   list-style-type: none;
 
+  li {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  .patch-head,
   .patch-item {
     @include make-col();
-    @include make-col-span(4);
-    @include media-breakpoint-down(sm) {
+  }
+  .patch-head {
+    @include make-col-span(12);
+    font-size: 1.25rem;
+    background-color: $primary-brand-color;
+    margin-top: 1em;
+
+    h3 {
+      color: $white;
+      padding: 0.5em 0;
+      margin: 0;
+      text-transform: capitalize;
+    }
+  }
+  .patch-item {
+    @include make-col-span(12);
+    @include media-breakpoint-up(sm) {
       @include make-col-span(6);
     }
-    padding-bottom: 25px;
+    @include media-breakpoint-up(md) {
+      @include make-col-span(4);
+    }
+    padding-bottom: 1em;
   }
 
   .patch-thumb,
   .patch-info {
   }
   .patch-thumb {
-  }
-  .patch-thumb {
+    @include media-breakpoint-down(sm) {
+      padding: 0.9em 0;
+    }
 
     img {
       width: 100%;
       height: auto;
+    }
+  }
+  .patch-info {
+    .status {
+      display: none;
     }
   }
 }

@@ -52,9 +52,26 @@ router.get('/patches', isAuthenticated, function(req, res) {
     .populate('_quilt')
     .exec(function(err, patches) {
       if (err) return next(err);
+      var sortedPatch = {
+            'progress': [],
+            'complete': []
+          };
+
+      for (var i=0; i<patches.length; i++) {
+        var patch = patches[i];
+        switch(patch.status) {
+          case 'progress':
+            sortedPatch.progress.push(patch);
+            break;
+          case 'complete':
+            sortedPatch.complete.push(patch);
+            break;
+        }
+      }
       res.render('pages/account/patches', {
+        pageId: 'my-squares',
         title: 'My Squares',
-        patches: patches
+        patches: sortedPatch
       });
     });
 });

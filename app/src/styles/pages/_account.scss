@@ -1,0 +1,6 @@
+#my-squares {
+  .contents {
+    @include make-container();
+    padding-bottom: 2em;
+  }
+}

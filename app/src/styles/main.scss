@@ -7,6 +7,7 @@
 @import "../../../bower_components/bootstrap/scss/nav";
 @import "../../../bower_components/bootstrap/scss/tables";
 @import "../../../bower_components/bootstrap/scss/forms";
+@import "../../../bower_components/bootstrap/scss/list-group";
 @import "../../../bower_components/bootstrap/scss/modal";
 @import "../../../bower_components/bootstrap/scss/buttons";
 @import "../../../bower_components/bootstrap/scss/button-group";
@@ -24,6 +25,7 @@
 @import "./quilt";
 @import "./patch";
 @import "./pages/login-signup";
+@import "./pages/account";
 
 html,
 body {
@@ -33,10 +35,40 @@ body {
 body {
   margin: 0;
   padding: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-family: Roboto, "Lucida Grande", Helvetica, Arial, sans-serif;
+  @include media-breakpoint-up(md) { // Tablet and above
+    font-size: 18px;
+  }
+
+}
+h1,
+h2,
+h3 {
+  letter-spacing: -0.05em;
 }
 h1 {
-  font-size: 1.5em;
+  font-size: 1.75rem;
+}
+h2 {
+  font-size: 2rem;
+  @include media-breakpoint-up(md) { // Tablet and above
+    font-size: 2.5rem;
+  }
+}
+h3 {
+  letter-spacing: -0.01em;
+  font-size: 1.5rem;
+  @include media-breakpoint-up(md) { // Tablet and above
+    font-size: 2rem;
+  }
+}
+h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  @include media-breakpoint-up(md) { // Tablet and above
+    font-size: 1.75rem;
+  }
 }
 button {
   border: 0;
@@ -67,6 +99,9 @@ footer {
 }
 .flash {
   @include fadeOut(5s);
+}
+.small {
+  font-size: 0.75rem;
 }
 .overlay {
   position: fixed;
@@ -153,27 +188,6 @@ footer {
     }
   }
 }
-.drawer-toggle,
-.drawer {
-  .icon,
-  .drawer-toggle {
-    display: inline-block;
-    font-size: 2.5em;
-    vertical-align: middle;
-  }
-}
-.drawer-toggle {
-  color: $gray;
-
-  .icon {
-    padding: .05em .25em .2em;
-  }
-}
-.drawer {
-  .drawer-toggle {
-    padding: 0 10px;
-  }
-}
 
 .quilt-nav,
 .quilt-name,
@@ -188,8 +202,8 @@ footer {
   position: relative;
   z-index: 0;
   @include media-breakpoint-up(lg) {
-    height: 90vh;
-    width: 90vh;
+    height: 100%;
+    width: auto;
     padding-top: 0;
   }
 }

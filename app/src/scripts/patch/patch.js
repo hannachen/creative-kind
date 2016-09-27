@@ -135,6 +135,7 @@ var patch = (function($) {
     $colorButtons.on('touchstart click', applyColor);
     $applyColorButton.on('touchstart click', clearSelected);
     $colorPalette.on('changeSet', function(e) {
+      console.log('changeset');
       // Update color set
       colorSet = e.colorData;
       selectedSet.value = $paletteSelectons.filter(':checked').val();
