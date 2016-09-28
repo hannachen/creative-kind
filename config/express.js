@@ -34,6 +34,9 @@ module.exports = function(app, config) {
           "%": lvalue % rvalue
         }[operator];
       },
+      'json': function(context) {
+        return JSON.stringify(context);
+      },
       'section': function(name, options) {
         if(!this._sections) this._sections = {};
         this._sections[name] = options.fn(this);

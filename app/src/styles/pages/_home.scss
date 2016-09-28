@@ -1,0 +1,12 @@
+#home {
+  .contents {
+    padding: 0;
+  }
+  .grid-spacer { // Responsive square
+    @include media-breakpoint-up(lg) {
+      height: 75vh;
+      width: 75vh;
+      padding-top: 0;
+    }
+  }
+}

@@ -4,20 +4,6 @@
   {{/if}}
 
   {{#if user}}
-  <h2>
-    You are logged in as: {{user.username}}
-    {{#if user.usertype}}
-      [{{user.usertype}}]
-    {{/if}}
-  </h2>
-  <ul>
-    {{#if_eq user.usertype 'admin'}}
-      <li><a href="/qb-admin">Admin</a></li>
-    {{/if_eq}}
-    <li><a href="/quilts">View quilts</a></li>
-    <li><a href="/quilts/create">Create a quilt</a></li>
-    <li><a href="/account/logout">Logout</a></li>
-  </ul>
   {{/if}}
 
   {{#if quilts}}

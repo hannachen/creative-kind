@@ -124,13 +124,13 @@
     
     .apply-button,
     .complete-form {
-      @include make-col();
+      @include make-col-ready();
     }
     .apply-button {
-      @include make-col-span(4);
+      @include make-col(4);
     }
     .complete-form {
-      @include make-col-span(8);
+      @include make-col(8);
     }
   }
   #formActions {
@@ -176,10 +176,10 @@
   }
   .patch-head,
   .patch-item {
-    @include make-col();
+    @include make-col-ready();
   }
   .patch-head {
-    @include make-col-span(12);
+    @include make-col(12);
     font-size: 1.25rem;
     background-color: $primary-brand-color;
     margin-top: 1em;
@@ -192,14 +192,13 @@
     }
   }
   .patch-item {
-    @include make-col-span(12);
+    @include make-col(12);
     @include media-breakpoint-up(sm) {
-      @include make-col-span(6);
+      @include make-col(6);
     }
     @include media-breakpoint-up(md) {
-      @include make-col-span(4);
+      @include make-col(4);
     }
-    padding-bottom: 1em;
   }
 
   .patch-thumb,

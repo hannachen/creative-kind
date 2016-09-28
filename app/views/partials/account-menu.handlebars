@@ -1,11 +1,13 @@
 <div id="account-drawer" class="drawer dw-xs-8 dw-sm-6 dw-md-3 fold" aria-labelledby="account-drawer">
-  <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-foldedopen="false" aria-controls="account-drawer">&times;</button>
+  <button class="drawer-toggle" data-toggle="drawer" data-target="#account-drawer" aria-foldedopen="false" aria-controls="account-drawer">
+    <span class="icon">&times;</span>
+  </button>
   <div class="drawer-contents">
     {{#if user}}
       <h2>
         <span class="account-username">{{user.username}}</span>
         {{#if user.usertype}}
-          <span class="account-type">{{user.usertype}}</span>
+          <span class="tag tag-default account-type">{{user.usertype}}</span>
         {{/if}}
       </h2>
       <ul class="list-group">
@@ -14,7 +16,7 @@
         {{/if_eq}}
         <li class="list-group-item"><a href="/account/patches">My Squares</a></li>
         <li class="list-group-item"><a href="/account/quilts">My Quilts</a></li>
-        <li class="list-group-item">Notifications</li>
+        <li class="list-group-item disabled">Notifications</li>
         <li class="list-group-item"><a href="/quilts/create">Create a quilt</a></li>
         <li class="list-group-item"><a href="/account">My Profile</a></li>
         <li class="list-group-item"><a href="/account/logout">Logout</a></li>

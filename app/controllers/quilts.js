@@ -68,7 +68,6 @@ router.get('/view/:id*', function (req, res, next) {
               title: 'View Quilt',
               quilt: quilt,
               quiltData: JSON.stringify(simplePatchData),
-              userData: JSON.stringify(req.user),
               patches: patches,
               themes: themes,
               expressFlash: req.flash('message')

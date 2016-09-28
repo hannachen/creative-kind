@@ -35,7 +35,8 @@ router.get('/', function (req, res, next) {
 
       res.render('index', {
         title: 'Quilting Bee',
-        quilts: quilts
+        quilts: quilts,
+        pageId: 'home'
       });
     });
 });

@@ -8,7 +8,7 @@
     "components"
   ],
   "devDependencies": {
-    "bootstrap": "v4.0.0-alpha.2",
+    "bootstrap": "v4.0.0-alpha.4",
     "lodash": "~4.16.0",
     "paper": "^0.10.2"
   },
