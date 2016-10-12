@@ -26,6 +26,7 @@ var quiltsList = (function($) {
 
   var containerEl = document.getElementById('canvas-container'),
       grid,
+      myPatch = '',
       quilts = [],
       user = {};
 
@@ -53,19 +54,17 @@ var quiltsList = (function($) {
     $donationModal.on('hidden.bs.modal', function() {
       $confirmationModal.modal('show');
     });
-
     $confirmationModal.on('hide.bs.modal', function () {
       $confirmationButton.attr('href', '');
     });
-
     $document.on('scroll.canvas', scrollCanvas);
-
     $document.on('click-patch', function(e) {
       var patchData = e.patch,
-        targetUrl = '/patch/edit/' + patchData.uid;
+          targetUrl = '/patch/start/' + patchData.uid;
 
       if (!_.isEmpty(user)) {
         if (patchData.status === 'mine') {
+          targetUrl = '/patch/edit/' + patchData.uid;
           window.location.href = targetUrl;
         } else if (patchData.status === 'new') {
           if (myPatch.length) {
@@ -110,82 +109,6 @@ var quiltsList = (function($) {
 
     if (!$target.is($activeQuilt)) {
       quilts.push(targetSvg);
-    }
-  }
-
-  function populateQuilt(targetSvg, patchData) {
-    if (targetSvg.hasChildren()) {
-      let patches = targetSvg.children,
-          indexOffset = 0;
-      _.forEach(patches, function(group, i) {
-        if (group === undefined || group.hasChildren() === undefined || !patchData[i-indexOffset]) {
-          indexOffset++;
-          return;
-        }
-        let patch, plus, circle;
-        if(group.hasChildren()) {
-          _.forEach(group.children, function(item) {
-            let itemType = getItemType(item);
-            switch(itemType) {
-              case 'rectangle':
-                patch = item;
-                break;
-              case 'path':
-                plus = item;
-                break;
-              case 'circle':
-                circle = item;
-                break;
-            }
-          });
-        }
-
-        plus.locked = true;
-        plus.visible = false;
-
-        circle.locked = true;
-        circle.visible = false;
-
-        patch.strokeScaling = false;
-        patch.fillColor = '#ffffff';
-        patch.data.uid = patchData[i-indexOffset].uid;
-        patch.data.status = patchData[i-indexOffset].status;
-
-        let myPatch = '';
-        if (patch.status === 'mine') {
-          myPatch = patchData[i-indexOffset].uid;
-        }
-
-        patch.on(getPatchEvents());
-        switch (patch.data.status) {
-          case 'progress':
-            patch.off(getPatchEvents());
-            patch.fillColor = '#cccccc';
-            break;
-          case 'mine':
-            patch.fillColor = '#aab0ff';
-            break;
-          case 'complete':
-            project.importSVG('/patch/svg/'+patch.data.uid, function(patchSvg) {
-              patchSvg.rotate(-45);
-              patchSvg.fitBounds(patch.bounds);
-              patchSvg.data = patch.data;
-              group.addChild(patchSvg);
-              patch.off(getPatchEvents());
-              patchSvg.on(getPatchEvents());
-              patch.visible = false;
-            });
-            break;
-          case 'new':
-          default:
-            if (myPatch.length) {
-              patch.off(getPatchEvents());
-            } else {
-              plus.visible = true;
-            }
-            break;
-        }
-      });
     }
   }
 
@@ -346,73 +269,6 @@ var quiltsList = (function($) {
     return itemType;
   }
 
-  function getPatchEvents() {
-    var events = {};
-    events.click = clickPatch;
-    if (!Modernizr.touch) {
-      events.mouseenter = enterArea;
-      events.mouseleave = leaveArea;
-    }
-    return events;
-  }
-
-  function clickPatch(e) {
-    console.log(e);
-    clickedPatch = e.target.data;
-    if (clickedPatch.status === 'complete') {
-      console.log(clickedPatch);
-      showPatch(clickedPatch.uid);
-    } else {
-
-      var targetUrl = '/patch/edit/' + clickedPatch.uid;
-      if (!_.isEmpty(user)) {
-        if (clickedPatch.status === 'mine') {
-          window.location.href = targetUrl;
-        } else if (clickedPatch.status === 'new') {
-          if (myPatch.length) {
-            $alertModal.modal('show');
-          } else {
-            $confirmationButton.attr('href', targetUrl);
-            $donationModal.modal('show');
-          }
-        }
-      } else {
-        var targetUrl = '/account/login/?cb=' + targetUrl;
-        window.location.href = targetUrl;
-      }
-    }
-  }
-
-  function showPatch(patchId) {
-    console.log(patchId);
-    $patchPreview.css('display', 'block');
-    var $preview = $('<img src="/patch/svg/'+patchId+'">');
-    $preview.on('click', function() {
-      $preview.off('click');
-      $patchPreview.css('display', 'none');
-      $patchPreview.empty();
-    });
-    $patchPreview.append($preview);
-  }
-
-  function enterArea(e) {
-    e.target.opacity = 0.8;
-  }
-
-  function leaveArea(e) {
-    e.target.opacity = 1;
-  }
-
-  function htmlEncode(value) {
-    //create a in-memory div, set it's inner text(which jQuery automatically encodes)
-    //then grab the encoded contents back out.  The div never exists on the page.
-    return $('<div/>').text(value).html();
-  }
-
-  function htmlDecode(value) {
-    return $('<div/>').html(value).text();
-  }
-
   function fitToContainer(item, i) {
     let width = item.bounds.width,
         index = i || 0,
@@ -428,10 +284,6 @@ var quiltsList = (function($) {
     if (i === quilts.length - 1) {
       jumpToIndex(currentQuiltIndex);
     }
-  }
-
-  function onFrame(event) {
-    // Your animation code goes in here
   }
 
   function viewportEvents() {
@@ -482,14 +334,6 @@ var quiltsList = (function($) {
     containerHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
     containerHeight -= parseFloat(computedStyle.marginTop) + parseFloat(computedStyle.marginBottom);
     return containerHeight;
-  }
-
-  function getViewportW() {
-    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  }
-
-  function getViewportH() {
-    return window.innerHeight || document.documentElement.clientHeight || document.body.clientWidth;
   }
 
   return {

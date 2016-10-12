@@ -1,17 +1,18 @@
 var express = require('express'),
-    router = express.Router(),
-    moment = require('moment'),
-    mongoose = require('mongoose'),
-    passport = require('passport'),
-    recaptcha = require('express-recaptcha'),
-    async = require('async'),
-    fs = require('fs'),
-    nodemailer = require('nodemailer'),
-    sgTransport = require('nodemailer-sendgrid-transport'),
-    crypto = require('crypto'),
-    User = mongoose.model('User'),
-    Quilt = mongoose.model('Quilt'),
-    Patch = mongoose.model('Patch');
+  router = express.Router(),
+  moment = require('moment'),
+  mongoose = require('mongoose'),
+  passport = require('passport'),
+  recaptcha = require('express-recaptcha'),
+  async = require('async'),
+  fs = require('fs'),
+  nodemailer = require('nodemailer'),
+  sgTransport = require('nodemailer-sendgrid-transport'),
+  crypto = require('crypto'),
+  User = mongoose.model('User'),
+  Quilt = mongoose.model('Quilt'),
+  Patch = mongoose.model('Patch'),
+  fbConfig = require('../../config/fb.js');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -30,7 +31,7 @@ module.exports = function (app) {
 router.get('/', isAuthenticated, function (req, res, next) {
   Quilt.find({'_user': req.user.id}, function(err, quilts) {
     if (err) return next(err);
-    
+
     Patch
       .find({'_user': req.user.id})
       .populate('_quilt')
@@ -53,9 +54,9 @@ router.get('/patches', isAuthenticated, function(req, res) {
     .exec(function(err, patches) {
       if (err) return next(err);
       var sortedPatch = {
-            'progress': [],
-            'complete': []
-          };
+        'progress': [],
+        'complete': []
+      };
 
       for (var i=0; i<patches.length; i++) {
         var patch = patches[i];
@@ -129,13 +130,13 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
       },
       function(user, done) {
         var pwdHash = crypto.createHash('sha256').update(user.hash),
-            oldPwd = pwdHash.digest('hex').substring(0, 15),
-            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
-            sign = crypto.createHmac('sha256', config.secret);
+          oldPwd = pwdHash.digest('hex').substring(0, 15),
+          queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
+          sign = crypto.createHmac('sha256', config.secret);
         sign.update(queryString);
 
         var token = sign.digest('hex'),
-            url = queryString + '&token=' + token;
+          url = queryString + '&token=' + token;
         done(null, url, user);
       },
       function(url, user, done) {
@@ -167,8 +168,8 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
 
 router.get('/reset', function(req, res) {
   var queryString = 'email=' + encodeURIComponent(req.query.email) + '&old=' + req.query.old + '&expire=' + req.query.expire,
-      token = req.query.token,
-      verifier = crypto.createVerify('RSA-SHA256');
+    token = req.query.token,
+    verifier = crypto.createVerify('RSA-SHA256');
   verifier.update(queryString);
 
   // Verify token
@@ -249,17 +250,30 @@ router.get('/logout', function(req, res) {
 
 // route for facebook authentication and login
 // different scopes while logging in
-router.get('/login/facebook',
-  passport.authenticate('facebook', { scope : 'email' }
-));
+router.get('/login/facebook', function(req, res, next) {
+  var callbackUrl = (req.query.cb) ? req.query.cb : '';
+  if (callbackUrl) {
+    res.cookie('redirect', callbackUrl, {maxAge : 9999});
+  }
+  console.log('FACEBOOK CALLBACK', callbackUrl);
+  passport.authenticate('facebook', {
+    scope : ['email']
+  })(req, res, next);
+});
+
 
 // handle the callback after facebook has authenticated the user
-router.get('/login/facebook/callback',
+router.get('/login/facebook/callback', function(req, res, next) {
+  console.log(req.cookies.redirect);
+  var callbackUrl = (req.cookies && req.cookies.redirect) ? decodeURI(req.cookies.redirect) : '/account/';
+  // res.redirect(callbackUrl);
   passport.authenticate('facebook', {
-    successRedirect : '/account/',
-    failureRedirect : '/'
-  })
-);
+    scope : ['email'],
+    successRedirect: callbackUrl,
+    failureRedirect: '/'
+  })(req, res, next);
+  console.log('FB CALLBACK 2', callbackUrl);
+});
 
 
 // route for twitter authentication and login

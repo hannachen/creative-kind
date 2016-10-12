@@ -7,16 +7,18 @@ module.exports = function(passport) {
   var env = process.env.NODE_ENV || 'development';
 
   passport.use('facebook', new FacebookStrategy({
-      clientID        : fbConfig[env].appID,
-      clientSecret    : fbConfig[env].appSecret,
-      callbackURL     : fbConfig[env].callbackUrl,
-      profileFields   : ['id', 'emails']
+      clientID          : fbConfig[env].appID,
+      clientSecret      : fbConfig[env].appSecret,
+      callbackURL       : fbConfig[env].callbackUrl,
+      profileFields     : ['id', 'email',  'name'],
+      enableProof       : true
     },
 
     // facebook will send back the tokens and profile
     function(access_token, refresh_token, profile, done) {
 
-      console.log('profile', profile);
+      console.log('Refresh token', refresh_token);
+      console.log('profile ???', profile);
 
       // asynchronous
       process.nextTick(function() {

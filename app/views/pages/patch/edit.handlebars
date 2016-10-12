@@ -15,30 +15,29 @@
     <div class="grid-spacer" id="grid-spacer"></div>
     <canvas id="coloring-area" class="coloring-area"></canvas>
   </div>
-  <ul class="color-palette">
-    {{#each patch._quilt._theme.colors}}
+  <div class="color-toolbar">
+    <ul class="color-palette">
+      {{#each patch._quilt._theme.colors}}
       {{!--NOW {{../../../../colorSet}} --}}
-      {{#if_eq @index patch.colorSet}}
-        {{#each colors}}
-          <li class="color"><button class="color-button" data-index="0" data-color="#{{this}}" style="background-color:#{{this}};"></button></li>
-        {{/each}}
-      {{/if_eq}}
-    {{/each}}
-    <li class="color"><button class="color-button" data-index="0" data-color="#588C7E" style="background-color:#588C7E;"></button></li>
-    <li class="color"><button class="color-button" data-index="1" data-color="#F2E394" style="background-color:#F2E394;"></button></li>
-    <li class="color"><button class="color-button" data-index="2" data-color="#F2AE72" style="background-color:#F2AE72;"></button></li>
-    <li class="color"><button class="color-button" data-index="3" data-color="#D96459" style="background-color:#D96459;"></button></li>
-    <li class="color"><button class="color-button" data-index="4" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
-  </ul>
-  <div class="buttons-container">
+        {{#if_eq @index patch.colorSet}}
+          {{#each colors}}
+            <li class="color"><button class="color-button" data-index="0" data-color="#{{this}}" style="background-color:#{{this}};"></button></li>
+          {{/each}}
+        {{/if_eq}}
+      {{/each}}
+      <li class="color"><button class="color-button" data-index="0" data-color="#588C7E" style="background-color:#588C7E;"></button></li>
+      <li class="color"><button class="color-button" data-index="1" data-color="#F2E394" style="background-color:#F2E394;"></button></li>
+      <li class="color"><button class="color-button" data-index="2" data-color="#F2AE72" style="background-color:#F2AE72;"></button></li>
+      <li class="color"><button class="color-button" data-index="3" data-color="#D96459" style="background-color:#D96459;"></button></li>
+      <li class="color"><button class="color-button" data-index="4" data-color="#8C4646" style="background-color:#8C4646;"></button></li>
+    </ul>
     <div class="apply-button">
-      <button type="button" class="btn btn-secondary" id="apply-color" disabled>Apply Colour</button>
+      <button type="button" class="btn btn-secondary" id="apply-color" title="Apply Colour" disabled>
+        <span class="icon icon-android-done"></span>
+      </button>
     </div>
-    <form class="complete-form" action="/patch/save/{{patch.uid}}" method="post" id="formActions">
-      <button class="action-button" name="saveAction" data-target="#formActions" value="progress">Save</button>
-      <button class="action-button" name="completeAction" data-target="#formActions" value="complete">Complete</button>
-    </form>
   </div>
+
   <form class="palette-selector" method="post" id="paletteSelector">
     <input type="hidden" class="selected-set" id="selectedSet" value="{{patch.colorSet}}" />
     <fieldset class="form-group">
@@ -60,9 +59,17 @@
       </ul>
     </fieldset>
   </form>
+
   <div id="saveData">
     <span class="color-data">{{patch.colors}}</span>
     <span class="color-index-data">{{patch.colorIndex}}</span>
   </div>
 
+</div>
+
+<div class="buttons-container">
+  <form class="complete-form" action="/patch/save/{{patch.uid}}" method="post" id="formActions">
+    <button class="btn action-button btb-save" name="saveAction" data-target="#formActions" value="progress">Save</button>
+    <button class="btn action-button btn-submit" name="completeAction" data-target="#formActions" value="complete">Submit Design</button>
+  </form>
 </div>

@@ -67,6 +67,7 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap-drawer/dist/js/drawer.js',
       'bower_components/materialize/js/global.js',
       'bower_components/materialize/js/forms.js',
+      'bower_components/slick-carousel/slick/slick.js',
       'bower_components/gsap/src/uncompressed/TweenMax.js'
     ])
     .pipe(sourcemaps.init())

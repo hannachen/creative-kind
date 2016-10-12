@@ -6213,7 +6213,7 @@ form .btn-submit {
     float: right; }
 
 .quilt-container {
-  padding: 2em;
+  padding: 0;
   position: relative;
   height: 100%;
   box-sizing: border-box; }
@@ -6397,23 +6397,63 @@ form .btn-submit {
     right: 0;
     bottom: 0;
     z-index: 1; }
+  .patch-container .color-toolbar {
+    margin-left: 0;
+    margin-right: 0;
+    border: 1px solid #b2b2b2;
+    margin: 25px 0; }
+    .patch-container .color-toolbar::after {
+      content: "";
+      display: table;
+      clear: both; }
+  .patch-container .color-palette,
+  .patch-container .apply-button {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0;
+    padding-left: 0; }
   .patch-container .color-palette {
-    margin: 25px 0;
-    padding: 0;
-    overflow: hidden; }
+    float: left;
+    width: 83.33333%;
+    padding: 10px 5px;
+    border-right: 1px solid #b2b2b2; }
     .patch-container .color-palette .color {
       list-style-type: none;
       margin: 0;
-      padding: 0;
+      padding: 0 5px;
       width: 20%;
       float: left; }
+      @media (min-width: 768px) {
+        .patch-container .color-palette .color {
+          max-width: 100px;
+          padding: 0 8px; } }
     .patch-container .color-palette .color-button {
+      display: block;
       width: 100%;
-      height: 60px;
+      padding-top: 100%;
       border: 0;
+      border-radius: 50%; }
+  .patch-container .apply-button {
+    float: left;
+    width: 16.66667%; }
+    .patch-container .apply-button .btn, .patch-container .apply-button form .button-facebook, form .patch-container .apply-button .button-facebook,
+    .patch-container .apply-button form .button-twitter,
+    form .patch-container .apply-button .button-twitter, .patch-container .apply-button form .btn-submit, form .patch-container .apply-button .btn-submit {
+      width: 100%;
+      border: 0;
+      padding: .75em 0;
       border-radius: 0; }
+    .patch-container .apply-button .icon {
+      font-size: 2.5rem;
+      line-height: 100%; }
   .patch-container .palette-selector {
-    margin: 2.5em 0 5em; }
+    margin: 1.5em 0; }
+    .patch-container .palette-selector legend {
+      text-align: center;
+      width: 100%;
+      display: block;
+      padding: .5em;
+      border: 1px solid #b2b2b2; }
     .patch-container .palette-selector .form-group {
       padding: 1em; }
     .patch-container .palette-selector .color-sets li,
@@ -6436,44 +6476,31 @@ form .btn-submit {
       width: 90%; }
   .patch-container #saveData {
     display: none !important; }
-  .patch-container .buttons-container {
-    margin-left: -15px;
-    margin-right: -15px; }
-    .patch-container .buttons-container::after {
-      content: "";
-      display: table;
-      clear: both; }
-    .patch-container .buttons-container .apply-button,
-    .patch-container .buttons-container .complete-form {
-      position: relative;
-      min-height: 1px;
-      padding-right: 15px;
-      padding-left: 15px; }
-    .patch-container .buttons-container .apply-button {
-      float: left;
-      width: 33.33333%; }
-    .patch-container .buttons-container .complete-form {
-      float: left;
-      width: 66.66667%; }
-  .patch-container #formActions {
-    overflow: hidden; }
-    .patch-container #formActions .action-button {
-      width: 50%;
-      padding: 1.5em;
-      font-size: 13px;
-      border: 1px solid #cccccc;
-      float: left; }
 
-.patch-start-form .theme {
+.buttons-container {
+  background-color: rgba(178, 178, 178, 0.5);
+  margin: 0 -1em;
+  padding: 1em 0; }
+  .buttons-container .complete-form .action-button {
+    display: block;
+    width: 50%;
+    padding: 1em 1.5em;
+    font-size: 1em;
+    margin: 0 auto; }
+  .buttons-container .complete-form .btn-submit {
+    color: #ffffff;
+    background-color: #1b4b5d; }
+
+.start-patch-form .theme {
   margin: 1em 0; }
-  .patch-start-form .theme .theme-name {
+  .start-patch-form .theme .theme-name {
     text-align: center;
     padding: 0.5em 0; }
-  .patch-start-form .theme .swatches::after {
+  .start-patch-form .theme .swatches::after {
     content: "";
     display: table;
     clear: both; }
-  .patch-start-form .theme .swatch {
+  .start-patch-form .theme .swatch {
     display: block;
     width: 20%;
     height: 2.75em;

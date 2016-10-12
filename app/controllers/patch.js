@@ -136,7 +136,7 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
     });
 });
 
-router.post('/start/:uid*', isAuthenticated, function (req, res, next) {
+router.get('/start/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
