@@ -10,6 +10,7 @@
 @import "../../../bower_components/bootstrap/scss/list-group";
 @import "../../../bower_components/bootstrap/scss/tags";
 @import "../../../bower_components/bootstrap/scss/modal";
+@import "../../../bower_components/bootstrap/scss/animation";
 @import "../../../bower_components/bootstrap/scss/buttons";
 @import "../../../bower_components/bootstrap/scss/button-group";
 @import "../../../bower_components/materialize/sass/components/color";
@@ -22,12 +23,14 @@
 @import "./mixins";
 @import "./utils";
 @import "./forms";
+@import "./modals";
 @import "./menu";
 @import "./quilt";
 @import "./patch";
 @import "./pages/home";
 @import "./pages/login-signup";
 @import "./pages/account";
+@import "./pages/patch";
 
 html,
 body {
@@ -105,6 +108,10 @@ footer {
 .small {
   font-size: 0.75rem;
 }
+.btn {
+  padding: .75em .5em;
+  border-radius: .25em;
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -117,12 +124,15 @@ footer {
 .contents {
   @include media-breakpoint-down(sm) {
     @include make-container();
-    padding-top: 1.25em;
+    padding-top: 15px;
     padding-bottom: 2em;
   }
   @include media-breakpoint-up(md) {
     padding: 0 5% 5%;
   }
+}
+.modal-backdrop {
+  background-color: $primary-brand-color;
 }
 .modal-dialog {
   padding: 0 1em 1em;
@@ -152,7 +162,7 @@ footer {
   }
   .modal-title {
     text-align: center;
-    text-transform: uppercase;
+    //text-transform: uppercase;
   }
   .modal-body {
     padding: .5em 2.5em 1.5em;
@@ -191,7 +201,7 @@ footer {
     color: $primary-brand-color;
 
     h1 {
-      margin: .5em 0;
+      margin: .425em 0;
     }
   }
 }
@@ -243,6 +253,16 @@ footer {
     &:active,
     &:focus {
       background-color: rgba($gray, .15);
+    }
+    &.nav-prev {
+      @include media-breakpoint-down(sm) { // Phablet and below
+        border-left: 0;
+      }
+    }
+    &.nav-next {
+      @include media-breakpoint-down(sm) { // Phablet and below
+        border-right: 0;
+      }
     }
   }
   .quilt-list {

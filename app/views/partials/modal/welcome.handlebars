@@ -1,14 +1,17 @@
-<div id="welcome-modal" class="modal fade">
+<div id="welcome-modal" class="modal" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Welcome to Quilting Bee!</h4>
+        <h2 class="modal-title">Quilting Bee</h2>
       </div>
       <div class="modal-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec sapien ac tortor elementum finibus. Vivamus fermentum lobortis quam, in interdum leo tristique vel. Sed sem nibh, vestibulum ac dignissim bibendum, placerat eget quam.</p>
+        <h3>Welcome!</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec sapien ac tortor elementum finibus. Vivamus fermentum lobortis quam, in interdum leo tristique vel.</p>
       </div>
       <div class="modal-footer">
         <a class="btn btn-primary signup-link" href="/login-signup/#signup" role="button">Sign Up</a>
+        <a class="btn btn-secondary signin-link" href="/login-signup/#signin" role="button">Login</a>
+        <button type="button" class="btn btn-cancel close" data-dismiss="modal">View Quilts</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

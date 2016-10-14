@@ -21,16 +21,20 @@
     checkVisit: function() {
       var visited = Boolean(Cookies.get('visited'));
       if (!visited) {
+        this.$welcomeModal.on('hide.bs.modal', this.setVisited);
+        this.$welcomeModal.on('click', '.btn', this.setVisited);
         this.$welcomeModal.modal('show');
         this.$welcomeModal.find('.signup-link').on('click', function(e) {
           e.preventDefault();
           var link = document.domain + e.currentTarget.getAttribute('href');
-          Cookies.set('visited', 'true', { expires: 365 });
           window.location = e.currentTarget.getAttribute('href');
           console.log(document.domain);
           console.log(e.currentTarget.getAttribute('href'));
         });
       }
+    },
+    setVisited: function() {
+      Cookies.set('visited', 'true', { expires: 365 });
     }
   };
 

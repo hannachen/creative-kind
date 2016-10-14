@@ -64,8 +64,6 @@
   }
   .color-toolbar {
     @include make-row(0);
-    border: 1px solid $gray;
-    margin: 25px 0;
   }
   .color-palette,
   .apply-button {
@@ -110,25 +108,47 @@
     }
   }
   .palette-selector {
-    margin: 1.5em 0;
 
     legend {
       text-align: center;
       width: 100%;
       display: block;
-      padding: .5em;
       border: 1px solid $gray;
+
+      .btn {
+        padding: 1em;
+        width: 100%;
+        color: $gray;
+        vertical-align: middle;
+      }
+      .icon {
+        vertical-align: middle;
+        font-size: 2em;
+        line-height: 100%;
+        position: relative;
+        top: -6px;
+      }
     }
     .form-group {
-      padding: 1em;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      overflow: hidden;
     }
     .color-sets {
+      padding: 1em 1em 2em;
+
       li,
       .swatches {
         overflow: hidden; // TODO: replace this with actual clearfix
       }
       li {
         list-style-type: none;
+      }
+      .color-set {
+        .set-name {
+          display: none;
+        }
       }
       .swatches {
         margin: .5em 0;
@@ -141,13 +161,14 @@
       }
       .selection,
       .label {
-        float: left;
+        vertical-align: middle;
+        display: inline-block;
       }
       .selection {
         width: 10%;
       }
       .label {
-        width: 90%;
+        width: 85%;
       }
     }
   }
@@ -157,8 +178,8 @@
 }
 .buttons-container {
   background-color: rgba($gray, .5);
-  margin: 0 -1em;
-  padding: 1em 0;
+  margin: 0;
+  padding: 1em 0 3em;
 
   .complete-form {
     .action-button {
@@ -228,6 +249,7 @@
     @include media-breakpoint-up(md) {
       @include make-col(4);
     }
+    padding-bottom: 1em;
   }
 
   .patch-thumb,

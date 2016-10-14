@@ -3,7 +3,7 @@
 {{/section}}
 <div class="patch-container" data-mode="edit">
 
-  <ul class="toolbar">
+  <ul class="toolbar hidden">
     <li class="tool multiple">
       <span class="label">Select Multiple</span>
       <input class="select-multiple" type="checkbox" checked>
@@ -41,13 +41,17 @@
   <form class="palette-selector" method="post" id="paletteSelector">
     <input type="hidden" class="selected-set" id="selectedSet" value="{{patch.colorSet}}" />
     <fieldset class="form-group">
-      <legend>Change colour palette</legend>
-      <ul class="color-sets">
+      <legend>
+        <button class="btn" type="button" data-toggle="collapse" data-target="#colorSetSelector" aria-expanded="false" aria-controls="colorSetSelector">
+          <span class="icon icon-angle-down"></span>Change colour palette
+        </button>
+      </legend>
+      <ul class="color-sets collapse" id="colorSetSelector">
         {{#each patch._quilt._theme.colors}}
         <li class="color-set">
           <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}" />
           <label class="label" for="set{{@index}}">
-            Colour set {{@index}}
+            <span class="set-name">Colour set {{@index}}</span>
             <ul class="swatches">
               {{#each colors}}
                 <li class="swatch" style="background-color:#{{this}}" data-index="{{@index}}" data-hex="#{{this}}">&nbsp;</li>

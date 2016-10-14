@@ -1,0 +1,38 @@
+#welcome-modal {
+  background-color: $primary-brand-color;
+
+  .modal-content {
+    background-color: transparent;
+    border: none;
+    color: $white;
+  }
+  .modal-body {
+    text-align: center;
+  }
+  .modal-footer {
+    border-top: 0;
+  }
+  .signup-link,
+  .btn-cancel {
+    display: block;
+  }
+  .signup-link {
+    width: 90%;
+    margin: 1em auto;
+    color: $primary-brand-color;
+    background-color: $white;
+    @include media-breakpoint-up(md) {
+      width: 50%;
+    }
+  }
+  .signin-link {
+    color: $white;
+    border: 0;
+    background-color: transparent;
+  }
+  .btn-cancel {
+    padding: 1em;
+    margin: 0 auto;
+    opacity: .75;
+  }
+}

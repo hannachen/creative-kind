@@ -22,6 +22,11 @@ var Quilt = (function(svg, quiltData) {
 
   Quilt.prototype.setupQuilt = function(svg, patchStatus) {
     var _this = this;
+    _.forEach(patchStatus, function(patch) {
+      if (patch.status === 'mine') {
+        _this.myPatch = patch.uid;
+      }
+    });
     if (svg.hasChildren()) {
       let svgPatches = svg.children,
           indexOffset = 0;
@@ -61,18 +66,12 @@ var Quilt = (function(svg, quiltData) {
         patch.data.uid = patchStatus[i-indexOffset].uid;
         patch.data.status = patchStatus[i-indexOffset].status;
 
-        if (patch.status === 'mine') {
-          _this.myPatch = patchStatus[i-indexOffset].uid;
-        }
-
-        patch.on(_this.getPatchEvents());
-
         switch (patch.data.status) {
           case 'progress':
-            patch.off(_this.getPatchEvents());
             patch.fillColor = '#cccccc';
             break;
           case 'mine':
+            patch.on(_this.getPatchEvents());
             patch.fillColor = '#aab0ff';
             break;
           case 'complete':
@@ -81,7 +80,6 @@ var Quilt = (function(svg, quiltData) {
               patchSvg.fitBounds(patch.bounds);
               patchSvg.data = patch.data;
               group.addChild(patchSvg);
-              patch.off(_this.getPatchEvents());
               patchSvg.on(_this.getPatchEvents());
               patch.visible = false;
             });
@@ -89,8 +87,9 @@ var Quilt = (function(svg, quiltData) {
           case 'new':
           default:
             if (_this.myPatch.length) {
-              patch.off(_this.getPatchEvents());
+              plus.visible = false;
             } else {
+              patch.on(_this.getPatchEvents());
               plus.visible = true;
             }
             break;

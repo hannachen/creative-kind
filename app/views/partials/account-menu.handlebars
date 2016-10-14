@@ -7,13 +7,12 @@
       <h2>
         <span class="account-username">{{user.username}}</span>
         {{#if user.usertype}}
+          {{#if_eq user.usertype 'admin'}}<a href="/qb-admin">{{/if_eq}}
           <span class="tag tag-default account-type">{{user.usertype}}</span>
+          {{#if_eq user.usertype 'admin'}}</a>{{/if_eq}}
         {{/if}}
       </h2>
       <ul class="list-group">
-        {{#if_eq user.usertype 'admin'}}
-          <li class="list-group-item"><a href="/qb-admin">Admin</a></li>
-        {{/if_eq}}
         <li class="list-group-item"><a href="/account/patches">My Squares</a></li>
         <li class="list-group-item"><a href="/account/quilts">My Quilts</a></li>
         <li class="list-group-item disabled">Notifications</li>

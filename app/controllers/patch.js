@@ -87,7 +87,8 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
         if (String(req.user.id) === String(patch._user) || req.user.isAdmin) {
           res.render('pages/patch/edit', {
             title: 'Edit Patch',
-            patch: patch
+            patch: patch,
+            pageId: 'edit-patch'
           });
         } else {
           res.redirect('/quilts/view/'+patch._quilt);
@@ -98,7 +99,8 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
         res.render('pages/patch/start', {
           title: 'Start Patch',
           patch: patch,
-          theme: patch._quilt._theme
+          theme: patch._quilt._theme,
+          pageId: 'edit-patch'
         });
       }
     });

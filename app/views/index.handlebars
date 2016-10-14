@@ -34,13 +34,15 @@
 
 {{>modal/quilt-alert }}
 
-{{#if user}}
+<div class="user-menu">
+  {{#if user}}
 
-  <h2>Welcome {{user.username}}</h2>
-  <ul>
-    <li><a href="/account">Account</a></li>
-  </ul>
+    <h2>Welcome {{user.username}}</h2>
+    <ul>
+      <li><a href="/account">Account</a></li>
+    </ul>
 
-{{else}}
-  {{>login-menu }}
-{{/if}}
+  {{else}}
+    {{>login-menu }}
+  {{/if}}
+</div>

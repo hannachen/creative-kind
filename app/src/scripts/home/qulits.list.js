@@ -75,7 +75,9 @@ var quiltsList = (function($) {
           }
         }
       } else {
-        window.location.href = '/account/login/?cb=' + targetUrl;
+        if (patchData.status === 'new') {
+          window.location.href = '/account/login/?cb=' + targetUrl;
+        }
       }
     });
   }
