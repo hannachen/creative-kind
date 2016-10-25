@@ -7,7 +7,7 @@ var express = require('express'),
   async = require('async'),
   fs = require('fs'),
   nodemailer = require('nodemailer'),
-  sgTransport = require('nodemailer-sendgrid-transport'),
+  mgTransport = require('nodemailer-mailgun-transport'),
   crypto = require('crypto'),
   User = mongoose.model('User'),
   Quilt = mongoose.model('Quilt'),
@@ -130,9 +130,9 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
       },
       function(user, done) {
         var pwdHash = crypto.createHash('sha256').update(user.hash),
-          oldPwd = pwdHash.digest('hex').substring(0, 15),
-          queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
-          sign = crypto.createHmac('sha256', config.secret);
+            oldPwd = pwdHash.digest('hex').substring(0, 15),
+            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
+            sign = crypto.createHmac('sha256', req.config.secret);
         sign.update(queryString);
 
         var token = sign.digest('hex'),
@@ -140,17 +140,19 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
         done(null, url, user);
       },
       function(url, user, done) {
-        var smtpTransport = nodemailer.createTransport(sgTransport(req.config.nodemailer));
+        var smtpTransport = nodemailer.createTransport(mgTransport(req.config.nodemailer));
         var mailOptions = {
-          to: user.email,
           from: 'passwordreset@demo.com',
+          to: user.email,
           subject: 'Quilting Bee Password Reset',
+          'h:Reply-To': 'local@localhost',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/account/reset/?' + url + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         smtpTransport.sendMail(mailOptions, function(err) {
+          if (err) return next(err);
           req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
           done(err, 'done');
         });

@@ -48,7 +48,8 @@ router.get('/view/:uid*', function (req, res, next) {
       if (patch._user) {
         res.render('pages/patch/view', {
           title: 'View Patch',
-          patch: patch
+          patch: patch,
+          pageId: 'view-patch'
         });
       } else {
         res.redirect('/quilts/view/'+patch._quilt.id);
@@ -123,11 +124,11 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
           var url = '/';
           switch(patch.status) {
             case 'progress':
-              req.flash('success', 'Patch saved, see you soon.');
+              req.flash('success', 'Save Complete!');
               url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':
-              req.flash('success', 'Patch complete, thank you.');
+              req.flash('success', 'Thanks for contributing!');
               url = '/quilts/view/'+patch._quilt;
               break;
           }

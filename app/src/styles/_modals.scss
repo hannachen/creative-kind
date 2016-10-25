@@ -1,3 +1,83 @@
+.modal-backdrop {
+  background-color: rgba($gray, .8);
+
+  &.in {
+    opacity: 1;
+  }
+}
+.modal-dialog {
+  padding: 0 1em 1em;
+  bottom: 0;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  pointer-events: none;
+  @include media-breakpoint-up(sm) {
+    width: 100%;
+    max-width: 560px;
+  }
+  @include media-breakpoint-up(md) {
+    max-width: 620px;
+  }
+  @include media-breakpoint-up(lg) {
+    max-width: 750px;
+  }
+
+  .modal-content {
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+    border-radius: .6em;
+    border: 0;
+    overflow: hidden;
+  }
+  .modal-header {
+    border-bottom: 0;
+    padding-top: 1.5em;
+    padding-bottom: 0;
+
+    .close {
+      display: none;
+    }
+  }
+  .modal-title {
+    text-align: center;
+    font-weight: bold;
+    //text-transform: uppercase;
+  }
+  .modal-body {
+    padding: .5em 2.5em 1.5em;
+
+    p {
+      text-align: center;
+      margin: 0 auto;
+      width: 75%;
+    }
+  }
+  .modal-footer {
+    text-align: center;
+    padding: 0;
+    border-top: 1px solid $gray;
+
+    .btn-primary,
+    .btn-secondary {
+      display: block;
+      width: 50%;
+      padding: 1.5em 0;
+      border-radius: 0;
+      border: 0;
+      background-color: $white;
+    }
+    .btn-primary {
+      float: right;
+      border-left: 1px solid $gray;
+      color: $primary-brand-color;
+    }
+    .btn-secondary {
+      color: $off-black;
+    }
+  }
+}
 #welcome-modal {
   background-color: $primary-brand-color;
 
@@ -8,31 +88,67 @@
   }
   .modal-body {
     text-align: center;
+
+    p {
+      width: 100%;
+    }
   }
   .modal-footer {
     border-top: 0;
+
+    .btn {
+      margin: 1em auto;
+      float: none;
+    }
   }
   .signup-link,
   .btn-cancel {
     display: block;
   }
-  .signup-link {
+  .signup-link,
+  .signin-link {
     width: 90%;
-    margin: 1em auto;
-    color: $primary-brand-color;
-    background-color: $white;
     @include media-breakpoint-up(md) {
       width: 50%;
     }
   }
-  .signin-link {
+  .signup-link {
+    margin: 1em auto;
     color: $white;
-    border: 0;
     background-color: transparent;
+    border: 1px solid $white;
+  }
+  .signin-link {
+    border: 0;
+    color: $primary-brand-color;
+    background-color: $white;
   }
   .btn-cancel {
     padding: 1em;
     margin: 0 auto;
     opacity: .75;
+  }
+}
+#confirmation-modal {
+
+}
+#donation-modal {
+
+  .btn-donate {
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+#flash-modal {
+  width: 80%;
+  margin: 0 auto;
+
+  .modal-body {
+    padding: 2em 1em;
   }
 }

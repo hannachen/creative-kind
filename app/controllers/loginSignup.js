@@ -11,7 +11,7 @@ router.get('/login-signup', function (req, res, next) {
   } else {
     var cb = req.query.cb;
     res.render('login-signup', {
-      title: 'Quilting Bee',
+      title: 'Creative KIND',
       pageId: 'login-signup',
       cb: cb
     });

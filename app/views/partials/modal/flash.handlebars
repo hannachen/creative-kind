@@ -1,0 +1,13 @@
+{{#if this}}
+  <div id="flash-modal" class="modal fade">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          {{#each this}}
+            <div class="flash">{{this}}</div>
+          {{/each}}
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+{{/if}}

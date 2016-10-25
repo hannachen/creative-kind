@@ -2,14 +2,32 @@
   .contents {
     padding: 0;
   }
-  .grid-spacer { // Responsive square
-    @include media-breakpoint-up(lg) {
-      height: 75vh;
-      width: 75vh;
-      padding-top: 0;
-    }
-  }
   .user-menu {
     display: none;
+  }
+  &.modal-open {
+    .modal {
+      z-index: 450;
+    }
+    .modal-backdrop {
+      z-index: 400;
+    }
+    .header-menu {
+      .title,
+      .drawer-toggle {
+        color: $white;
+      }
+      .title,
+      .sub-menu-toggle {
+        z-index: 475;
+      }
+      .account-nav-toggle,
+      .sub-menu-toggle {
+        position: relative;
+      }
+      .account-nav-toggle {
+        z-index: 350;
+      }
+    }
   }
 }

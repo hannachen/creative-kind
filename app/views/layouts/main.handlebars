@@ -18,12 +18,6 @@
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  {{#if flash}}
-    {{#each flash}}
-      <div class="flash">{{this}}</div>
-    {{/each}}
-  {{/if}}
-
   {{>header}}
 
   {{>account-menu }}
@@ -33,6 +27,8 @@
   </div><!-- end .contents -->
 
   {{>sub-menu}}
+
+  {{>modal/flash flash }}
 
   {{>footer}}
 

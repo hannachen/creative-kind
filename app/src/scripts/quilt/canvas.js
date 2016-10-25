@@ -1,7 +1,8 @@
 'use strict';
 var quiltCanvas = (function($) {
 
-  var $donationModal = $('#donation-modal').modal('hide'),
+  var $loginModal = $('#login-modal').modal('hide'),
+      $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
       $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
@@ -10,53 +11,22 @@ var quiltCanvas = (function($) {
   var containerEl = document.getElementById('canvas-container'),
       quiltData = document.getElementById('quilt-data'),
       userData = document.getElementById('user-data'),
+      quiltId = containerEl.getAttribute('data-quilt-id') || '',
+      newPatch = quiltData.getAttribute('data-new-patch') || '',
       grid,
       patchStatus,
       myPatch = '',
       user = {};
 
   function init() {
-
     if ($quiltArea.length) {
+      initVariables();
       setupCanvas();
       initEvents();
     }
   }
 
-  function initEvents() {
-    $donationModal.on('hidden.bs.modal', function() {
-      $confirmationModal.modal('show');
-    });
-
-    $confirmationModal.on('hide.bs.modal', function () {
-      $confirmationButton.attr('href', '');
-    });
-
-    $(document).on('click-patch', function(e) {
-      var patchData = e.patch,
-          targetUrl = '/patch/edit/' + patchData.uid;
-
-      if (!_.isEmpty(user)) {
-        if (patchData.status === 'mine') {
-          window.location.href = targetUrl;
-        } else if (patchData.status === 'new') {
-          if (myPatch.length) {
-            $alertModal.modal('show');
-          } else {
-            $confirmationButton.attr('href', targetUrl);
-            $donationModal.modal('show');
-          }
-        }
-      } else {
-        window.location.href = '/account/login/?cb=' + targetUrl;
-      }
-    });
-  }
-
-  function setupCanvas() {
-    // Setup directly from canvas id:
-    paper.setup('grid-area');
-
+  function initVariables() {
     if (quiltData) {
       var quiltDataString = quiltData.innerHTML;
     }
@@ -71,9 +41,51 @@ var quiltCanvas = (function($) {
     if (userData) {
       var userDataString = userData.innerHTML.trim();
       if (!_.isEmpty(userDataString)) {
-        // user = JSON.parse(userDataString);
+        user = JSON.parse(userDataString);
       }
     }
+  }
+
+  function initEvents() {
+    $donationModal.on('hidden.bs.modal', function() {
+      $confirmationModal.modal('show');
+    });
+    $confirmationModal.on('hide.bs.modal', function () {
+      if (_.isEmpty(user)) {
+        $loginModal.modal('show');
+      }
+      $confirmationButton.attr('href', '');
+    });
+
+    $(document).on('click-patch', function(e) {
+      var patchData = e.patch,
+          targetUrl = '/quilts/view/' + quiltId + '/' + patchData.uid;
+
+      console.log('TEST', e);
+      if (!_.isEmpty(user)) {
+        if (patchData.status === 'mine') {
+          console.log('HELLO');
+          targetUrl = '/patch/edit/' + patchData.uid;
+          window.location.href = targetUrl;
+        } else if (patchData.status === 'new') {
+          if (myPatch.length) {
+            $alertModal.modal('show');
+          } else {
+            targetUrl = '/patch/edit/' + patchData.uid;
+            $confirmationButton.attr('href', targetUrl);
+            $donationModal.modal('show');
+          }
+        }
+      } else {
+        $confirmationModal.modal('show');
+        // window.location.href = '/account/login/?cb=' + targetUrl;
+      }
+    });
+  }
+
+  function setupCanvas() {
+    // Setup directly from canvas id:
+    paper.setup('grid-area');
 
     // Add grid SVG
     project.importSVG('/img/quilt-grid.svg', {
@@ -90,7 +102,17 @@ var quiltCanvas = (function($) {
     fitToContainer(svg);
     grid = svg;
 
-    var quiltModule = new Quilt(svg, patchStatus);
+    var quiltModule = new Quilt(svg, quiltId, patchStatus);
+
+    console.log('NEW PATCH', newPatch);
+    if (newPatch && newPatch.length) {
+      var patchData = {
+        uid: newPatch,
+        status: 'new'
+      };
+      console.log('HELLO', newPatch);
+      quiltModule.emitClickEvent(patchData);
+    }
   }
 
   function htmlEncode(value){

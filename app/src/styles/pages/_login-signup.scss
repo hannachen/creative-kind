@@ -7,11 +7,14 @@
   }
   .header-menu {
     border-bottom: none;
+
+    .title {
+      color: white;
+    }
   }
   .login-signup {
     padding: 1em 0;
-  }
-  .signup-form {
+
     label,
     .input-field {
       color: $white;
@@ -19,5 +22,7 @@
     .input-email {
       border-bottom: 1px solid $white;
     }
+  }
+  .signup-form {
   }
 }

@@ -5,11 +5,11 @@
 {{/if_eq}}
 
 {{#if patches}}
-  <div class="data" id="quilt-data">
+  <div class="data" id="quilt-data"{{#if newPatch}} data-new-patch="{{newPatch}}"{{/if}}>
     {{quiltData}}
   </div>
   <div class="quilt-container">
-    <div id="canvas-container" class="canvas-container">
+    <div id="canvas-container" class="canvas-container" data-quilt-id="{{quilt.id}}">
       <div class="grid-spacer" id="grid-spacer"></div>
       <canvas id="grid-area" class="grid-area"></canvas>
     </div>

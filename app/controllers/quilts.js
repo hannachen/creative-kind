@@ -35,7 +35,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/view/:id*', function (req, res, next) {
+router.get('/view/:id/:patchid?', function (req, res, next) {
   Quilt.findOne({'_id':req.params.id})
     .populate('_user')
     .populate('_theme')
@@ -58,6 +58,10 @@ router.get('/view/:id*', function (req, res, next) {
                 patch.status === 'progress') {
                 patch.status = 'mine';
               }
+              // Make sure the upcoming patch is new
+              if (patch.uid === req.params.patchid && patch.status !== 'new') {
+                req.params.patchid = '';
+              }
               var simplePatch = {
                 uid: patch.uid,
                 status: patch.status
@@ -65,11 +69,13 @@ router.get('/view/:id*', function (req, res, next) {
               simplePatchData.push(simplePatch);
             });
             res.render('pages/quilts/view', {
+              pageId: 'view-quilt',
               title: 'View Quilt',
               quilt: quilt,
               quiltData: JSON.stringify(simplePatchData),
               patches: patches,
               themes: themes,
+              newPatch: req.params.patchid,
               expressFlash: req.flash('message')
             });
           });

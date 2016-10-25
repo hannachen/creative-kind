@@ -1,10 +1,11 @@
 'use strict';
-var Quilt = (function(svg, quiltData) {
+var Quilt = (function(svg, quiltId, quiltData) {
 
   console.log('NEW');
 
-  function Quilt(svg, quiltData) {
+  function Quilt(svg, quiltId, quiltData) {
     this.$patchPreview = $('#patch-preview');
+    this.quiltId = quiltId;
     this.myPatch = '';
     this.patches = [];
     this.clickedPatch;
@@ -124,15 +125,13 @@ var Quilt = (function(svg, quiltData) {
         events = {};
     events.click = function(e) {
       var clickedPatch = e.target.data;
+      clickedPatch.quilt = _this.quiltId;
+      console.log(_this.quiltId);
       _this.clickedPatch = clickedPatch;
       if (clickedPatch.status === 'complete') {
         _this.showPatch(clickedPatch.uid);
       } else {
-        // trigger custom event
-        $(document).trigger({
-          type: 'click-patch',
-          patch: clickedPatch
-        });
+        _this.emitClickEvent(clickedPatch);
       }
     };
     if (!Modernizr.touch) {
@@ -142,9 +141,16 @@ var Quilt = (function(svg, quiltData) {
     return events;
   };
 
+  Quilt.prototype.emitClickEvent = function(patchId) {
+    // trigger custom event
+    $(document).trigger({
+      type: 'click-patch',
+      patch: patchId
+    });
+  };
+
   Quilt.prototype.showPatch = function(patchId) {
     var _this = this;
-    console.log(patchId);
     this.$patchPreview.css('display', 'block');
     var $preview = $('<img src="/patch/svg/'+patchId+'">');
     $preview.on('click', function() {
@@ -153,7 +159,7 @@ var Quilt = (function(svg, quiltData) {
       _this.$patchPreview.empty();
     });
     this.$patchPreview.append($preview);
-  }
+  };
 
   Quilt.prototype.enterArea = function(e) {
     e.target.opacity = 0.8;

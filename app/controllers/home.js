@@ -34,7 +34,7 @@ router.get('/', function (req, res, next) {
       });
 
       res.render('index', {
-        title: 'Quilting Bee',
+        title: 'Creative KIND',
         quilts: quilts,
         pageId: 'home'
       });

@@ -10,6 +10,7 @@
       this.initPage();
     },
     initVariables: function() {
+      this.$flashMsg = $('#flash-modal');
       this.$drawerNav = $('#account-drawer, #submenu-drawer');
     },
     initEvents: function() {
@@ -19,8 +20,12 @@
     initPage: function() {
       // Allow Page URL to activate a tab's ID
       var taburl = document.location.toString();
-      if(taburl.match('#')) {
+      if (taburl.match('#')) {
         $('.nav-pills a[href="#'+taburl.split('#')[1]+'"]').tab('show');
+      }
+      console.log('flash',_.isEmpty(this.$flashMsg.find('.modal-body').text().trim()));
+      if (!_.isEmpty(this.$flashMsg.find('.modal-body').text().trim())) {
+        this.$flashMsg.modal('show');
       }
     },
     onDrawerOpen: function(e) {
