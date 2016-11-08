@@ -6149,6 +6149,14 @@ form .btn-submit {
   .modal-backdrop.in {
     opacity: 1; }
 
+.modal {
+  height: 100vw;
+  top: 3.5em; }
+  @media (min-width: 768px) {
+    .modal {
+      top: 0;
+      height: auto; } }
+
 .modal-dialog {
   padding: 0 1em 1em;
   bottom: 0;
@@ -6207,46 +6215,44 @@ form .btn-submit {
     .modal-dialog .modal-footer .btn-secondary {
       color: #222222; }
 
-#welcome-modal {
-  background-color: #1b4b5d; }
-  #welcome-modal .modal-content {
-    background-color: transparent;
-    border: none;
-    color: #ffffff; }
-  #welcome-modal .modal-body {
-    text-align: center; }
-    #welcome-modal .modal-body p {
-      width: 100%; }
-  #welcome-modal .modal-footer {
-    border-top: 0; }
-    #welcome-modal .modal-footer .btn, #welcome-modal .modal-footer form .button-facebook, form #welcome-modal .modal-footer .button-facebook,
-    #welcome-modal .modal-footer form .button-twitter,
-    form #welcome-modal .modal-footer .button-twitter, #welcome-modal .modal-footer form .btn-submit, form #welcome-modal .modal-footer .btn-submit {
-      margin: 1em auto;
-      float: none; }
-  #welcome-modal .signup-link,
-  #welcome-modal .btn-cancel {
-    display: block; }
-  #welcome-modal .signup-link,
-  #welcome-modal .signin-link {
-    width: 90%; }
-    @media (min-width: 768px) {
-      #welcome-modal .signup-link,
-      #welcome-modal .signin-link {
-        width: 50%; } }
-  #welcome-modal .signup-link {
+#welcome-modal .modal-content {
+  background-color: transparent;
+  border: none;
+  color: #ffffff; }
+#welcome-modal .modal-body {
+  text-align: center; }
+  #welcome-modal .modal-body p {
+    width: 100%; }
+#welcome-modal .modal-footer {
+  border-top: 0; }
+  #welcome-modal .modal-footer .btn, #welcome-modal .modal-footer form .button-facebook, form #welcome-modal .modal-footer .button-facebook,
+  #welcome-modal .modal-footer form .button-twitter,
+  form #welcome-modal .modal-footer .button-twitter, #welcome-modal .modal-footer form .btn-submit, form #welcome-modal .modal-footer .btn-submit {
     margin: 1em auto;
-    color: #ffffff;
-    background-color: transparent;
-    border: 1px solid #ffffff; }
-  #welcome-modal .signin-link {
-    border: 0;
-    color: #1b4b5d;
-    background-color: #ffffff; }
-  #welcome-modal .btn-cancel {
-    padding: 1em;
-    margin: 0 auto;
-    opacity: .75; }
+    float: none; }
+#welcome-modal .signup-link,
+#welcome-modal .btn-cancel {
+  display: block; }
+#welcome-modal .signup-link,
+#welcome-modal .signin-link {
+  width: 90%; }
+  @media (min-width: 768px) {
+    #welcome-modal .signup-link,
+    #welcome-modal .signin-link {
+      width: 50%; } }
+#welcome-modal .signup-link {
+  margin: 1em auto;
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid #ffffff; }
+#welcome-modal .signin-link {
+  border: 0;
+  color: #1b4b5d;
+  background-color: #ffffff; }
+#welcome-modal .btn-cancel {
+  padding: 1em;
+  margin: 0 auto;
+  opacity: .75; }
 
 #donation-modal .btn-donate {
   position: relative; }
@@ -6260,6 +6266,10 @@ form .btn-submit {
   margin: 0 auto; }
   #flash-modal .modal-body {
     padding: 2em 1em; }
+
+#alert-modal .btn-continue {
+  width: 100%;
+  border-left: 0; }
 
 .drawer-toggle .icon,
 .drawer-toggle .drawer-toggle,
@@ -6354,6 +6364,18 @@ form .btn-submit {
     color: #1b4b5d; }
   #submenu-drawer .drawer-toggle {
     float: right; }
+
+#quilt-container #canvas-overlay {
+  background-color: rgba(27, 75, 93, 0.85);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 400;
+  display: none; }
+  .modal-open #quilt-container #canvas-overlay {
+    display: block; }
 
 .quilt-container {
   padding: 0;
@@ -6716,17 +6738,75 @@ form .btn-submit {
 .view-patch .grid-spacer {
   padding-top: 0; }
 
+#quilt-nav-container {
+  margin-left: 0;
+  margin-right: 0;
+  border-bottom: 1px solid #b2b2b2; }
+  #quilt-nav-container::after {
+    content: "";
+    display: table;
+    clear: both; }
+  #quilt-nav-container .quilt-nav,
+  #quilt-nav-container .quilt-list {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0;
+    padding-left: 0; }
+  #quilt-nav-container .quilt-nav,
+  #quilt-nav-container .quilt-name {
+    text-align: center;
+    color: #666666; }
+  #quilt-nav-container .quilt-nav {
+    float: left;
+    width: 16.66667%;
+    display: block;
+    border: 1px solid #b2b2b2;
+    border-bottom: 0;
+    border-top: 0;
+    padding: .4em 0 .1em;
+    font-size: 1.75em;
+    border-radius: 0;
+    margin: 0; }
+    #quilt-nav-container .quilt-nav:hover, #quilt-nav-container .quilt-nav:active, #quilt-nav-container .quilt-nav:focus {
+      background-color: rgba(178, 178, 178, 0.15); }
+    @media (max-width: 767px) {
+      #quilt-nav-container .quilt-nav.nav-prev {
+        border-left: 0; } }
+    @media (max-width: 767px) {
+      #quilt-nav-container .quilt-nav.nav-next {
+        border-right: 0; } }
+  #quilt-nav-container .quilt-list {
+    float: left;
+    width: 66.66667%;
+    display: block;
+    list-style-type: none;
+    position: relative; }
+  #quilt-nav-container .quilt-name {
+    font-weight: bold;
+    line-height: 130%; }
+  #quilt-nav-container .active {
+    height: 3em; }
+    #quilt-nav-container .active .quilt-nav,
+    #quilt-nav-container .active .quilt-name {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%); }
+    #quilt-nav-container .active .quilt-name {
+      padding: 0 1em; }
+
 #home .contents {
   padding: 0; }
-#home .user-menu {
+#home .user-menu,
+#home #quilt-nav-container {
   display: none; }
 #home.modal-open .modal {
   z-index: 450; }
 #home.modal-open .modal-backdrop {
-  z-index: 400; }
-#home.modal-open .header-menu .title,
-#home.modal-open .header-menu .drawer-toggle {
-  color: #ffffff; }
+  z-index: 400;
+  background-color: rgba(178, 178, 178, 0); }
 #home.modal-open .header-menu .title,
 #home.modal-open .header-menu .sub-menu-toggle {
   z-index: 475; }
@@ -6734,7 +6814,7 @@ form .btn-submit {
 #home.modal-open .header-menu .sub-menu-toggle {
   position: relative; }
 #home.modal-open .header-menu .account-nav-toggle {
-  z-index: 350; }
+  visibility: hidden; }
 
 #login-signup {
   color: #ffffff;
@@ -6945,65 +7025,6 @@ form .button-twitter, form .btn-submit {
       height: 75vh;
       width: 75vh;
       padding-top: 0; } }
-
-#quilt-nav-container {
-  margin-left: 0;
-  margin-right: 0;
-  border-bottom: 1px solid #b2b2b2; }
-  #quilt-nav-container::after {
-    content: "";
-    display: table;
-    clear: both; }
-  #quilt-nav-container .quilt-nav,
-  #quilt-nav-container .quilt-list {
-    position: relative;
-    min-height: 1px;
-    padding-right: 0;
-    padding-left: 0; }
-  #quilt-nav-container .quilt-nav,
-  #quilt-nav-container .quilt-name {
-    text-align: center;
-    color: #666666; }
-  #quilt-nav-container .quilt-nav {
-    float: left;
-    width: 16.66667%;
-    display: block;
-    border: 1px solid #b2b2b2;
-    border-bottom: 0;
-    border-top: 0;
-    padding: .4em 0 .1em;
-    font-size: 1.75em;
-    border-radius: 0;
-    margin: 0; }
-    #quilt-nav-container .quilt-nav:hover, #quilt-nav-container .quilt-nav:active, #quilt-nav-container .quilt-nav:focus {
-      background-color: rgba(178, 178, 178, 0.15); }
-    @media (max-width: 767px) {
-      #quilt-nav-container .quilt-nav.nav-prev {
-        border-left: 0; } }
-    @media (max-width: 767px) {
-      #quilt-nav-container .quilt-nav.nav-next {
-        border-right: 0; } }
-  #quilt-nav-container .quilt-list {
-    float: left;
-    width: 66.66667%;
-    display: block;
-    list-style-type: none;
-    position: relative; }
-  #quilt-nav-container .quilt-name {
-    font-weight: bold;
-    line-height: 130%; }
-  #quilt-nav-container .active {
-    height: 3em; }
-    #quilt-nav-container .active .quilt-nav,
-    #quilt-nav-container .active .quilt-name {
-      display: block;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%); }
-    #quilt-nav-container .active .quilt-name {
-      padding: 0 1em; }
 
 .static-page .contents {
   position: relative; }

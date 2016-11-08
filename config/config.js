@@ -17,7 +17,7 @@ var config = {
     nodemailer: {
       service: 'Mailgun',
       auth: {
-        api_key: 'api:key-ad0790abff28a38aab14bda682df47a1',
+        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
         domain: 'sandbox5ddedd142de24091b958d347bad4d895.mailgun.org'
       }
     }
@@ -35,8 +35,8 @@ var config = {
     nodemailer: {
       service: 'Mailgun',
       auth: {
-        api_key: 'key-29e6f0358d5b5d79c64c4252c5c891ae',
-        domain: 'sandbox54110b86e96f44ceb96aa9b85d4bb923.mailgun.org'
+        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
+        domain: 'quilting-bee.fpo.website'
       }
     }
   },

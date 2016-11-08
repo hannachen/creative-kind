@@ -5,6 +5,14 @@
     opacity: 1;
   }
 }
+.modal {
+  height: 100vw;
+  top: 3.5em;
+  @include media-breakpoint-up(md) {
+    top: 0;
+    height: auto;
+  }
+}
 .modal-dialog {
   padding: 0 1em 1em;
   bottom: 0;
@@ -79,8 +87,6 @@
   }
 }
 #welcome-modal {
-  background-color: $primary-brand-color;
-
   .modal-content {
     background-color: transparent;
     border: none;
@@ -150,5 +156,11 @@
 
   .modal-body {
     padding: 2em 1em;
+  }
+}
+#alert-modal {
+  .btn-continue {
+    width: 100%;
+    border-left: 0;
   }
 }

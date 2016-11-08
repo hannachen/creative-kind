@@ -47,38 +47,38 @@ var quiltCanvas = (function($) {
   }
 
   function initEvents() {
-    $donationModal.on('hidden.bs.modal', function() {
-      $confirmationModal.modal('show');
-    });
-    $confirmationModal.on('hide.bs.modal', function () {
-      if (_.isEmpty(user)) {
-        $loginModal.modal('show');
-      }
+    $confirmationModal.on('hide.bs.modal', function (e) {
+      console.log('TEST', e);
+      $donationModal.modal('show');
       $confirmationButton.attr('href', '');
     });
-
     $(document).on('click-patch', function(e) {
       var patchData = e.patch,
           targetUrl = '/quilts/view/' + quiltId + '/' + patchData.uid;
 
-      console.log('TEST', e);
-      if (!_.isEmpty(user)) {
+      if (_.isEmpty(user)) {
+        if (patchData.status === 'new') {
+          $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
+          $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
+          $loginModal.modal('show');
+        }
+      } else {
+        targetUrl = '/patch/edit/' + patchData.uid;
         if (patchData.status === 'mine') {
-          console.log('HELLO');
-          targetUrl = '/patch/edit/' + patchData.uid;
           window.location.href = targetUrl;
         } else if (patchData.status === 'new') {
           if (myPatch.length) {
             $alertModal.modal('show');
           } else {
-            targetUrl = '/patch/edit/' + patchData.uid;
-            $confirmationButton.attr('href', targetUrl);
-            $donationModal.modal('show');
+            $confirmationButton.one('click', function(e) {
+              e.preventDefault();
+              console.log('HELLO??', e.currentTarget);
+              $confirmationModal.modal('hide');
+              $donationModal.modal('show');
+            });
+            $confirmationModal.modal('show');
           }
         }
-      } else {
-        $confirmationModal.modal('show');
-        // window.location.href = '/account/login/?cb=' + targetUrl;
       }
     });
   }

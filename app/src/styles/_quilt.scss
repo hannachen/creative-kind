@@ -1,4 +1,18 @@
 #quilt-container {
+  #canvas-overlay {
+    background-color: rgba($primary-brand-color, .85);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 400;
+    display: none;
+
+    .modal-open & {
+      display: block;
+    }
+  }
 }
 .quilt-container {
   padding: 0;

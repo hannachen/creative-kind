@@ -2,7 +2,8 @@
   .contents {
     padding: 0;
   }
-  .user-menu {
+  .user-menu,
+  #quilt-nav-container {
     display: none;
   }
   &.modal-open {
@@ -11,12 +12,9 @@
     }
     .modal-backdrop {
       z-index: 400;
+      background-color: rgba($gray, 0);
     }
     .header-menu {
-      .title,
-      .drawer-toggle {
-        color: $white;
-      }
       .title,
       .sub-menu-toggle {
         z-index: 475;
@@ -26,7 +24,7 @@
         position: relative;
       }
       .account-nav-toggle {
-        z-index: 350;
+        visibility: hidden;
       }
     }
   }

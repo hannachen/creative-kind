@@ -166,7 +166,7 @@ var Quilt = (function(svg, quiltId, quiltData) {
   };
 
   Quilt.prototype.leaveArea = function(e) {
-    e.target.opacity = 1;
+    this.dragging = false;
   };
 
   return Quilt;

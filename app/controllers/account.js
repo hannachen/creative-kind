@@ -12,7 +12,8 @@ var express = require('express'),
   User = mongoose.model('User'),
   Quilt = mongoose.model('Quilt'),
   Patch = mongoose.model('Patch'),
-  fbConfig = require('../../config/fb.js');
+  fbConfig = require('../../config/fb.js'),
+  hbs = require('nodemailer-express-handlebars');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -141,18 +142,34 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
       },
       function(url, user, done) {
         var smtpTransport = nodemailer.createTransport(mgTransport(req.config.nodemailer));
+        var templateOptions = {
+          viewEngine: {
+            layoutsDir: 'app/views/email/',
+            defaultLayout : 'template',
+            partialsDir : 'app/views/partials/'
+          },
+          viewPath: 'app/views/email/'
+        };
+        smtpTransport.use('compile', hbs(templateOptions));
         var mailOptions = {
-          from: 'passwordreset@demo.com',
           to: user.email,
+          from: 'passwordreset@demo.com',
           subject: 'Quilting Bee Password Reset',
           'h:Reply-To': 'local@localhost',
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/account/reset/?' + url + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+          template: 'email.body.reset-password',
+          context: {
+            actionType: 'ViewAction',
+            actionLabel: 'Reset Password',
+            actionDesc: 'Reset your password.',
+            cta : 'http://' + req.headers.host + '/account/reset/?' + url
+          }
         };
         smtpTransport.sendMail(mailOptions, function(err) {
+          if (err) {
+            console.log(err);
+          }
           if (err) return next(err);
+          smtpTransport.close();
           req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
           done(err, 'done');
         });

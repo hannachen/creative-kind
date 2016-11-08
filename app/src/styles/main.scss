@@ -27,6 +27,7 @@
 @import "./menu";
 @import "./quilt";
 @import "./patch";
+@import "./modules/quilt-nav";
 @import "./pages/home";
 @import "./pages/login-signup";
 @import "./pages/account";
@@ -211,73 +212,6 @@ footer {
   }
 }
 
-#quilt-nav-container {
-  @include make-row(0);
-  border-bottom: 1px solid $gray;
-
-  .quilt-nav,
-  .quilt-list {
-    @include make-col-ready(0);
-  }
-  .quilt-nav,
-  .quilt-name {
-    text-align: center;
-    color: #666666;
-  }
-  .quilt-nav {
-    @include make-col(2);
-    display: block;
-    border: 1px solid $gray;
-    border-bottom: 0;
-    border-top: 0;
-    padding: .4em 0 .1em;
-    font-size: 1.75em;
-    border-radius: 0;
-    margin: 0;
-
-    &:hover,
-    &:active,
-    &:focus {
-      background-color: rgba($gray, .15);
-    }
-    &.nav-prev {
-      @include media-breakpoint-down(sm) { // Phablet and below
-        border-left: 0;
-      }
-    }
-    &.nav-next {
-      @include media-breakpoint-down(sm) { // Phablet and below
-        border-right: 0;
-      }
-    }
-  }
-  .quilt-list {
-    @include make-col(8);
-    display: block;
-    list-style-type: none;
-    position: relative;
-  }
-  .quilt-name {
-    font-weight: bold;
-    line-height: 130%;
-  }
-  .active {
-    height: 3em;
-
-    .quilt-nav,
-    .quilt-name {
-      display: block;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .quilt-name {
-      padding: 0 1em;
-    }
-  }
-}
 .static-page {
   .contents {
     position: relative;

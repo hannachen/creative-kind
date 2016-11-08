@@ -20,6 +20,7 @@ var quiltsList = (function($) {
       dragStartMousePos,
       dragStartQuiltPos,
       dragDirection,
+      dragging,
       currentQuiltIndex = 0,
       initialPosition = new Point(0, 0);
 
@@ -50,32 +51,28 @@ var quiltsList = (function($) {
   }
 
   function initEvents() {
-    // $donationModal.on('hidden.bs.modal', function() {
-    //   $confirmationModal.modal('show');
-    // });
     $confirmationModal.on('hide.bs.modal', function () {
-      if (_.isEmpty(user)) {
-        $loginModal.modal('show');
-      }
+      $donationModal.modal('show');
       $confirmationButton.attr('href', '');
-    });
-    $confirmationModal.on('hidden.bs.modal', function() {
-      if (_.isEmpty()) {
-        $loginModal.modal('show');
-      } else {
-        $donationModal.modal('show');
-      }
-    });
-    $loginModal.on('show.bs.modal', function() {
-      $confirmationButton.off('click');
     });
     $document.on('scroll.canvas', scrollCanvas);
     $document.on('click-patch', function(e) {
       console.log('click');
+      if (dragging) {
+        return;
+      }
       var patchData = e.patch,
           targetUrl = '/quilts/view/' + patchData.quilt + '/' + patchData.uid;
 
-      if (!_.isEmpty(user)) {
+      if (_.isEmpty(user)) {
+        if (patchData.status === 'new') {
+          view.emit('onMouseUp');
+          // Add cb to buttons
+          $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
+          $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
+          $loginModal.modal('show');
+        }
+      } else {
         if (patchData.status === 'mine') {
           targetUrl = '/patch/edit/' + patchData.uid;
           window.location.href = targetUrl;
@@ -86,16 +83,7 @@ var quiltsList = (function($) {
             $confirmationButton.attr('href', targetUrl);
             $confirmationModal.modal('show');
           }
-        }
-      } else {
-        if (patchData.status === 'new') {
-          $confirmationButton.on('click', function(e) {
-            console.log('click', e);
-            e.preventDefault();
-            $confirmationModal.modal('hide');
-          });
-          $confirmationModal.modal('show');
-          // window.location.href = '/account/login/?cb=' + targetUrl;
+          view.emit('onMouseUp');
         }
       }
     });
@@ -175,14 +163,16 @@ var quiltsList = (function($) {
     if (quilts.length > 1) {
       // Record starting position on mouse down
       view.onMouseDown = function(e) {
+        dragging = true;
         dragStartMousePos = e.point;
         dragStartQuiltPos = quilts[0].position;
       };
       // Reset starting position on mouse up
       view.onMouseUp = function() {
+        dragging = false;
         var dragDistance = quilts[0].position.x - dragStartQuiltPos.x,
-          dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
-          scroll = false;
+            dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
+            scroll = false;
         if (dragDistance < 0) {
           dragDirection = 'left';
         } else {
