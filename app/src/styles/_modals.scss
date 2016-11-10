@@ -87,6 +87,10 @@
   }
 }
 #welcome-modal {
+  top: 0;
+  height: auto;
+  background-color: $primary-brand-color;
+
   .modal-content {
     background-color: transparent;
     border: none;

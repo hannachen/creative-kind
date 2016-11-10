@@ -8,6 +8,6 @@ module.exports = {
   staging: {
     'apikey': 'i4m94Su0hEH3XDE9cj1jQvdU8',
     'apisecret': 'joDUd3HLBq9hatTKT8K2t9Z1XWslwbLJ5QcN0yfvaMGcwKJf3T',
-    'callbackUrl': 'http://quilting-bee.fpo.website/account/login/twitter/callback'
+    'callbackUrl': 'http://creative-kind.fpo.website/account/login/twitter/callback'
   }
 }

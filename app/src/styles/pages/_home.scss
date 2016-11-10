@@ -23,9 +23,18 @@
       .sub-menu-toggle {
         position: relative;
       }
+      .title {
+        color: $white;
+      }
       .account-nav-toggle {
         visibility: hidden;
       }
+    }
+    .btn {
+      border-radius: .5em;
+    }
+    .view-quilt-link {
+      color: $white;
     }
   }
 }

@@ -8,6 +8,6 @@ module.exports = {
   staging: {
     'appID': '652241354915302',
     'appSecret': '52e65a76227aec4415f3de3ef0803a97',
-    'callbackUrl': 'http://quilting-bee.fpo.website/account/login/facebook/callback'
+    'callbackUrl': 'http://creative-kind.fpo.website/account/login/facebook/callback'
   }
 }

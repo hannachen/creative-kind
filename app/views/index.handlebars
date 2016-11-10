@@ -19,15 +19,21 @@
 <div id="quilt-container" class="home">
   <div class="quilt-container">
     <div id="canvas-container" class="canvas-container">
-      <div class="canvas-overlay" id="canvas-overlay"></div>
+      <div class="canvas-overlay" id="canvas-overlay">
+        <div class="square-example">
+          <svg class="plus" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+             x="0px" y="0px" width="6.87px" height="6.87px" viewBox="0 0 6.87 6.87" overflow="inherit" xml:space="preserve">
+            <path fill="#231F20" d="M6.87,4.46H4.46v2.42H2.42V4.46H0V2.41h2.42V0h2.04v2.42h2.42V4.46z"/>
+          </svg>
+        </div>
+        <p>Select an open square <span class="soft-break"></span>to start designing.</p>
+      </div>
       <div class="grid-spacer" id="grid-spacer"></div>
       <canvas id="grid-area" class="grid-area"></canvas>
     </div>
     <div class="patch-preview" id="patch-preview"></div>
   </div>
 </div>
-
-{{>modal/welcome }}
 
 {{>modal/login }}
 
