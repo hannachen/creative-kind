@@ -3,7 +3,9 @@
   paper.install(window);
 
   $(function() {
-    quiltCanvas.init();
+    if ($('#canvas-container').length) {
+      quiltCanvas.init();
+    }
     theme.init();
   });
 })(jQuery,window);

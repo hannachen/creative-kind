@@ -16,7 +16,9 @@ var theme = (function($) {
       $themeCarousel.on('afterChange', function(e, slick, currentSlide) {
         setActiveTheme($input, $selectedTheme, $themes.get(currentSlide));
       });
-      $themeCarousel.slick();
+      $themeCarousel.slick({
+        mobileFirst: true
+      });
 
       initEvents();
     }

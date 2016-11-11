@@ -4615,84 +4615,6 @@ form [data-toggle="buttons"] > .btn-group > .btn-submit input[type="checkbox"] {
 .transparent-text {
   color: transparent !important; }
 
-/* ==========================================================================
-   Materialize variables
-   ========================================================================== */
-/**
- * Table of Contents:
- *
- *  1. Colors
- *  2. Badges
- *  3. Buttons
- *  4. Cards
- *  5. Collapsible
- *  6. Chips
- *  7. Date Picker
- *  8. Dropdown
- *  10. Forms
- *  11. Global
- *  12. Grid
- *  13. Navigation Bar
- *  14. Side Navigation
- *  15. Photo Slider
- *  16. Spinners | Loaders
- *  17. Tabs
- *  18. Tables
- *  19. Toasts
- *  20. Typography
- *  21. Footer
- *  22. Flow Text
- *  23. Collections
- *  24. Progress Bar
- */
-/* 1. Colors
-   ========================================================================== */
-/* 2. Badges
-   ========================================================================== */
-/* 3. Buttons
-   ========================================================================== */
-/* 4. Cards
-   ========================================================================== */
-/* 5. Collapsible
-   ========================================================================== */
-/* 6. Chips
-   ========================================================================== */
-/* 7. Date Picker
-   ========================================================================== */
-/* 8. Dropdown
-   ========================================================================== */
-/* 9. Fonts
-   ========================================================================== */
-/* 10. Forms
-   ========================================================================== */
-/* 11. Global
-   ========================================================================== */
-/* 12. Grid
-   ========================================================================== */
-/* 13. Navigation Bar
-   ========================================================================== */
-/* 14. Side Navigation
-   ========================================================================== */
-/* 15. Photo Slider
-   ========================================================================== */
-/* 16. Spinners | Loaders
-   ========================================================================== */
-/* 17. Tabs
-   ========================================================================== */
-/* 18. Tables
-   ========================================================================== */
-/* 19. Toasts
-   ========================================================================== */
-/* 20. Typography
-   ========================================================================== */
-/* 21. Footer
-   ========================================================================== */
-/* 22. Flow Text
-   ========================================================================== */
-/* 23. Collections
-   ========================================================================== */
-/* 24. Progress Bar
-   ========================================================================== */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -5054,12 +4976,10 @@ html {
 *, *:before, *:after {
   box-sizing: inherit; }
 
-ul {
-  padding: 0;
+ul:not(.browser-default) {
+  padding-left: 0;
   list-style-type: none; }
-  ul.browser-default, ul.browser-default li {
-    list-style-type: initial; }
-  ul li {
+  ul:not(.browser-default) li {
     list-style-type: none; }
 
 a {
@@ -5080,22 +5000,22 @@ a {
   box-shadow: none !important; }
 
 .z-depth-1 {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); }
 
 .z-depth-1-half {
-  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15); }
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2); }
 
 .z-depth-2 {
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3); }
 
 .z-depth-3 {
-  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); }
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3); }
 
 .z-depth-4 {
-  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21); }
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3); }
 
 .z-depth-5 {
-  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22); }
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3); }
 
 .hoverable {
   transition: box-shadow .25s;
@@ -5450,12 +5370,12 @@ td, th {
 span.badge {
   min-width: 3rem;
   padding: 0 6px;
+  margin-left: 14px;
   text-align: center;
   font-size: 1rem;
   line-height: inherit;
   color: #757575;
-  position: absolute;
-  right: 15px;
+  float: right;
   box-sizing: border-box; }
   span.badge.new {
     font-weight: 300;
@@ -5469,9 +5389,30 @@ span.badge {
     content: " " attr(data-badge-caption); }
 
 nav ul a span.badge {
-  position: static;
+  display: inline-block;
+  float: none;
   margin-left: 4px;
-  line-height: 0; }
+  line-height: 22px;
+  height: 22px; }
+
+.side-nav span.badge.new,
+.collapsible span.badge.new {
+  position: relative;
+  background-color: transparent; }
+  .side-nav span.badge.new::before,
+  .collapsible span.badge.new::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 0;
+    bottom: 10px;
+    left: 0;
+    background-color: #26a69a;
+    border-radius: 2px;
+    z-index: -1; }
+
+.collapsible span.badge.new {
+  z-index: 1; }
 
 .video-container {
   position: relative;
@@ -6002,6 +5943,13 @@ textarea.materialize-textarea {
 .input-field {
   position: relative;
   margin-top: 1rem; }
+  .input-field.inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px; }
+    .input-field.inline input,
+    .input-field.inline .select-dropdown {
+      margin-bottom: 1rem; }
   .input-field.col label {
     left: 0.75rem; }
   .input-field.col .prefix ~ label,
@@ -6011,6 +5959,7 @@ textarea.materialize-textarea {
     color: rgba(0, 0, 0, 0.15);
     position: absolute;
     top: 0.8rem;
+    left: 0;
     font-size: 1rem;
     cursor: text;
     transition: .2s ease-out; }
@@ -6145,7 +6094,7 @@ form .btn-submit {
   background-color: #ffffff; }
 
 .modal-backdrop {
-  background-color: rgba(178, 178, 178, 0.8); }
+  background-color: rgba(178, 178, 178, 0.75); }
   .modal-backdrop.in {
     opacity: 1; }
 
@@ -6436,8 +6385,7 @@ form .btn-submit {
       .quilt-container .canvas-container {
         display: inline-block;
         min-height: 0;
-        width: auto;
-        border: 1px solid #ff0000; } }
+        width: auto; } }
   .quilt-container .grid-area {
     position: absolute;
     top: 0;
@@ -6450,7 +6398,8 @@ form .btn-submit {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 10; }
+    z-index: 10;
+    background-color: #000000; }
     .quilt-container .patch-preview img {
       width: 100%;
       height: auto; }
@@ -6521,8 +6470,8 @@ form .btn-submit {
   list-style-type: none; }
 
 .theme-carousel {
-  max-width: 400px;
-  position: relative; }
+  width: 100%;
+  max-width: 400px; }
   .theme-carousel .slick-arrow {
     position: absolute;
     top: 19px;
@@ -6829,32 +6778,45 @@ form .btn-submit {
     #quilt-nav-container .active .quilt-name {
       padding: 0 1em; }
 
-#home .contents {
-  padding: 0; }
-#home .user-menu,
-#home #quilt-nav-container {
-  display: none; }
-#home.modal-open .modal {
-  z-index: 450; }
-#home.modal-open .modal-backdrop {
-  z-index: 400;
-  background-color: rgba(178, 178, 178, 0); }
-#home.modal-open .header-menu .title,
-#home.modal-open .header-menu .sub-menu-toggle {
-  z-index: 475; }
-#home.modal-open .header-menu .account-nav-toggle,
-#home.modal-open .header-menu .sub-menu-toggle {
-  position: relative; }
-#home.modal-open .header-menu .title {
-  color: #ffffff; }
-#home.modal-open .header-menu .account-nav-toggle {
-  visibility: hidden; }
-#home.modal-open .btn, #home.modal-open form .button-facebook, form #home.modal-open .button-facebook,
-#home.modal-open form .button-twitter,
-form #home.modal-open .button-twitter, #home.modal-open form .btn-submit, form #home.modal-open .btn-submit {
-  border-radius: .5em; }
-#home.modal-open .view-quilt-link {
-  color: #ffffff; }
+#home {
+  /*
+  &.modal-open {
+    .modal {
+      z-index: 450;
+    }
+    .modal-backdrop {
+      z-index: 400;
+      background-color: rgba($gray, 0);
+    }
+    .header-menu {
+      .title,
+      .sub-menu-toggle {
+        z-index: 475;
+      }
+      .account-nav-toggle,
+      .sub-menu-toggle {
+        position: relative;
+      }
+      .title {
+        color: $white;
+      }
+      .account-nav-toggle {
+        visibility: hidden;
+      }
+    }
+    .btn {
+      border-radius: .5em;
+    }
+    .view-quilt-link {
+      color: $white;
+    }
+  }
+  */ }
+  #home .contents {
+    padding: 0; }
+  #home .user-menu,
+  #home #quilt-nav-container {
+    display: none; }
 
 #login-signup {
   color: #ffffff;
@@ -7047,7 +7009,16 @@ form .button-twitter, form .btn-submit {
     text-align: center;
     color: #247ba0; }
     .header-menu .title h1 {
-      margin: .425em 0; }
+      margin: .425em 0;
+      font-family: "Times New Roman", serif;
+      font-style: italic; }
+      .header-menu .title h1 em {
+        text-transform: uppercase;
+        font-family: "Roboto", sans-serif;
+        font-style: normal;
+        letter-spacing: .025em; }
+    .header-menu .title h2 {
+      display: none; }
 
 .quilt-nav,
 .quilt-name,

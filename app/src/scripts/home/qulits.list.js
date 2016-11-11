@@ -5,7 +5,6 @@ var quiltsList = (function($) {
       $loginModal = $('#login-modal').modal('hide'),
       $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
-      $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
       $quilts = $('.quilt-list .quilt'),
       $quiltNavContainer = $('#quilt-nav-container'),
@@ -51,15 +50,11 @@ var quiltsList = (function($) {
   }
 
   function initEvents() {
-    $confirmationModal.on('hide.bs.modal', function () {
-      $donationModal.modal('show');
-      $confirmationButton.attr('href', '');
-    });
     $document.on('scroll.canvas', scrollCanvas);
     $document.on('click-patch', function(e) {
       console.log('click');
       if (dragging) {
-        return;
+        return false;
       }
       var patchData = e.patch,
           targetUrl = '/quilts/view/' + patchData.quilt + '/' + patchData.uid;
@@ -80,8 +75,12 @@ var quiltsList = (function($) {
           if (myPatch.length) {
             $alertModal.modal('show');
           } else {
-            $confirmationButton.attr('href', targetUrl);
+            // $confirmationButton.attr('href', targetUrl);
+            targetUrl = '/patch/start/' + patchData.uid;
             $confirmationModal.modal('show');
+            $donationModal.find('.btn-secondary').on('click', function() {
+              window.location.href = targetUrl;
+            });
           }
           view.emit('onMouseUp');
         }
@@ -202,6 +201,7 @@ var quiltsList = (function($) {
             direction: dragDirection,
             index: currentQuiltIndex
           });
+          return false; // Prevent event from bubbling up
         }
         dragStartMousePos = null;
         dragStartQuiltPos = null;

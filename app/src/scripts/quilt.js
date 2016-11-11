@@ -162,10 +162,11 @@ var Quilt = (function(svg, quiltId, quiltData) {
   };
 
   Quilt.prototype.enterArea = function(e) {
-    e.target.opacity = 0.8;
+    e.target.opacity = 0.75;
   };
 
   Quilt.prototype.leaveArea = function(e) {
+    e.target.opacity = 1;
     this.dragging = false;
   };
 

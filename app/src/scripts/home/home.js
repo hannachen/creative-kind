@@ -9,7 +9,7 @@
       this.initPage();
     },
     initVariables: function() {
-      this.$welcomeModal = $('#welcome-modal');
+      // this.$welcomeModal = $('#welcome-modal');
       this.$quiltOverlay = $('#canvas-overlay');
     },
     initEvents: function() {

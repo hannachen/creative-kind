@@ -7,7 +7,7 @@
     <label for="input-title">Quilt Name</label>
     <input type="text" name="title" id="input-title" class="input-title form-control" placeholder="Quilt Name" />
   </fieldset>
-  <fieldset class="form-group create-quilt-field">
+  <div class="form-group create-quilt-field">
     <label for="input-theme">Select a Theme</label>
     <input type="hidden" name="theme" id="input-theme" class="input-theme" placeholder="Theme" />
     <div class="selected-theme">Select a theme</div>
@@ -25,7 +25,7 @@
         </div>
       {{/each}}
     </div>
-  </fieldset>
+  </div>
   {{#if_eq user.usertype 'admin'}}
     <fieldset class="form-group create-quilt-field">
       [admin only option]<br />

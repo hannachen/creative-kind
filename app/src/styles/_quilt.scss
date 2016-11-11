@@ -73,7 +73,6 @@
       display: inline-block;
       min-height: 0;
       width: auto;
-      border: 1px solid #ff0000;
     }
   }
   .grid-area {
@@ -90,6 +89,7 @@
     bottom: 0;
     left: 0;
     z-index: 10;
+    background-color: $black;
 
     img {
       width: 100%;
@@ -177,8 +177,8 @@
   }
 }
 .theme-carousel {
+  width: 100%;
   max-width: 400px;
-  position: relative;
 
   .slick-arrow {
     position: absolute;
@@ -194,4 +194,8 @@
 }
 .theme-preview {
   padding-bottom: 2.5em;
+}
+.create-quilt-form {
+  .create-quilt-field {
+  }
 }

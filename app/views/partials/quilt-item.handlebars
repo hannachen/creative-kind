@@ -1,9 +1,3 @@
-<h2>{{quilt.title}} [{{quilt.type}}]</h2>
-
-{{#if_eq quilt.type "private"}}
-  <h5>By: {{quilt._user.username}}</h5>
-{{/if_eq}}
-
 {{#if patches}}
   <div class="data" id="quilt-data"{{#if newPatch}} data-new-patch="{{newPatch}}"{{/if}}>
     {{quiltData}}
@@ -16,5 +10,11 @@
     <div class="patch-preview" id="patch-preview"></div>
   </div>
 {{/if}}
+
+<h2>{{quilt.title}} [{{quilt.type}}]</h2>
+
+{{#if_eq quilt.type "private"}}
+  <h5>By: {{quilt._user.username}}</h5>
+{{/if_eq}}
 
 {{>theme }}

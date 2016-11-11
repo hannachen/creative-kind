@@ -4,17 +4,10 @@ var quiltCanvas = (function($) {
   var $loginModal = $('#login-modal').modal('hide'),
       $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
-      $confirmationButton = $confirmationModal.find('.btn-primary'),
       $alertModal = $('#alert-modal').modal('hide'),
       $quiltArea = $('#grid-area');
 
-  var containerEl = document.getElementById('canvas-container'),
-      quiltData = document.getElementById('quilt-data'),
-      userData = document.getElementById('user-data'),
-      quiltId = containerEl.getAttribute('data-quilt-id') || '',
-      newPatch = quiltData.getAttribute('data-new-patch') || '',
-      grid,
-      patchStatus,
+  var containerEl, quiltData, userData, quiltId, newPatch, grid, patchStatus,
       myPatch = '',
       user = {};
 
@@ -27,6 +20,13 @@ var quiltCanvas = (function($) {
   }
 
   function initVariables() {
+    // Dom selects
+    containerEl = document.getElementById('canvas-container');
+    quiltData = document.getElementById('quilt-data');
+    userData = document.getElementById('user-data');
+    quiltId = containerEl.getAttribute('data-quilt-id') || '';
+    newPatch = quiltData.getAttribute('data-new-patch') || '';
+
     if (quiltData) {
       var quiltDataString = quiltData.innerHTML;
     }
@@ -47,11 +47,6 @@ var quiltCanvas = (function($) {
   }
 
   function initEvents() {
-    $confirmationModal.on('hide.bs.modal', function (e) {
-      console.log('TEST', e);
-      $donationModal.modal('show');
-      $confirmationButton.attr('href', '');
-    });
     $(document).on('click-patch', function(e) {
       var patchData = e.patch,
           targetUrl = '/quilts/view/' + quiltId + '/' + patchData.uid;
@@ -70,13 +65,11 @@ var quiltCanvas = (function($) {
           if (myPatch.length) {
             $alertModal.modal('show');
           } else {
-            $confirmationButton.one('click', function(e) {
-              e.preventDefault();
-              console.log('HELLO??', e.currentTarget);
-              $confirmationModal.modal('hide');
-              $donationModal.modal('show');
-            });
+            targetUrl = '/patch/start/' + patchData.uid;
             $confirmationModal.modal('show');
+            $donationModal.find('.btn-secondary').on('click', function() {
+              window.location.href = targetUrl;
+            });
           }
         }
       }

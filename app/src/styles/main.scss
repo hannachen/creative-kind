@@ -189,6 +189,18 @@ footer {
 
     h1 {
       margin: .425em 0;
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+
+      em {
+        text-transform: uppercase;
+        font-family: "Roboto", sans-serif;
+        font-style: normal;
+        letter-spacing: .025em;
+      }
+    }
+    h2 {
+      display: none;
     }
   }
 }
