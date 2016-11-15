@@ -6,6 +6,10 @@
     if ($('#canvas-container').length) {
       quiltCanvas.init();
     }
+    if ($('.invite').length) {
+      invite.init();
+    }
     theme.init();
+    invite.init();
   });
 })(jQuery,window);

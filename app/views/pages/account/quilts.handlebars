@@ -1,9 +1,24 @@
+{{#section 'footer'}}
+  <script src="/js/account.min.js"></script>
+{{/section}}
 <h3>My Quilts</h3>
 
 {{#if quilts}}
+<form action="/quilts/rename" id="quilts-form">
   <ul>
     {{#each quilts}}
-      <li><a href="/quilts/view/{{id}}">{{title}}</a>&nbsp;[{{type}}]</li>
+      <li id="quilt-item{{@index}}">
+        <button title="Rename" class="edit-action" data-target="#quilt-item{{@index}}">
+          <span class="icon icon-edit"></span>
+          <span class=" icon icon-android-close"></span>
+        </button>
+        <input class="edit-input" value="{{title}}" data-id="{{id}}" />
+        <a class="view-link" href="/quilts/view/{{id}}">
+          {{#if title}}{{title}}{{else}}{{id}}{{/if}}
+          {{#if_eq type 'private'}}<span class="icon icon-lock"></span>{{/if_eq}}
+        </a>
+      </li>
     {{/each}}
   </ul>
+</form>
 {{/if}}

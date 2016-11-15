@@ -3,12 +3,21 @@
     <input type="hidden" name="cb" value="{{cb}}" />
   {{/if}}
   <ul class="form-group">
-    <li class="input-field login-field ">
+    <li class="input-field login-field">
       <input type="text" name="username" class="input-username" placeholder="Username" />
     </li>
     <li class="input-field login-field">
       <input type="password" name="password" class="input-password" placeholder="Password" />
     </li>
+    <ul class="form-group user-utils">
+      <li class="remember-me">
+        <input type="checkbox" class="input-remember-me" id="remember-me" name="remember-me" checked />
+        <label for="remember-me">Remember me</label>
+      </li>
+      <li class="forgot-password">
+        <a href="/account/recover-password" class="recover-password-cta">Forgot Password?</a>
+      </li>
+    </ul>
     <li class="login-button">
       <input type="submit" value="Login" class="btn-submit submit-login">
     </li>
@@ -22,11 +31,6 @@
     </li>
     <li class="login">
       <a href="/account/login/twitter" class="login-twitter button-twitter">Twitter</a>
-    </li>
-  </ul>
-  <ul class="form-group">
-    <li class="forgot-password">
-      <a href="/account/recover-password" class="recover-password-cta">Forgot Password</a>
     </li>
   </ul>
 </form>

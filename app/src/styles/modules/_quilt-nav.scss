@@ -1,6 +1,5 @@
 #quilt-nav-container {
   @include make-row(0);
-  border-bottom: 1px solid $gray;
 
   .quilt-nav,
   .quilt-list {
@@ -9,12 +8,11 @@
   .quilt-nav,
   .quilt-name {
     text-align: center;
-    color: #666666;
+    color: $off-black;
   }
   .quilt-nav {
     @include make-col(2);
     display: block;
-    border: 1px solid $gray;
     border-bottom: 0;
     border-top: 0;
     padding: .4em 0 .1em;

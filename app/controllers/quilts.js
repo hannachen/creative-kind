@@ -150,3 +150,17 @@ router.post('/create', isAuthenticated, function (req, res, next) {
     }
   });
 });
+
+router.post('/rename/:id', isAuthenticated, function (req, res, next) {
+  console.log('renaming quilt');
+  var query = {'_id':req.params.id},
+      update = {'title':req.body.title},
+      options = {'muti': false};
+  Quilt.update(query, update, options, function(err, quilt) {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});

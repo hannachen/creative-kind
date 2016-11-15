@@ -23,6 +23,7 @@
 @import "./mixins";
 @import "./utils";
 @import "./forms";
+@import "./checkbox";
 @import "./modals";
 @import "./menu";
 @import "./quilt";
@@ -30,6 +31,7 @@
 @import "./modules/quilt-nav";
 @import "./pages/home";
 @import "./pages/login-signup";
+@import "./pages/forgot-password";
 @import "./pages/account";
 @import "./pages/quilt";
 @import "./pages/patch";
@@ -113,7 +115,7 @@ footer {
   text-align: center;
 
   &:before {
-    font-family: "untitled-font-1" !important;
+    font-family: "creative-kind" !important;
     content: attr(data-icon);
     font-style: normal !important;
     font-weight: normal !important;
@@ -185,18 +187,24 @@ footer {
   .title {
     @include make-col(8);
     text-align: center;
-    color: $primary-brand-color;
 
     h1 {
-      margin: .425em 0;
+      margin: .325em 0;
       font-family: "Times New Roman", serif;
       font-style: italic;
+      @include media-breakpoint-up(sm) {
+        margin: .425em 0;
+      }
 
+      a {
+        color: $primary-brand-color;
+      }
       em {
         text-transform: uppercase;
+        font-size: 80%;
         font-family: "Roboto", sans-serif;
         font-style: normal;
-        letter-spacing: .025em;
+        letter-spacing: .05em;
       }
     }
     h2 {
@@ -205,8 +213,6 @@ footer {
   }
 }
 
-.quilt-nav,
-.quilt-name,
 .data {
   display: none;
 }

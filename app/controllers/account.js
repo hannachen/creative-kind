@@ -85,7 +85,8 @@ router.get('/quilts', isAuthenticated, function(req, res) {
 
     res.render('pages/account/quilts', {
       title: 'My Quilts',
-      quilts: quilts
+      quilts: quilts,
+      pageId: 'my-quilts'
     });
   });
 });
@@ -112,7 +113,8 @@ router.post('/register', function(req, res, next) {
 router.get('/recover-password', recaptcha.middleware.render, function(req, res) {
   res.render('pages/recover-password/index', {
     title: 'Forgot Password',
-    captcha:req.recaptcha
+    captcha:req.recaptcha,
+    pageId: 'forgot-password'
   });
 });
 
@@ -256,7 +258,7 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
   if (cb) {
     res.redirect(cb);
   } else {
-    res.redirect('/account/');
+    res.redirect('/');
   }
 });
 
@@ -284,7 +286,7 @@ router.get('/login/facebook', function(req, res, next) {
 // handle the callback after facebook has authenticated the user
 router.get('/login/facebook/callback', function(req, res, next) {
   console.log(req.cookies.redirect);
-  var callbackUrl = (req.cookies && req.cookies.redirect) ? decodeURI(req.cookies.redirect) : '/account/';
+  var callbackUrl = (req.cookies && req.cookies.redirect) ? decodeURI(req.cookies.redirect) : '/';
   // res.redirect(callbackUrl);
   passport.authenticate('facebook', {
     scope : ['email'],
@@ -310,5 +312,5 @@ router.get('/login/twitter/callback',
 
 /* GET Twitter View Page */
 router.get('/twitter', isAuthenticated, function(req, res) {
-  res.render('account');
+  res.redirect('/');
 });

@@ -3,3 +3,46 @@
     padding-top: 0;
   }
 }
+#my-quilts {
+  li {
+    display: block;
+    padding: 0 0 .75em 0;
+  }
+  .icon-lock {
+    position: relative;
+    bottom: -.15em;
+  }
+  .icon-lock,
+  .edit-action {
+    display: inline-block;
+  }
+  .icon-android-close,
+  .edit-input {
+    display: none;
+  }
+  .view-link,
+  .icon-edit {
+    display: inline;
+  }
+  .view-link {
+    padding-left: .2em;
+  }
+  .edit-action {
+    vertical-align: middle;
+    padding: 0 .2em;
+    line-height: 100%;
+    font-size: 1.15em;
+    color: $off-black;
+    background-color: $off-gray;
+  }
+  .edit-mode {
+    .icon-android-close,
+    .edit-input {
+      display: inline-block;
+    }
+    .icon-edit,
+    .view-link {
+      display: none;
+    }
+  }
+}

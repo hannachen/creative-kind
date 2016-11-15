@@ -6061,7 +6061,8 @@ textarea {
   display: none; }
 
 form .input-field {
-  text-align: center; }
+  text-align: center;
+  border-bottom: #ffffff; }
   form .input-field label {
     font-size: 1.5em;
     left: 50%;
@@ -6092,6 +6093,76 @@ form .btn-submit {
   font-size: 1.5em;
   color: #247ba0;
   background-color: #ffffff; }
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px; }
+
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 2em;
+  cursor: pointer; }
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 21px;
+  height: 21px;
+  border: 0;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: none; }
+
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  font-family: 'creative-kind';
+  content: 'C';
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  font-size: 14px;
+  line-height: 0.8;
+  color: #222222;
+  transition: all .2s; }
+
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0); }
+
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1); }
+
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd; }
+
+[type="checkbox"]:disabled:checked + label:after {
+  color: #999; }
+
+[type="checkbox"]:disabled + label {
+  color: #aaa; }
+
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  border: 1px dotted blue; }
+
+/* hover style just for information */
+label:hover:before {
+  border: 1px solid #4778d9 !important; }
 
 .modal-backdrop {
   background-color: rgba(178, 178, 178, 0.75); }
@@ -6228,9 +6299,15 @@ form .btn-submit {
 .drawer-toggle .drawer-toggle,
 .drawer .icon,
 .drawer .drawer-toggle {
+  font-size: 2.25em;
   display: inline-block;
-  font-size: 2.5em;
   vertical-align: middle; }
+  @media (min-width: 544px) {
+    .drawer-toggle .icon,
+    .drawer-toggle .drawer-toggle,
+    .drawer .icon,
+    .drawer .drawer-toggle {
+      font-size: 2.5em; } }
 .drawer-toggle .icon-chevron-left,
 .drawer .icon-chevron-left {
   font-size: 1.8em;
@@ -6239,8 +6316,11 @@ form .btn-submit {
 .drawer-toggle {
   color: #b2b2b2; }
   .drawer-toggle .icon {
-    padding: 0 .25em .1em;
+    padding: .1em .25em;
     line-height: 100%; }
+    @media (min-width: 544px) {
+      .drawer-toggle .icon {
+        padding: 0 .25em .1em; } }
 
 .drawer .drawer-toggle {
   padding: 0 .75em;
@@ -6484,6 +6564,19 @@ form .btn-submit {
 .theme-preview {
   padding-bottom: 2.5em; }
 
+.create-quilt-form .create-quilt-button {
+  margin: 2.5em 0 1em; }
+
+.quilt-name {
+  text-align: center;
+  font-size: 1em; }
+  .quilt-name .quilt-user {
+    display: block;
+    font-size: .75em; }
+
+.invite {
+  margin-top: 1em; }
+
 .patch-container {
   width: 100%;
   max-width: 800px;
@@ -6721,8 +6814,7 @@ form .btn-submit {
 
 #quilt-nav-container {
   margin-left: 0;
-  margin-right: 0;
-  border-bottom: 1px solid #b2b2b2; }
+  margin-right: 0; }
   #quilt-nav-container::after {
     content: "";
     display: table;
@@ -6736,12 +6828,11 @@ form .btn-submit {
   #quilt-nav-container .quilt-nav,
   #quilt-nav-container .quilt-name {
     text-align: center;
-    color: #666666; }
+    color: #222222; }
   #quilt-nav-container .quilt-nav {
     float: left;
     width: 16.66667%;
     display: block;
-    border: 1px solid #b2b2b2;
     border-bottom: 0;
     border-top: 0;
     padding: .4em 0 .1em;
@@ -6814,9 +6905,42 @@ form .btn-submit {
   */ }
   #home .contents {
     padding: 0; }
-  #home .user-menu,
-  #home #quilt-nav-container {
+  #home .user-menu {
     display: none; }
+  #home #quilt-nav-container .quilt-list {
+    width: 100%; }
+  #home #quilt-nav-container .quilt-nav,
+  #home #quilt-nav-container .quilt {
+    display: none; }
+  #home #quilt-nav-container .active {
+    display: block; }
+  #home #quilt-thumbnails-container {
+    width: 100%;
+    height: auto;
+    overflow-x: scroll;
+    padding-left: 15%; }
+    #home #quilt-thumbnails-container #quilt-thumbnails {
+      white-space: nowrap; }
+      #home #quilt-thumbnails-container #quilt-thumbnails::after {
+        content: "";
+        display: table;
+        clear: both; }
+      #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail {
+        display: inline-block;
+        position: relative;
+        width: 25%;
+        padding: 0 0.75em 0.75em 0;
+        box-sizing: border-box; }
+        #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb {
+          display: block;
+          width: 100%;
+          background-color: #247ba0; }
+          #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%; }
+          #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb.new {
+            background-color: #efede6; }
 
 #login-signup {
   color: #ffffff;
@@ -6832,14 +6956,106 @@ form .btn-submit {
     padding: 1em 0; }
     #login-signup .login-signup label,
     #login-signup .login-signup .input-field {
+      color: #ffffff;
+      text-align: left; }
+    #login-signup .login-signup ::-webkit-input-placeholder {
+      color: #ffffff; }
+    #login-signup .login-signup :-moz-placeholder {
+      /* Firefox 18- */
+      color: #ffffff; }
+    #login-signup .login-signup ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: #ffffff; }
+    #login-signup .login-signup :-ms-input-placeholder {
       color: #ffffff; }
     #login-signup .login-signup .input-email {
       border-bottom: 1px solid #ffffff; }
+  #login-signup .signup-form .signup-field {
+    text-align: center; }
+  #login-signup .login-form .user-utils {
+    margin: .5em auto 1.75em;
+    margin-left: -15px;
+    margin-right: -15px; }
+    #login-signup .login-form .user-utils::after {
+      content: "";
+      display: table;
+      clear: both; }
+    #login-signup .login-form .user-utils li {
+      font-size: .85em;
+      position: relative;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+      float: left;
+      width: 50%; }
+      #login-signup .login-form .user-utils li.forgot-password {
+        text-align: right; }
+
+#forgot-password {
+  color: #ffffff;
+  background-color: #F25F5C; }
+  #forgot-password .header-menu {
+    border-bottom: 0; }
+    #forgot-password .header-menu a,
+    #forgot-password .header-menu .icon {
+      color: #ffffff; }
+  #forgot-password .recover-password-form {
+    text-align: center; }
+    #forgot-password .recover-password-form h2 {
+      font-weight: 500; }
+    #forgot-password .recover-password-form label[for=email] {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%); }
+    #forgot-password .recover-password-form ::-webkit-input-placeholder {
+      text-align: center; }
+    #forgot-password .recover-password-form :-moz-placeholder {
+      /* Firefox 18- */
+      text-align: center; }
+    #forgot-password .recover-password-form ::-moz-placeholder {
+      /* Firefox 19+ */
+      text-align: center; }
+    #forgot-password .recover-password-form :-ms-input-placeholder {
+      text-align: center; }
+    #forgot-password .recover-password-form .g-recaptcha {
+      transform: scale(0.96);
+      transform-origin: 0 0; }
+    #forgot-password .recover-password-form .recover-password-button {
+      margin: 1.5em auto; }
 
 #my-squares .contents {
   padding-top: 0; }
 
-#view-quilt .theme-preview {
+#my-quilts li {
+  display: block;
+  padding: 0 0 .75em 0; }
+#my-quilts .icon-lock {
+  position: relative;
+  bottom: -.15em; }
+#my-quilts .icon-lock,
+#my-quilts .edit-action {
+  display: inline-block; }
+#my-quilts .icon-android-close,
+#my-quilts .edit-input {
+  display: none; }
+#my-quilts .view-link,
+#my-quilts .icon-edit {
+  display: inline; }
+#my-quilts .view-link {
+  padding-left: .2em; }
+#my-quilts .edit-action {
+  vertical-align: middle;
+  padding: 0 .2em;
+  line-height: 100%;
+  font-size: 1.15em;
+  color: #222222;
+  background-color: #efede6; }
+#my-quilts .edit-mode .icon-android-close,
+#my-quilts .edit-mode .edit-input {
+  display: inline-block; }
+#my-quilts .edit-mode .icon-edit,
+#my-quilts .edit-mode .view-link {
   display: none; }
 
 #edit-patch .contents {
@@ -6921,7 +7137,7 @@ footer {
   vertical-align: middle;
   text-align: center; }
   .flash:before {
-    font-family: "untitled-font-1" !important;
+    font-family: "creative-kind" !important;
     content: attr(data-icon);
     font-style: normal !important;
     font-weight: normal !important;
@@ -7006,22 +7222,25 @@ form .button-twitter, form .btn-submit {
   .header-menu .title {
     float: left;
     width: 66.66667%;
-    text-align: center;
-    color: #247ba0; }
+    text-align: center; }
     .header-menu .title h1 {
-      margin: .425em 0;
+      margin: .325em 0;
       font-family: "Times New Roman", serif;
       font-style: italic; }
+      @media (min-width: 544px) {
+        .header-menu .title h1 {
+          margin: .425em 0; } }
+      .header-menu .title h1 a {
+        color: #247ba0; }
       .header-menu .title h1 em {
         text-transform: uppercase;
+        font-size: 80%;
         font-family: "Roboto", sans-serif;
         font-style: normal;
-        letter-spacing: .025em; }
+        letter-spacing: .05em; }
     .header-menu .title h2 {
       display: none; }
 
-.quilt-nav,
-.quilt-name,
 .data {
   display: none; }
 

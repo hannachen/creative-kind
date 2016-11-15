@@ -32,8 +32,16 @@ var theme = (function($) {
       var form = e.currentTarget,
           actionUrl = form.getAttribute('action'),
           formData = utils.seralizeObject(form);
-      $.post(actionUrl, formData, function(e) {
-        console.log(e);
+      $.ajax(actionUrl, {
+        type: 'post',
+        data: formData,
+        statusCode: {
+          200: function() {
+          },
+          404: function() {
+            alert( "page not found" );
+          }
+        }
       });
     });
   }

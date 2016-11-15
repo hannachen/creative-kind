@@ -11,8 +11,10 @@ var quiltsList = (function($) {
       $quiltNames = $quiltNavContainer.find('.quilt'),
       $quiltNav = $quiltNavContainer.find('.quilt-nav'),
       $activeQuilt = $quilts.filter('.active').length > 0 ? $quilts.filter('.active') : $quilts.first(),
+      $quiltThumbnailContainer = $('#quilt-thumbnails-container'),
+      $quiltThumbnails = $quiltThumbnailContainer.find('.quilt-thumbnail'),
       breakpoint = utils.breakpoint(window.mobileMq),
-      userData = document.getElementById('user-data'),
+      userData,
       padding = breakpoint === 'mobile' ? 12 : 32,
       quiltGroup,
       dragThreshold = 20, // Threshold in %
@@ -35,18 +37,37 @@ var quiltsList = (function($) {
       initVariables();
       initEvents();
       setupCanvas();
+      setupThumbnails();
     }
+    // if ($('#quilt-thumbnails').length) {
+    //   console.log('test');
+    //   $('#quilt-thumbnails').slick({
+    //     mobileFirst: true,
+    //     infinite: false,
+    //     variableWidth: true
+    //   });
+    // }
     $activeQuilt.addClass('active');
   }
 
   function initVariables() {
 
+    userData = document.getElementById('user-data');
     if (userData) {
       var userDataString = userData.innerHTML.trim();
       if (!_.isEmpty(userDataString)) {
         user = JSON.parse(userDataString);
       }
     }
+  }
+
+  function setupThumbnails() {
+    console.log($quiltThumbnails.length);
+    var thumbnailWidth = $quiltThumbnailContainer.width()/4;
+    $quiltThumbnails.width(thumbnailWidth);
+    console.log($quiltThumbnailContainer);
+    console.log(thumbnailWidth);
+    $quiltThumbnailContainer.find('#quilt-thumbnails').width(thumbnailWidth * $quiltThumbnails.length);
   }
 
   function initEvents() {

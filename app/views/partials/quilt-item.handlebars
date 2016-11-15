@@ -11,10 +11,15 @@
   </div>
 {{/if}}
 
-<h2>{{quilt.title}} [{{quilt.type}}]</h2>
-
-{{#if_eq quilt.type "private"}}
-  <h5>By: {{quilt._user.username}}</h5>
-{{/if_eq}}
+<h2 class="quilt-name {{quilt.type}}">
+  {{quilt.title}}
+  {{#if_eq quilt.type "private"}}
+    <span class="quilt-user">By: {{quilt._user.username}}</span>
+  {{/if_eq}}
+</h2>
 
 {{>theme }}
+
+{{#if_eq user.id quilt._user.id}}
+  {{>invite}}
+{{/if_eq}}

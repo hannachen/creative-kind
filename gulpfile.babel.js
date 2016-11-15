@@ -32,6 +32,7 @@ gulp.task('vendor-styles', function () {
   return gulp.src([
       'bower_components/sanitize-css/sanitize.css',
       'bower_components/bootstrap-drawer/dist/css/bootstrap-drawer.css',
+      'bower_components/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.css',
       'bower_components/slick-carousel/slick/slick.css'
     ])
     .pipe(concat('vendor.min.css'))
@@ -65,6 +66,7 @@ gulp.task('js:vendor', function() {
       'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
       'bower_components/bootstrap-drawer/dist/js/drawer.js',
+      'bower_components/bootstrap-tokenfield/dist/bootstrap-tokenfield.js',
       'bower_components/materialize/js/global.js',
       'bower_components/materialize/js/forms.js',
       'bower_components/slick-carousel/slick/slick.js',

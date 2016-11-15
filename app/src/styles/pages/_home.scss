@@ -2,10 +2,56 @@
   .contents {
     padding: 0;
   }
-  .user-menu,
-  #quilt-nav-container {
+  .user-menu {
     display: none;
   }
+  #quilt-nav-container {
+    .quilt-list {
+      width: 100%;
+    }
+    .quilt-nav,
+    .quilt {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+  }
+  #quilt-thumbnails-container {
+    width: 100%;
+    height: auto;
+    overflow-x: scroll;
+    padding-left: 15%;
+
+    #quilt-thumbnails {
+      white-space: nowrap;
+      @include clearfix();
+
+      .quilt-thumbnail {
+        display: inline-block;
+        position: relative;
+        width: 25%;
+        padding: 0 0.75em 0.75em 0;
+        box-sizing: border-box;
+
+        .thumb {
+          display: block;
+          width: 100%;
+          background-color: $primary-brand-color;
+
+          &:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+          }
+          &.new {
+            background-color: $off-gray;
+          }
+        }
+      }
+    }
+  }
+
   /*
   &.modal-open {
     .modal {

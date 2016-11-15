@@ -1,15 +1,20 @@
 form {
   .input-field {
     text-align: center;
+    border-bottom: $white;
 
     label {
       font-size: 1.5em;
       left: 50%;
       transform: translateX(-50%);
       transform-origin: center center;
+      @include media-breakpoint-up(md) {
+      }
 
       &.active {
         transform: translateX(-50%) translateY(-140%);
+        @include media-breakpoint-up(md) {
+        }
       }
     }
     input[type=email],

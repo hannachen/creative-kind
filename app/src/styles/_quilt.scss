@@ -198,4 +198,19 @@
 .create-quilt-form {
   .create-quilt-field {
   }
+  .create-quilt-button {
+    margin: 2.5em 0 1em;
+  }
+}
+.quilt-name {
+  text-align: center;
+  font-size: 1em;
+
+  .quilt-user {
+    display: block;
+    font-size: .75em;
+  }
+}
+.invite {
+  margin-top: 1em;
 }

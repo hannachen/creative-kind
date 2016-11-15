@@ -18,11 +18,43 @@
     label,
     .input-field {
       color: $white;
+      text-align: left;
+    }
+    ::-webkit-input-placeholder {
+      color: $white;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+      color: $white;
+    }
+    ::-moz-placeholder {  /* Firefox 19+ */
+      color: $white;
+    }
+    :-ms-input-placeholder {
+      color: $white;
     }
     .input-email {
       border-bottom: 1px solid $white;
     }
   }
   .signup-form {
+    .signup-field {
+      text-align: center;
+    }
+  }
+  .login-form {
+    .user-utils {
+      margin: .5em auto 1.75em;
+      @include make-row();
+
+      li {
+        font-size: .85em;
+        @include make-col-ready();
+        @include make-col(6);
+
+        &.forgot-password {
+          text-align: right;
+        }
+      }
+    }
   }
 }

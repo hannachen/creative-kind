@@ -36,7 +36,7 @@ var config = {
       service: 'Mailgun',
       auth: {
         api_key: 'key-ad0790abff28a38aab14bda682df47a1',
-        domain: 'quilting-bee.fpo.website'
+        domain: 'api.mailgun.net/v3/creative-kind.fpo.website'
       }
     }
   },
@@ -53,8 +53,8 @@ var config = {
     nodemailer: {
       service: 'Mailgun',
       auth: {
-        api_key: 'key-29e6f0358d5b5d79c64c4252c5c891ae',
-        domain: 'sandbox54110b86e96f44ceb96aa9b85d4bb923.mailgun.org'
+        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
+        domain: 'api.mailgun.net/v3/creative-kind.fpo.website'
       }
     }
   },
@@ -71,8 +71,8 @@ var config = {
     nodemailer: {
       service: 'Mailgun',
       auth: {
-        api_key: 'key-29e6f0358d5b5d79c64c4252c5c891ae',
-        domain: 'sandbox54110b86e96f44ceb96aa9b85d4bb923.mailgun.org'
+        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
+        domain: 'api.mailgun.net/v3/creative-kind.fpo.website'
       }
     }
   }

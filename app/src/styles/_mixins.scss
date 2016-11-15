@@ -2,3 +2,7 @@
   color: $white;
   background-color: $primary-brand-color;
 }
+@mixin bright-background() {
+  color: $white;
+  background-color: $accent-brand-color;
+}

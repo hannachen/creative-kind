@@ -1,27 +1,29 @@
-{{#if quilt._theme}}
-  <div class="theme-preview">
-    {{#each quilt._theme}}
-      {{#if colors}}
-        <ul class="theme">
-          <li class="theme-name">
-            {{name}}
-          </li>
-          {{#each colors}}
-            <li class="color-set">
-              <ul>
-                {{#each colors}}
-                  <li class="swatch" style="background-color:#{{this}}">&nbsp;</li>
-                {{/each}}
-              </ul>
-            </li>
-          {{/each}}
-        </ul>
-      {{/if}}
-    {{/each}}
-  </div>
+{{#if_eq user.id quilt._user.id}}
+  {{>theme-selector}}
 {{else}}
-  No theme selected.
-  {{#if user}}
-    {{>theme-selector}}
+  {{#if quilt._theme}}
+    <div class="theme-preview">
+      {{#each quilt._theme}}
+        {{#if colors}}
+          <ul class="theme">
+            <li class="theme-name">
+              {{name}}
+            </li>
+            {{#each colors}}
+              <li class="color-set">
+                <ul>
+                  {{#each colors}}
+                    <li class="swatch" style="background-color:#{{this}}">&nbsp;</li>
+                  {{/each}}
+                </ul>
+              </li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      {{/each}}
+    </div>
+  {{else}}
+    No theme selected.
   {{/if}}
-{{/if}}
+{{/if_eq}}
+
