@@ -50,7 +50,12 @@ var quiltsList = (function($) {
     if (userData) {
       var userDataString = userData.innerHTML.trim();
       if (!_.isEmpty(userDataString)) {
-        user = JSON.parse(userDataString);
+        console.log(userDataString);
+        try {
+          user = JSON.parse(userDataString);
+        } catch(e) {
+          user = userDataString;
+        }
       }
     }
   }
@@ -176,7 +181,7 @@ var quiltsList = (function($) {
         slideOffset = parseInt($quiltThumbnailContainer.css('padding-left').replace('px', '')),
         thumbPos = $targetThumbnail.offset().left - $quiltThumbnailSlide.offset().left + slideOffset,
         endPos = slideWidth - winCenter,
-        targetPos = thumbPos - winCenter + $targetThumbnail.width(),
+        targetPos = thumbPos - winCenter + $targetThumbnail.width()/2,
         targetPos = targetPos > 0 ? targetPos : 0,
         targetPos = targetPos > endPos ? endPos : targetPos;
     TweenLite.to($quiltThumbnailContainer.get(0), 0.5, {scrollTo: {x: targetPos}, ease: Expo.easeInOut});
