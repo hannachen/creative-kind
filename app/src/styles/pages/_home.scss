@@ -21,6 +21,7 @@
     width: 100%;
     height: auto;
     overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
     padding-left: 15%;
 
     #quilt-thumbnails {
@@ -34,10 +35,13 @@
         padding: 0 0.75em 0.75em 0;
         box-sizing: border-box;
 
+        &:last-child {
+          padding-right: 0;
+        }
         .thumb {
           display: block;
           width: 100%;
-          background-color: $primary-brand-color;
+          background-color: $off-gray;
 
           &:after {
             content: "";
@@ -46,6 +50,25 @@
           }
           &.new {
             background-color: $off-gray;
+            position: relative;
+
+            &:before {
+              color: $secondary-brand-color;
+              font-family: creative-kind;
+              font-size: 2.5em;
+              content: "D";
+              display: inline-block;
+              line-height: 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translateX(-50%) translateY(-50%);
+            }
+          }
+        }
+        &.active {
+          .thumb {
+            background-color: $primary-brand-color;
           }
         }
       }

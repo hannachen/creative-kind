@@ -70,7 +70,9 @@ gulp.task('js:vendor', function() {
       'bower_components/materialize/js/global.js',
       'bower_components/materialize/js/forms.js',
       'bower_components/slick-carousel/slick/slick.js',
-      'bower_components/gsap/src/uncompressed/TweenMax.js'
+      'bower_components/gsap/src/uncompressed/TweenLite.js',
+      'bower_components/gsap/src/uncompressed/plugins/ScrollToPlugin.js',
+      'bower_components/gsap/src/uncompressed/easing/EasePack.js'
     ])
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.min.js'))

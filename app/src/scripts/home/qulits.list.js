@@ -12,7 +12,9 @@ var quiltsList = (function($) {
       $quiltNav = $quiltNavContainer.find('.quilt-nav'),
       $activeQuilt = $quilts.filter('.active').length > 0 ? $quilts.filter('.active') : $quilts.first(),
       $quiltThumbnailContainer = $('#quilt-thumbnails-container'),
-      $quiltThumbnails = $quiltThumbnailContainer.find('.quilt-thumbnail'),
+      $quiltThumbnailSlide = $quiltThumbnailContainer.find('#quilt-thumbnails'),
+      $quiltThumbnails = $quiltThumbnailSlide.children(),
+      $quiltLinks = $quiltThumbnails.filter(':not(.new)'),
       breakpoint = utils.breakpoint(window.mobileMq),
       userData,
       padding = breakpoint === 'mobile' ? 12 : 32,
@@ -37,16 +39,8 @@ var quiltsList = (function($) {
       initVariables();
       initEvents();
       setupCanvas();
-      setupThumbnails();
+      resizeThumbnails();
     }
-    // if ($('#quilt-thumbnails').length) {
-    //   console.log('test');
-    //   $('#quilt-thumbnails').slick({
-    //     mobileFirst: true,
-    //     infinite: false,
-    //     variableWidth: true
-    //   });
-    // }
     $activeQuilt.addClass('active');
   }
 
@@ -61,17 +55,17 @@ var quiltsList = (function($) {
     }
   }
 
-  function setupThumbnails() {
-    console.log($quiltThumbnails.length);
+  function resizeThumbnails() {
     var thumbnailWidth = $quiltThumbnailContainer.width()/4;
     $quiltThumbnails.width(thumbnailWidth);
-    console.log($quiltThumbnailContainer);
-    console.log(thumbnailWidth);
-    $quiltThumbnailContainer.find('#quilt-thumbnails').width(thumbnailWidth * $quiltThumbnails.length);
+    $quiltThumbnailSlide.width(thumbnailWidth * $quiltThumbnails.length);
+    console.log('Thumbnails', $quiltThumbnails.length);
+    console.log('Thumbnail Width', thumbnailWidth);
   }
 
   function initEvents() {
-    $document.on('scroll.canvas', scrollCanvas);
+    $quiltLinks.find('a').on('click', onThumbClick);
+    $document.on('scroll.canvas', onScrollCanvas);
     $document.on('click-patch', function(e) {
       console.log('click');
       if (dragging) {
@@ -144,6 +138,12 @@ var quiltsList = (function($) {
     }
   }
 
+  function onThumbClick(e) {
+    e.preventDefault();
+    var index = e.currentTarget.getAttribute('data-index');
+    jumpToIndex(index);
+  }
+
   function onNavClick(e) {
     e.preventDefault();
     var $target = $(e.currentTarget),
@@ -153,15 +153,33 @@ var quiltsList = (function($) {
     } else {
       goToPrevIndex();
     }
-    setActiveName(currentQuiltIndex);
   }
 
   function setActiveName(index) {
     var currentQuiltIndex = index || 0;
     $quiltNames.removeClass('active');
-    var setActive = $quiltNames.filter(':eq('+currentQuiltIndex+')');
-    setActive.addClass('active');
+    $quiltNames.filter(':eq('+currentQuiltIndex+')').addClass('active');
     setButtonState();
+  }
+
+  function setActiveThumbnail(index) {
+    var currentQuiltIndex = index || 0;
+    $quiltThumbnails.removeClass('active');
+    $quiltLinks.filter(':eq('+currentQuiltIndex+')').addClass('active');
+    scrollToThumbnail(index);
+  }
+
+  function scrollToThumbnail(index) {
+    var $targetThumbnail = $quiltThumbnails.find('[data-index='+index+']'),
+        winCenter = window.innerWidth/2,
+        slideWidth = $quiltThumbnailSlide.width(),
+        slideOffset = parseInt($quiltThumbnailContainer.css('padding-left').replace('px', '')),
+        thumbPos = $targetThumbnail.offset().left - $quiltThumbnailSlide.offset().left + slideOffset,
+        endPos = slideWidth - winCenter,
+        targetPos = thumbPos - winCenter + $targetThumbnail.width(),
+        targetPos = targetPos > 0 ? targetPos : 0,
+        targetPos = targetPos > endPos ? endPos : targetPos;
+    TweenLite.to($quiltThumbnailContainer.get(0), 0.5, {scrollTo: {x: targetPos}, ease: Expo.easeInOut});
   }
 
   function setButtonState() {
@@ -262,8 +280,7 @@ var quiltsList = (function($) {
     jumpToIndex(targetIndex, true);
   }
 
-  function scrollCanvas(e) {
-    setActiveName(e.index);
+  function onScrollCanvas(e) {
   }
 
   function jumpToIndex(index, scroll) {
@@ -276,32 +293,14 @@ var quiltsList = (function($) {
     quiltGroup.scale = scale;
     quiltGroup.pivot = new Point(quiltGroup.bounds.x - padding, quiltGroup.bounds.y);
 
+    setActiveName(index);
+    setActiveThumbnail(index);
+
     if (scroll) {
-      TweenMax.to(quiltGroup.position, 0.5, {x: targetPos, ease: Expo.easeInOut});
+      TweenLite.to(quiltGroup.position, 0.5, {x: targetPos, ease: Expo.easeInOut});
     } else {
       quiltGroup.position.x = targetPos;
     }
-  }
-
-  /**
-   * Find out the type of a paper item.
-   *
-   * @param {paper.Item} item
-   * @returns {string}
-   */
-  function getItemType(item) {
-    var itemType = '';
-    // console.log(item.className);
-    switch (item.className) {
-      case 'Shape':
-        itemType = item.type;
-        break;
-      case 'Path':
-        itemType = item.className.toLowerCase();
-        break;
-      default:
-    }
-    return itemType;
   }
 
   function fitToContainer(item, i) {
@@ -329,6 +328,7 @@ var quiltsList = (function($) {
   function onResize(e) {
     e.preventDefault();
     setViewport();
+    resizeThumbnails();
     _.forEach(quilts, function(quilt, i) {
       fitToContainer(quilt, i);
     });

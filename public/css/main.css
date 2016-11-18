@@ -6918,6 +6918,7 @@ label:hover:before {
     width: 100%;
     height: auto;
     overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
     padding-left: 15%; }
     #home #quilt-thumbnails-container #quilt-thumbnails {
       white-space: nowrap; }
@@ -6931,16 +6932,32 @@ label:hover:before {
         width: 25%;
         padding: 0 0.75em 0.75em 0;
         box-sizing: border-box; }
+        #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail:last-child {
+          padding-right: 0; }
         #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb {
           display: block;
           width: 100%;
-          background-color: #247ba0; }
+          background-color: #efede6; }
           #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb:after {
             content: "";
             display: block;
             padding-bottom: 100%; }
           #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb.new {
-            background-color: #efede6; }
+            background-color: #efede6;
+            position: relative; }
+            #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail .thumb.new:before {
+              color: #9bd5d0;
+              font-family: creative-kind;
+              font-size: 2.5em;
+              content: "D";
+              display: inline-block;
+              line-height: 100%;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translateX(-50%) translateY(-50%); }
+        #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail.active .thumb {
+          background-color: #247ba0; }
 
 #login-signup {
   color: #ffffff;

@@ -34,11 +34,11 @@
 
 <div id="quilt-thumbnails-container">
   <ul id="quilt-thumbnails">
-    <li class="quilt-thumbnail">
+    <li class="quilt-thumbnail new">
       <a href="{{#if user}}/quilts/create{{else}}/login-signup/#login{{/if}}" class="thumb new" data-index="-1" data-title="New"></a>
     </li>
     {{#each quilts}}
-      <li class="quilt-thumbnail">
+      <li class="quilt-thumbnail{{#if_eq @index 0}} active{{/if_eq}}">
         <a href="/quilts/view/{{id}}" class="thumb" data-index="{{@index}}" data-quilt-id="{{id}}" data-title="{{title}}"></a>
       </li>
     {{/each}}
