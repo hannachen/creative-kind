@@ -41,7 +41,12 @@ var quiltCanvas = (function($) {
     if (userData) {
       var userDataString = userData.innerHTML.trim();
       if (!_.isEmpty(userDataString)) {
-        user = JSON.parse(userDataString);
+        console.log(userDataString);
+        try {
+          user = JSON.parse(userDataString);
+        } catch(e) {
+          user = userDataString;
+        }
       }
     }
   }

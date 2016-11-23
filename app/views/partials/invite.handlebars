@@ -1,6 +1,11 @@
 {{#if user}}
   <div class="invite">
+
+    <label for="message-field" class="message-label">Message</label>
+    <textarea placeholder="Enter a message" id="message-field" name="message"></textarea>
+
     <label for="invite-field" class="invite-label">Invite Friends</label>
-    <input type="text" class="invite-field" id="invite-field" name="invites">
+    <input type="text" class="invite-field" placeholder="Email" id="invite-field" name="invites" />
+
   </div>
 {{/if}}

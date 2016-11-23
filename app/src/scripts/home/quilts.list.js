@@ -50,7 +50,6 @@ var quiltsList = (function($) {
     if (userData) {
       var userDataString = userData.innerHTML.trim();
       if (!_.isEmpty(userDataString)) {
-        console.log(userDataString);
         try {
           user = JSON.parse(userDataString);
         } catch(e) {
@@ -61,9 +60,10 @@ var quiltsList = (function($) {
   }
 
   function resizeThumbnails() {
-    var thumbnailWidth = $quiltThumbnailContainer.width()/4;
+    var thumbnailWidth = $quiltThumbnailContainer.width()/4,
+        offset = 15;
     $quiltThumbnails.width(thumbnailWidth);
-    $quiltThumbnailSlide.width(thumbnailWidth * $quiltThumbnails.length);
+    $quiltThumbnailSlide.width(thumbnailWidth * $quiltThumbnails.length + offset);
     console.log('Thumbnails', $quiltThumbnails.length);
     console.log('Thumbnail Width', thumbnailWidth);
   }
@@ -71,41 +71,42 @@ var quiltsList = (function($) {
   function initEvents() {
     $quiltLinks.find('a').on('click', onThumbClick);
     $document.on('scroll.canvas', onScrollCanvas);
-    $document.on('click-patch', function(e) {
-      console.log('click');
-      if (dragging) {
-        return false;
-      }
-      var patchData = e.patch,
-          targetUrl = '/quilts/view/' + patchData.quilt + '/' + patchData.uid;
+    $document.on('click-patch', onPatchClick);
+  }
 
-      if (_.isEmpty(user)) {
-        if (patchData.status === 'new') {
-          view.emit('onMouseUp');
-          // Add cb to buttons
-          $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
-          $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
-          $loginModal.modal('show');
-        }
-      } else {
-        if (patchData.status === 'mine') {
-          targetUrl = '/patch/edit/' + patchData.uid;
-          window.location.href = targetUrl;
-        } else if (patchData.status === 'new') {
-          if (myPatch.length) {
-            $alertModal.modal('show');
-          } else {
-            // $confirmationButton.attr('href', targetUrl);
-            targetUrl = '/patch/start/' + patchData.uid;
-            $confirmationModal.modal('show');
-            $donationModal.find('.btn-secondary').on('click', function() {
-              window.location.href = targetUrl;
-            });
-          }
-          view.emit('onMouseUp');
-        }
+  function onPatchClick(e) {
+    if (dragging) {
+      return false;
+    }
+    var patchData = e.patch,
+        targetUrl = '/quilts/view/' + patchData.quilt + '/' + patchData.uid;
+
+    if (_.isEmpty(user)) {
+      if (patchData.status === 'new') {
+        view.emit('onMouseUp');
+        // Add cb to buttons
+        $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
+        $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
+        $loginModal.modal('show');
       }
-    });
+    } else {
+      if (patchData.status === 'mine') {
+        targetUrl = '/patch/edit/' + patchData.uid;
+        window.location.href = targetUrl;
+      } else if (patchData.status === 'new') {
+        if (myPatch.length) {
+          $alertModal.modal('show');
+        } else {
+          // $confirmationButton.attr('href', targetUrl);
+          targetUrl = '/patch/start/' + patchData.uid;
+          $confirmationModal.modal('show');
+          $donationModal.find('.btn-secondary').on('click', function () {
+            window.location.href = targetUrl;
+          });
+        }
+        view.emit('onMouseUp');
+      }
+    }
   }
 
   function setupCanvas() {
@@ -179,7 +180,8 @@ var quiltsList = (function($) {
         winCenter = window.innerWidth/2,
         slideWidth = $quiltThumbnailSlide.width(),
         slideOffset = parseInt($quiltThumbnailContainer.css('padding-left').replace('px', '')),
-        thumbPos = $targetThumbnail.offset().left - $quiltThumbnailSlide.offset().left + slideOffset,
+        slideMargin = parseInt($('.contents').css('margin-left').replace('px', '')),
+        thumbPos = $targetThumbnail.offset().left - $quiltThumbnailSlide.offset().left + slideOffset + slideMargin,
         endPos = slideWidth - winCenter,
         targetPos = thumbPos - winCenter + $targetThumbnail.width()/2,
         targetPos = targetPos > 0 ? targetPos : 0,
@@ -211,7 +213,7 @@ var quiltsList = (function($) {
         dragStartQuiltPos = quilts[0].position;
       };
       // Reset starting position on mouse up
-      view.onMouseUp = function() {
+      view.onMouseUp = function(e) {
         dragging = false;
         var dragDistance = quilts[0].position.x - dragStartQuiltPos.x,
             dragThresholdValue = (quilts[0].bounds.width / 100) * dragThreshold,
@@ -232,13 +234,19 @@ var quiltsList = (function($) {
           } else {
             if (currentQuiltIndex - 1 < 0) {
               currentQuiltIndex = 0;
+              if (!_.isEmpty(user)) {
+                window.location.href = '/quilts/create';
+              }
             } else {
               currentQuiltIndex--;
               scroll = true;
             }
           }
         }
-        scrollToIndex(currentQuiltIndex);
+        scrollToIndex(currentQuiltIndex); // Bounce back to current quilt
+        if (dragStartMousePos.x != e.point.x || dragStartMousePos.y != e.point.y) {
+          return false; // Prevent event from bubbling up
+        }
         if (scroll) {
           $document.trigger({
             type: 'scroll.canvas',
@@ -251,7 +259,9 @@ var quiltsList = (function($) {
         dragStartQuiltPos = null;
       };
       view.onMouseDrag = function(e) {
-        quiltGroup.position.x += e.delta.x;
+        window.requestAnimationFrame(function() {
+          quiltGroup.position.x += e.delta.x;
+        });
       };
     }
   }
@@ -285,6 +295,7 @@ var quiltsList = (function($) {
     jumpToIndex(targetIndex, true);
   }
 
+  // Hook for canvas carousel scroll event
   function onScrollCanvas(e) {
   }
 
@@ -306,6 +317,7 @@ var quiltsList = (function($) {
     } else {
       quiltGroup.position.x = targetPos;
     }
+    currentQuiltIndex = index;
   }
 
   function fitToContainer(item, i) {
@@ -316,7 +328,6 @@ var quiltsList = (function($) {
         scale = newWidth / width,
         newPosX = newWidth * index + newWidth / 2 + offset * 2 + padding;
 
-    console.log(offset);
     item.scale(scale);
     item.position = [newPosX, item.bounds.height / 2 + padding];
     // Last quilt item

@@ -15,10 +15,12 @@ var config = {
     db: 'mongodb://localhost/quilting-bee',
     secret: secretKey,
     nodemailer: {
-      service: 'Mailgun',
+      service: 'Smtp',
+      host: 'mailtrap.io',
+      port: 2525,
       auth: {
-        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
-        domain: 'sandbox5ddedd142de24091b958d347bad4d895.mailgun.org'
+        user: 'ff27f37f3e2377',
+        pass: '89d93467781621'
       }
     }
   },

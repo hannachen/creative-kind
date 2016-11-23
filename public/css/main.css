@@ -6314,7 +6314,7 @@ label:hover:before {
   margin-top: 5px; }
 
 .drawer-toggle {
-  color: #b2b2b2; }
+  color: #565656; }
   .drawer-toggle .icon {
     padding: .1em .25em;
     line-height: 100%; }
@@ -6869,6 +6869,23 @@ label:hover:before {
     #quilt-nav-container .active .quilt-name {
       padding: 0 1em; }
 
+.invite .tokenfield .token {
+  padding: .2em;
+  padding-left: 0;
+  height: 34px;
+  display: block;
+  white-space: nowrap; }
+  .invite .tokenfield .token .token-label {
+    vertical-align: middle; }
+  .invite .tokenfield .token .close {
+    font-size: 1.5em;
+    line-height: 1.2em;
+    float: left; }
+.invite .tokenfield.invalid:after {
+  color: red;
+  content: 'Invalid Email';
+  font-size: .75rem; }
+
 #home {
   /*
   &.modal-open {
@@ -7204,6 +7221,10 @@ form .button-twitter, form .btn-submit {
 @media (min-width: 768px) {
   .contents {
     padding: 0 5% 5%; } }
+
+.contents,
+.header-menu {
+  overflow-x: hidden; }
 
 .header-menu {
   margin-left: auto;

@@ -26,6 +26,7 @@
     "nodemailer": "^2.6.4",
     "nodemailer-express-handlebars": "^2.0.0",
     "nodemailer-mailgun-transport": "^1.2.2",
+    "nodemailer-smtp-transport": "^2.7.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",

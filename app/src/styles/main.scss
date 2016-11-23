@@ -29,6 +29,7 @@
 @import "./quilt";
 @import "./patch";
 @import "./modules/quilt-nav";
+@import "./modules/invite";
 @import "./pages/home";
 @import "./pages/login-signup";
 @import "./pages/forgot-password";
@@ -159,6 +160,10 @@ footer {
   @include media-breakpoint-up(md) {
     padding: 0 5% 5%;
   }
+}
+.contents,
+.header-menu {
+  overflow-x: hidden;
 }
 .header-menu {
   @include make-container(0);

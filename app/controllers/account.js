@@ -163,6 +163,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
             actionType: 'ViewAction',
             actionLabel: 'Reset Password',
             actionDesc: 'Reset your password.',
+            name: user.username,
             cta : 'http://' + req.headers.host + '/account/reset/?' + url
           }
         };

@@ -1,0 +1,27 @@
+.invite {
+  .tokenfield {
+    .token {
+      padding: .2em;
+      padding-left: 0;
+      height: 34px;
+      display: block;
+      white-space: nowrap;
+
+      .token-label {
+        vertical-align: middle;
+      }
+      .close {
+        font-size: 1.5em;
+        line-height: 1.2em;
+        float: left;
+      }
+    }
+    &.invalid {
+      &:after {
+        color: red;
+        content: 'Invalid Email';
+        font-size: .75rem;
+      }
+    }
+  }
+}

@@ -3,7 +3,6 @@ var patch = (function($) {
 
   var containerEl = document.getElementById('canvas-container'),
       canvasArea = document.getElementById('coloring-area'),
-      patchData = [],
       colorIndexData = [],
       selectedItems = [],
       colorSet = [],
@@ -26,18 +25,11 @@ var patch = (function($) {
     paper.setup('coloring-area');
 
     // Read save data
-    var colorDataString = $saveData.find('.color-data').text().trim(),
-        colorIndexDataString = $saveData.find('.color-index-data').text().trim();
-
-    // Convert save data string into arrays
-    if (colorDataString) {
-      patchData = colorDataString.split(',');
-    }
-
-    console.log('data count', patchData.length);
+    var colorIndexDataString = $saveData.find('.color-index-data').text().trim();
     if (colorIndexDataString) {
       colorIndexData = colorIndexDataString.split(',');
     }
+    console.log('data string', colorIndexDataString);
 
     // Add grid SVG
     project.importSVG('/img/grid-1.svg', {
@@ -135,9 +127,10 @@ var patch = (function($) {
     $colorButtons.on('touchstart click', applyColor);
     $applyColorButton.on('touchstart click', clearSelected);
     $colorPalette.on('changeSet', function(e) {
-      console.log('changeset');
+      console.log('changeset', $paletteSelectons.filter(':checked').val());
       // Update color set
       colorSet = e.colorData;
+      console.log('colourSet', colorSet);
       selectedSet.value = $paletteSelectons.filter(':checked').val();
       _.forEach(colourAreas, setColor);
       view.draw();
@@ -145,19 +138,18 @@ var patch = (function($) {
   }
 
   function setColor(shapeArea, i) {
-    console.log(shapeArea.data.colorIndex);
+    console.log('shape area', shapeArea);
+    console.log('setting colour...', shapeArea.data.colorIndex);
     console.log(colorSet[shapeArea.data.colorIndex]);
+    console.log('color index data', colorIndexData[i]);
     if (shapeArea === undefined) {
       return;
     }
-    if (patchData[i] &&
-        (colorIndexData[i] !== null ||
-        colorIndexData[i] === undefined)) {
-
+    if (colorIndexData[i] !== null || colorIndexData[i] === undefined) {
       var currentColor = shapeArea.fillColor.toCSS(true), // Convert Paper.js Color object into hex
           newColor = colorSet[shapeArea.data.colorIndex];
-      // console.log('current:', currentColor);
-      // console.log('new:', newColor);
+      console.log('current:', currentColor);
+      console.log('new:', newColor);
       if (newColor && newColor !== currentColor) {
         shapeArea.fillColor = newColor;
       }
@@ -175,14 +167,14 @@ var patch = (function($) {
       selectedItem.fillColor = colorToApply;
       selectedItem.fillColor.alpha = selectedAlpha;
       selectedItem.data.colorIndex = colorIndex;
+
+      console.log('apply color', colorToApply);
     });
 
     // Clear palette if only one area is selected
     if (selectedItems.length <= 1) {
       clearSelected();
     }
-
-    console.log('colorindex', colorIndex);
     view.draw();
   }
 
@@ -229,6 +221,7 @@ var patch = (function($) {
   function initFormActions() {
     console.log('starting form action listeners....');
     var $actionsForm = $('#formActions');
+    // Prevent default form behaviour
     $actionsForm.on('submit', function(e) {
       e.preventDefault();
     });

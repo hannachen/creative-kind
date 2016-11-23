@@ -35,6 +35,7 @@ var colors = (function($) {
     $paletteColors.each(function(i) {
       var $color = $(this),
           newColor = $swatches.eq(i).data('hex');
+      console.log('COLOR SET UPDATE', $color);
       $color.attr('data-color', newColor); // Using jQuery 'attr' to set the data instead of data() to prevent value caching
       $color.css('background-color', newColor);
       colorData.push(newColor);
