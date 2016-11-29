@@ -4,6 +4,18 @@ var path = require('path'),
 // var secretKey = process.env.QUILTING_BEE_SECRET_KEY;
 var secretKey = process.env.SECRET_KEY || '3BxR7DFG9Hm4';
 
+/*
+nodemailer: {
+  service: 'Smtp',
+    host: 'mailtrap.io',
+    port: 2525,
+    auth: {
+    user: 'ff27f37f3e2377',
+      pass: '89d93467781621'
+  }
+}
+*/
+
 var config = {
   development: {
     root: rootPath,
@@ -15,12 +27,10 @@ var config = {
     db: 'mongodb://localhost/quilting-bee',
     secret: secretKey,
     nodemailer: {
-      service: 'Smtp',
-      host: 'mailtrap.io',
-      port: 2525,
+      service: 'Mailgun',
       auth: {
-        user: 'ff27f37f3e2377',
-        pass: '89d93467781621'
+        api_key: 'key-ad0790abff28a38aab14bda682df47a1',
+        domain: 'sandbox5ddedd142de24091b958d347bad4d895.mailgun.org'
       }
     }
   },

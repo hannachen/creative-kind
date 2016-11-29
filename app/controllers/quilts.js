@@ -13,8 +13,6 @@ var _ = require('lodash'),
     smtpTransport = require('nodemailer-smtp-transport'),
     hbs = require('nodemailer-express-handlebars');
 
-var env = process.env.NODE_ENV || 'development';
-
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
   // Passport adds this method to request object. A middleware is allowed to add properties to
@@ -129,46 +127,73 @@ router.post('/create', isAuthenticated, function (req, res, next) {
     'invites': req.body.invites,
     'type': req.body.type
   };
-  var invites = [];
-  if (quiltData.invites) {
-    var emails = quiltData.invites.split(',');
-    _.forEach(emails, function(email) {
-      invites.push(email);
-    });
-  }
-  var transport = env === 'development' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
-  var mailTransport = nodemailer.createTransport(transport);
-  var templateOptions = {
-    viewEngine: {
-      layoutsDir: 'app/views/email/',
-      defaultLayout : 'template',
-      partialsDir : 'app/views/partials/'
-    },
-    viewPath: 'app/views/email/'
-  };
-  mailTransport.use('compile', hbs(templateOptions));
-  var mailOptions = {
-    to: invites,
-    from: 'invite@quilting-bee.com',
-    subject: 'You\'ve been invited',
-    'h:Reply-To': 'local@localhost',
-    template: 'email.body.invite',
-    context: {
-      name: req.user.username,
-      message: req.body.message,
-      cta : 'http://' + req.headers.host + '/signup/?'
-    }
-  };
-  mailTransport.sendMail(mailOptions, function(err) {
-    if (err) {
-      console.log(err);
-    }
-    if (err) return next(err);
-    mailTransport.close();
-    req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
-  });
+  // create a new quilt
   console.log('creating quilt');
-  res.json({ postData: quiltData });
+  var newQuilt = new Quilt(quiltData);
+  newQuilt.save(function(err, quilt) {
+    if (err) throw err;
+    console.log('Quilt saved successfully!');
+    if (quilt) { // Add patches
+      for (var i=0; i<totalPatch; i++) {
+        var patchData = {
+          'uid': uuid.v1(),
+          '_quilt': quilt.id,
+          '_user': null,
+          'colors': [],
+          'status': 'new',
+          'theme': ''
+        };
+        var patch = new Patch(patchData);
+        patch.save(function(err) {
+          if (err) throw err;
+          console.log('patch saved.');
+        });
+      }
+      var invites = {};
+      if (quiltData.invites) {
+        var emails = quiltData.invites.split(',');
+        _.forEach(emails, function(email) {
+          email = email.trim();
+          invites[email]  = { 'testString': '123' };
+        });
+      }
+      var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
+      var mailTransport = nodemailer.createTransport(transport);
+      var templateOptions = {
+        viewEngine: {
+          layoutsDir: 'app/views/email/',
+          defaultLayout : 'template',
+          partialsDir : 'app/views/partials/'
+        },
+        viewPath: 'app/views/email/'
+      };
+      mailTransport.use('compile', hbs(templateOptions));
+      var mailOptions = {
+        to: emails,
+        from: 'invite@quilting-bee.com',
+        subject: 'You\'ve been invited',
+        'h:Reply-To': 'local@localhost',
+        template: 'email.body.invite',
+        'recipient-variables': invites,
+        'X-Mailgun-Recipient-Variables': invites,
+        context: {
+          name: req.user.username,
+          message: req.body.message,
+          cta : 'http://' + req.headers.host + '/signup/?'
+        }
+      };
+      mailTransport.sendMail(mailOptions, function(err) {
+        if (err) {
+          console.log(err);
+        }
+        if (err) return next(err);
+        mailTransport.close();
+        req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
+        // res.redirect('/account');
+        res.json({ postData: quiltData });
+      });
+    }
+  });
 });
 
 router.post('/rename/:id', isAuthenticated, function (req, res, next) {
