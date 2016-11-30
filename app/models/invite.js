@@ -12,4 +12,6 @@ InviteSchema.virtual('date')
     return this._id.getTimestamp();
   });
 
+InviteSchema.index({ _user: 1, _quilt: 1, recipient: 1}, { unique: true });
+
 mongoose.model('Invite', InviteSchema);

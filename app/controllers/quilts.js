@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
+    Invite = mongoose.model('Invite'),
     Quilt = mongoose.model('Quilt'),
     Patch = mongoose.model('Patch'),
     Theme = mongoose.model('Theme'),
@@ -119,16 +120,44 @@ router.get('/create', isAuthenticated, function (req, res, next) {
     });
 });
 
+function onInsert(err, docs) {
+  if (err) {
+    if (err) throw err;
+  } else {
+    console.info('%d potatoes were successfully stored.', docs.length);
+  }
+}
+
 router.post('/create', isAuthenticated, function (req, res, next) {
   var quiltData = {
     '_user': req.user.id,
     '_theme': req.body.theme,
     'title': req.body.title,
-    'invites': req.body.invites,
     'type': req.body.type
   };
   // create a new quilt
   console.log('creating quilt');
+  // if (invites.length) {
+  //   var inviteData = invites.map(function(inputData) {
+  //         var returnData = {
+  //           '_user': req.user,
+  //           '_quilt': '123',
+  //           'recipient': inputData
+  //         };
+  //         return returnData;
+  //       });
+  //   console.log('RETURN DATA ---', returnData);
+  //   Invite.insertMany(inviteData)
+  //     .then(function(docs) {
+  //       // do something with docs
+  //       console.log('DOCS**', docs);
+  //     })
+  //     .catch(function(err) {
+  //       // error handling here
+  //       if (err) throw err;
+  //     });
+  // }
+
   var newQuilt = new Quilt(quiltData);
   newQuilt.save(function(err, quilt) {
     if (err) throw err;
@@ -149,12 +178,29 @@ router.post('/create', isAuthenticated, function (req, res, next) {
           console.log('patch saved.');
         });
       }
-      var invites = {};
-      if (quiltData.invites) {
-        var emails = quiltData.invites.split(',');
+
+      // Handle invites
+      var invites = req.body.invites ? req.body.invites.split(',') : {};
+      if (invites.length) {
+        var inviteData = {
+          '_user': req.user,
+          '_quilt': '571edd9fe84b406c7b2b4814'
+        };
+        _.forEach(invites, function (invite) {
+          inviteData.recipient = invite.trim();
+          var newInvite = new Invite(inviteData);
+          newInvite.save(function (err, invite) {
+            console.log('SAVED**', invite);
+            // if (err) throw err;
+          });
+        });
+      }
+      var invitesVariables = {};
+      if (inviteData) {
+        var emails = inviteData.split(',');
         _.forEach(emails, function(email) {
           email = email.trim();
-          invites[email]  = { 'testString': '123' };
+          invitesVariables[email]  = { 'testString': '123' };
         });
       }
       var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
@@ -174,8 +220,8 @@ router.post('/create', isAuthenticated, function (req, res, next) {
         subject: 'You\'ve been invited',
         'h:Reply-To': 'local@localhost',
         template: 'email.body.invite',
-        'recipient-variables': invites,
-        'X-Mailgun-Recipient-Variables': invites,
+        'recipient-variables': invitesVariables,
+        'X-Mailgun-Recipient-Variables': invitesVariables,
         context: {
           name: req.user.username,
           message: req.body.message,
@@ -194,6 +240,7 @@ router.post('/create', isAuthenticated, function (req, res, next) {
       });
     }
   });
+  res.json({ postData: 'asdf' });
 });
 
 router.post('/rename/:id', isAuthenticated, function (req, res, next) {
