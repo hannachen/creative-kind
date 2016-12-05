@@ -171,7 +171,7 @@ footer {
   border-bottom: 1px solid $gray;
 
   .row {
-    @include make-row(0);
+    @include make-row($no-grid-gutter-widths);
   }
   .col {
     @include make-col-ready();

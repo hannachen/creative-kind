@@ -34,7 +34,7 @@ router.get('/', function (req, res, next) {
       });
 
       res.render('index', {
-        title: 'Creative KIND ' + req.config.nodemailer.service,
+        title: 'Creative KIND',
         quilts: quilts,
         pageId: 'home'
       });

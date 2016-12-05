@@ -154,12 +154,32 @@
     }
   }
 }
+#submit-patch-modal {
+  .btn-cancel {
+    float: left;
+  }
+}
 #flash-modal {
   width: 80%;
   margin: 0 auto;
 
   .modal-body {
     padding: 2em 1em;
+  }
+  .modal-footer {
+    .patch-actions {
+      margin: 0;
+      li {
+        line-height: 100%;
+      }
+      .shares {
+        margin: 1em 0;
+      }
+      .btn {
+        width: 100%;
+        border-top: 1px solid $gray;
+      }
+    }
   }
 }
 #alert-modal {

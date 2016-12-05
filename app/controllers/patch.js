@@ -129,7 +129,7 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
               break;
             case 'complete':
               req.flash('success', 'Thanks for contributing!');
-              url = '/quilts/view/'+patch._quilt;
+              url = '/patch/view/'+patch.uid;
               break;
           }
           console.log('URL', url);
@@ -157,9 +157,43 @@ router.get('/start/:uid*', isAuthenticated, function (req, res, next) {
     });
 });
 
+router.get('/download/:uid/:type?', function (req, res, next) {
+  var allowedTypes = ['png']; // Only allow PNG for now
+  if (allowedTypes.indexOf(req.params.type) < 0) {
+    req.params.type = 'png'; // Default to PNG
+  }
+  Patch.findOne({'uid':req.params.uid })
+    .exec(function (err, patch) {
+      if (err) return next(err);
+
+      // switch(req.params.type) {
+      //   case 'png':
+      //   default:
+      // }
+
+      var filename = patch.uid + '.' + req.params.type,
+          filePath = req.config.root + '/public/patches/' + filename;
+
+      // Check if file exists
+      fs.access(filePath, function(err) {
+
+        // Create file
+        if (err && err.code === 'ENOENT') {
+          fs.readFile('/patch/svg/')
+            .then(svg2png)
+            .then(buffer => fs.writeFile(filePath, buffer))
+            .catch(e => console.error(e));
+        }
+
+        // Force download if incoming action is download
+        // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+        res.setHeader('content-type', 'image/png; charset=utf-8');
+        res.sendFile(filePath);
+      });
+    });
+});
 
 router.get('/svg/:uid', function (req, res, next) {
-  res.setHeader('content-type', 'image/svg+xml; charset=utf-8');
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
       if (err) return next(err);
@@ -172,6 +206,7 @@ router.get('/svg/:uid', function (req, res, next) {
           colors.push('#828282');
         }
       }
+      res.setHeader('content-type', 'image/svg+xml; charset=utf-8');
       res.render('partials/svg/patch', {
         title: 'View Patch',
         layout: 'svg',

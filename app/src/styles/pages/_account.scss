@@ -13,11 +13,14 @@
     bottom: -.15em;
   }
   .icon-lock,
-  .edit-action {
+  .icon-trash,
+  .edit-action,
+  .delete-action {
     display: inline-block;
   }
   .icon-android-close,
-  .edit-input {
+  .edit-input,
+  .delete-action {
     display: none;
   }
   .view-link,
@@ -27,7 +30,8 @@
   .view-link {
     padding-left: .2em;
   }
-  .edit-action {
+  .edit-action,
+  .delete-action {
     vertical-align: middle;
     padding: 0 .2em;
     line-height: 100%;
@@ -35,8 +39,18 @@
     color: $off-black;
     background-color: $off-gray;
   }
+  .delete-action {
+    height: 1.5em;
+    padding: 0 .25em;
+
+    .icon {
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+  }
   .edit-mode {
     .icon-android-close,
+    .delete-action,
     .edit-input {
       display: inline-block;
     }

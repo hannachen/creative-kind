@@ -1,27 +1,28 @@
 'use strict';
-var Quilt = (function(svg, quiltId, quiltData) {
+var Quilt = function(svg, quiltId, quiltData) {
 
   console.log('NEW');
 
-  function Quilt(svg, quiltId, quiltData) {
-    this.$patchPreview = $('#patch-preview');
-    this.quiltId = quiltId;
-    this.myPatch = '';
-    this.patches = [];
-    this.clickedPatch;
-    this.patchStatus;
+  this.$patchPreview = $('#patch-preview');
+  this.quiltId = quiltId;
+  this.myPatch = '';
+  this.patches = [];
+  this.clickedPatch;
+  this.patchStatus;
 
-    this.setupQuilt(svg, quiltData);
-  }
+  this.setupQuilt(svg, quiltData);
+};
 
-  Quilt.prototype.disable = function() {
+Quilt.prototype = {
+
+  disable: function() {
     var _this = this;
     _.forEach(this.patches, function(patch) {
       patch.off(_this.getPatchEvents());
     });
-  };
+  },
 
-  Quilt.prototype.setupQuilt = function(svg, patchStatus) {
+  setupQuilt: function(svg, patchStatus) {
     var _this = this;
     _.forEach(patchStatus, function(patch) {
       if (patch.status === 'mine') {
@@ -30,7 +31,7 @@ var Quilt = (function(svg, quiltId, quiltData) {
     });
     if (svg.hasChildren()) {
       let svgPatches = svg.children,
-          indexOffset = 0;
+        indexOffset = 0;
       console.log('LENGTH', svgPatches.length);
       _.forEach(svgPatches, function(group, i) {
         if (group === undefined || group.hasChildren() === undefined || !patchStatus[i-indexOffset]) {
@@ -98,7 +99,7 @@ var Quilt = (function(svg, quiltId, quiltData) {
         _this.patches.push(patch);
       });
     }
-  };
+  },
 
   /**
    * Find out the type of a paper item.
@@ -106,7 +107,7 @@ var Quilt = (function(svg, quiltId, quiltData) {
    * @param {paper.Item} item
    * @returns {string}
    */
-  Quilt.prototype.getItemType = function(item) {
+  getItemType: function(item) {
     var itemType = '';
     switch (item.className) {
       case 'Shape':
@@ -118,11 +119,11 @@ var Quilt = (function(svg, quiltId, quiltData) {
       default:
     }
     return itemType;
-  };
+  },
 
-  Quilt.prototype.getPatchEvents = function() {
+  getPatchEvents: function() {
     var _this = this,
-        events = {};
+      events = {};
     events.click = function(e) {
       var clickedPatch = e.target.data;
       clickedPatch.quilt = _this.quiltId;
@@ -139,17 +140,17 @@ var Quilt = (function(svg, quiltId, quiltData) {
       events.mouseleave = _this.leaveArea;
     }
     return events;
-  };
+  },
 
-  Quilt.prototype.emitClickEvent = function(patchId) {
+  emitClickEvent: function(patchId) {
     // trigger custom event
     $(document).trigger({
       type: 'click-patch',
       patch: patchId
     });
-  };
+  },
 
-  Quilt.prototype.showPatch = function(patchId) {
+  showPatch: function(patchId) {
     var _this = this;
     this.$patchPreview.css('display', 'block');
     var $preview = $('<img src="/patch/svg/'+patchId+'">');
@@ -159,16 +160,14 @@ var Quilt = (function(svg, quiltId, quiltData) {
       _this.$patchPreview.empty();
     });
     this.$patchPreview.append($preview);
-  };
+  },
 
-  Quilt.prototype.enterArea = function(e) {
+  enterArea: function(e) {
     e.target.opacity = 0.75;
-  };
+  },
 
-  Quilt.prototype.leaveArea = function(e) {
+  leaveArea: function(e) {
     e.target.opacity = 1;
     this.dragging = false;
-  };
-
-  return Quilt;
-})();
+  }
+};

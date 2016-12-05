@@ -180,19 +180,35 @@ var patch = (function($) {
 
   function onActionButtonClick(e) {
     console.log('SAVING...', e);
-    var form = e.currentTarget.getAttribute('data-target'),
-        $form = $(form),
-        svgString = paper.project.exportSVG({asString:true}),
-        parser = new DOMParser(),
-        doc = parser.parseFromString(svgString, 'image/svg+xml'),
-        $svg = $(doc).find('#gridareas'),
-        $gridItem = $svg.find('path'),
-        data = [],
-        colorData = [],
+    var $form = $(e.currentTarget.getAttribute('data-target')),
         status = e.currentTarget.value.toLowerCase(),
         postUrl = $form.attr('action') + '/' + status;
 
     console.log(postUrl);
+    if (status === 'complete') {
+      console.log('TEST');
+      var $submitPatchModal = $('#submit-patch-modal');
+      $submitPatchModal.find('.btn').on('click', function() {
+        $(this).off('click');
+      });
+      $submitPatchModal.find('.btn-submit-design').on('click', function() {
+        savePatch(postUrl);
+      });
+      $submitPatchModal.modal('show');
+    } else {
+      savePatch(postUrl);
+    }
+
+  }
+
+  function savePatch(postUrl) {
+    var svgString = paper.project.exportSVG({asString:true}),
+        parser = new DOMParser(),
+        doc = parser.parseFromString(svgString, 'image/svg+xml'),
+        $svg = $(doc).find('#gridareas'),
+        $gridItem = $svg.find('path'),
+        colorData = [],
+        data = [];
 
     // Collect color index
     _.forEach(colourAreas, function(shapeArea) {
@@ -201,7 +217,6 @@ var patch = (function($) {
 
     // Collect shape colors
     $gridItem.each(function(i, v) {
-      console.log(v);
       data.push(v.getAttribute('fill'));
     });
 

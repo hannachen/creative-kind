@@ -63,11 +63,11 @@
     z-index: 1;
   }
   .color-toolbar {
-    @include make-row(0);
+    @include make-row($no-grid-gutter-widths);
   }
   .color-palette,
   .apply-button {
-    @include make-col-ready(0);
+    @include make-col-ready($no-grid-gutter-widths);
   }
   .color-palette {
     @include make-col(10);
@@ -269,10 +269,5 @@
     .status {
       display: none;
     }
-  }
-}
-.view-patch {
-  .grid-spacer {
-    padding-top: 0;
   }
 }

@@ -1,9 +1,9 @@
 #quilt-nav-container {
-  @include make-row(0);
+  @include make-row($no-grid-gutter-widths);
 
   .quilt-nav,
   .quilt-list {
-    @include make-col-ready(0);
+    @include make-col-ready($no-grid-gutter-widths);
   }
   .quilt-nav,
   .quilt-name {

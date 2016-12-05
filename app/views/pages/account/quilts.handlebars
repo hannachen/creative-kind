@@ -12,6 +12,9 @@
           <span class="icon icon-edit"></span>
           <span class=" icon icon-android-close"></span>
         </button>
+        <a href="/delete/{{id}}" title="Delete" data-id="{{id}}" class="delete-action">
+          <span class="icon icon-trash"></span>
+        </a>
         <input class="edit-input" value="{{title}}" data-id="{{id}}" />
         <a class="view-link" href="/quilts/view/{{id}}">
           {{#if title}}{{title}}{{else}}{{id}}{{/if}}
@@ -21,4 +24,7 @@
     {{/each}}
   </ul>
 </form>
+
+{{>modal/quilt-delete }}
+
 {{/if}}

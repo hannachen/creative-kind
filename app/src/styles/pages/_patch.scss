@@ -5,6 +5,33 @@
 }
 #view-patch {
   .grid-spacer {
+    padding-top: 0;
     height: auto;
+  }
+  .patch-actions {
+    margin: 2em 0;
+
+    .download {
+      display: none;
+    }
+    .shares {
+      @include make-row($no-grid-gutter-widths);
+
+      li {
+        @include make-col-ready($no-grid-gutter-widths);
+        text-align: center;
+      }
+      .social-label {
+        @include make-col(3.75);
+      }
+      .social-link {
+        @include make-col(2.75);
+        font-size: 1.5em;
+
+        .link {
+          display: inline-block;
+        }
+      }
+    }
   }
 }

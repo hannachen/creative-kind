@@ -4,11 +4,11 @@
 <form class="create-quilt-form" id="create-quilt-form" action="/quilts/create" method="post">
 
   <fieldset class="form-group create-quilt-field">
-    <label for="input-title">Quilt Name</label>
+    <label for="input-title">Name Your Quilt</label>
     <input type="text" name="title" id="input-title" class="input-title form-control" placeholder="Quilt Name" required aria-required="true" />
   </fieldset>
   <div class="form-group create-quilt-field">
-    <label for="input-theme">Select a Theme</label>
+    <label for="input-theme">Choose A Colour Theme</label>
     <input type="hidden" name="theme" id="input-theme" class="input-theme" placeholder="Theme" required aria-required="true" />
     <div class="selected-theme">Select a theme</div>
     <div class="carousel theme-carousel" data-target=".input-theme">
@@ -39,8 +39,9 @@
 
   {{>invite}}
 
-  <div class="create-quilt-button">
-    <input type="submit" value="Create Quilt" class="submit-create-quilt" data-minLength="10" />
+  <div class="form-group create-quilt-button">
+    <label for="submit-create-quilt">Confirm</label>
+    <input type="submit" value="Create Quilt" id="submit-create-quilt" class="submit-create-quilt" data-minLength="10" />
   </div>
 
 </form>

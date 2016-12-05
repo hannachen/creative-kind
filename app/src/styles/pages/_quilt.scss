@@ -16,3 +16,14 @@
   //  }
   //}
 }
+#create-quilt-form {
+  .selected-theme {
+    display: none;
+  }
+  .submit-create-quilt {
+    @extend .btn;
+    width: 100%;
+    background-color: $primary-brand-color;
+    color: $white;
+  }
+}

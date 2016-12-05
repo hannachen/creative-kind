@@ -12,7 +12,6 @@ var express = require('express'),
     User = mongoose.model('User'),
     Quilt = mongoose.model('Quilt'),
     Patch = mongoose.model('Patch'),
-    fbConfig = require('../../config/fb.js'),
     hbs = require('nodemailer-express-handlebars');
 
 var isAuthenticated = function (req, res, next) {
@@ -139,7 +138,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
         sign.update(queryString);
 
         var token = sign.digest('hex'),
-          url = queryString + '&token=' + token;
+            url = queryString + '&token=' + token;
         done(null, url, user);
       },
       function(url, user, done) {
@@ -190,8 +189,8 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
 
 router.get('/reset', function(req, res) {
   var queryString = 'email=' + encodeURIComponent(req.query.email) + '&old=' + req.query.old + '&expire=' + req.query.expire,
-    token = req.query.token,
-    verifier = crypto.createVerify('RSA-SHA256');
+      token = req.query.token,
+      verifier = crypto.createVerify('RSA-SHA256');
   verifier.update(queryString);
 
   // Verify token

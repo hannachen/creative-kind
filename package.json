@@ -54,6 +54,7 @@
     "modernizr": "^3.3.1",
     "mongodb": "^2.2.10",
     "mongoose-beautiful-unique-validation": "^2.0.3",
-    "monk": "^3.1.2"
+    "monk": "^3.1.2",
+    "svg2png": "^4.1.0"
   }
 }

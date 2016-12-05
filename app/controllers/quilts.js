@@ -8,11 +8,15 @@ var express = require('express'),
     Color = mongoose.model('Color');
 
 var _ = require('lodash'),
-    uuid = require('node-uuid')
+    fs = require('fs'),
+    uuid = require('node-uuid'),
+    crypto = require('crypto'),
     nodemailer = require('nodemailer'),
     mgTransport = require('nodemailer-mailgun-transport'),
     smtpTransport = require('nodemailer-smtp-transport'),
     hbs = require('nodemailer-express-handlebars');
+
+var totalPatch = 41;
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -36,6 +40,29 @@ router.get('/', function (req, res, next) {
       quilts: quilts
     });
   });
+});
+
+router.delete('/:id', isAuthenticated, function (req, res) {
+  var query = {'_id':req.params.id};
+  // Non admin users can only delete their own quilts
+  if (!req.user.isAdmin) {
+    query._user = req._user;
+  }
+  Quilt.findByIdAndRemove(query)
+    .exec(function (err, removed) {
+      if (err) {
+        res.sendStatus(400);
+      } else {
+        Patch.remove({ _quilt: removed })
+          .exec(function (err, removedFromQuilt) {
+            if (err) {
+              res.sendStatus(400);
+            } else {
+              res.sendStatus(204);
+            }
+          });
+      }
+    });
 });
 
 router.get('/view/:id/:patchid?', function (req, res, next) {
@@ -105,6 +132,20 @@ router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
   });
 });
 
+router.post('/rename/:id', isAuthenticated, function (req, res) {
+  console.log('renaming quilt');
+  var query = {'_id':req.params.id},
+    update = {'title':req.body.title},
+    options = {'muti': false};
+  Quilt.update(query, update, options, function(err) {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 router.get('/create', isAuthenticated, function (req, res, next) {
   Theme.find({})
     .populate('colors')
@@ -119,14 +160,6 @@ router.get('/create', isAuthenticated, function (req, res, next) {
       });
     });
 });
-
-function onInsert(err, docs) {
-  if (err) {
-    if (err) throw err;
-  } else {
-    console.info('%d potatoes were successfully stored.', docs.length);
-  }
-}
 
 router.post('/create', isAuthenticated, function (req, res, next) {
   var quiltData = {
@@ -180,79 +213,186 @@ router.post('/create', isAuthenticated, function (req, res, next) {
       }
 
       // Handle invites
-      var invites = req.body.invites ? req.body.invites.split(',') : {};
-      if (invites.length) {
+      var emails = req.body.invites ? req.body.invites.split(',') : {};
+      if (emails.length) {
+        var invitesVariables = {};
         var inviteData = {
-          '_user': req.user,
-          '_quilt': '571edd9fe84b406c7b2b4814'
+          '_quilt': quilt.id,
+          'sender': req.user
         };
-        _.forEach(invites, function (invite) {
-          inviteData.recipient = invite.trim();
-          var newInvite = new Invite(inviteData);
-          newInvite.save(function (err, invite) {
-            console.log('SAVED**', invite);
-            // if (err) throw err;
-          });
+        _.forEach(emails, function (invite) {
+          // Update recipient email
+          inviteData.email = invite.trim();
+          var key = uuid.v1();
+          // Update key
+          inviteData.key = key;
+          invitesVariables[inviteData.email] = {
+            'cta': 'http://' + req.headers.host + '/quilts/invite/' + key
+          };
+          User.findOne({email: invite})
+            .exec(function (err, user) {
+              if (user) {
+                inviteData.recipient = user;
+              }
+              var newInvite = new Invite(inviteData);
+              newInvite.save(function (err, invite) {
+                console.log('SAVED**', invite);
+                // if (err) throw err;
+              });
+            });
+        });
+
+        var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
+        var mailTransport = nodemailer.createTransport(transport);
+        var templateOptions = {
+          viewEngine: {
+            layoutsDir: 'app/views/email/',
+            defaultLayout : 'template',
+            partialsDir : 'app/views/partials/'
+          },
+          viewPath: 'app/views/email/'
+        };
+        mailTransport.use('compile', hbs(templateOptions));
+        var mailOptions = {
+          to: emails,
+          from: 'invite@creative-kind.com',
+          subject: 'You\'ve been invited',
+          'h:Reply-To': 'local@localhost',
+          template: 'email.body.invite',
+          'recipient-variables': invitesVariables,
+          'X-Mailgun-Recipient-Variables': invitesVariables,
+          context: {
+            name: req.user.username,
+            message: req.body.message
+          }
+        };
+        mailTransport.sendMail(mailOptions, function(err) {
+          if (err) {
+            console.log(err);
+          }
+          if (err) return next(err);
+          mailTransport.close();
+          req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
+          res.json({ postData: quiltData });
         });
       }
-      var invitesVariables = {};
-      if (inviteData) {
-        var emails = inviteData.split(',');
-        _.forEach(emails, function(email) {
-          email = email.trim();
-          invitesVariables[email]  = { 'testString': '123' };
-        });
-      }
-      var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
-      var mailTransport = nodemailer.createTransport(transport);
-      var templateOptions = {
-        viewEngine: {
-          layoutsDir: 'app/views/email/',
-          defaultLayout : 'template',
-          partialsDir : 'app/views/partials/'
-        },
-        viewPath: 'app/views/email/'
-      };
-      mailTransport.use('compile', hbs(templateOptions));
-      var mailOptions = {
-        to: emails,
-        from: 'invite@quilting-bee.com',
-        subject: 'You\'ve been invited',
-        'h:Reply-To': 'local@localhost',
-        template: 'email.body.invite',
-        'recipient-variables': invitesVariables,
-        'X-Mailgun-Recipient-Variables': invitesVariables,
-        context: {
-          name: req.user.username,
-          message: req.body.message,
-          cta : 'http://' + req.headers.host + '/signup/?'
-        }
-      };
-      mailTransport.sendMail(mailOptions, function(err) {
-        if (err) {
-          console.log(err);
-        }
-        if (err) return next(err);
-        mailTransport.close();
-        req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
-        // res.redirect('/account');
-        res.json({ postData: quiltData });
-      });
     }
   });
-  res.json({ postData: 'asdf' });
 });
 
-router.post('/rename/:id', isAuthenticated, function (req, res, next) {
-  console.log('renaming quilt');
-  var query = {'_id':req.params.id},
-      update = {'title':req.body.title},
-      options = {'muti': false};
-  Quilt.update(query, update, options, function(err, quilt) {
-    if (err) {
-      res.sendStatus(400);
-    } else {
-      res.sendStatus(200);
-    }
-  });
+router.get('/invite/:id', function(req, res) {
+  console.log('INVITE-- ', req.params);
+  Invite.findOne({'key':req.params.id})
+    .populate('_quilt')
+    .populate('sender')
+    .deepPopulate('_quilt._user')
+    .exec(function (err, invite) {
+      if (err) throw err;
+      console.log('INVITE***', invite);
+      Patch.find({'_quilt': invite._quilt.id}, function(err, patches) {
+        if (err) return next(err);
+        var simplePatchData = new Array();
+        _.forEach(patches, function(patch) {
+          if (patch._user && req.user &&
+            String(req.user.id) === String(patch._user) &&
+            patch.status === 'progress') {
+            patch.status = 'mine';
+          }
+          // Make sure the upcoming patch is new
+          if (patch.uid === req.params.patchid && patch.status !== 'new') {
+            req.params.patchid = '';
+          }
+          var simplePatch = {
+            uid: patch.uid,
+            status: patch.status
+          };
+          simplePatchData.push(simplePatch);
+        });
+        res.render('pages/quilts/view', {
+          pageId: 'join-quilt',
+          title: 'Join Quilt',
+          sender: invite.sender,
+          quilt: invite._quilt,
+          quiltData: JSON.stringify(simplePatchData),
+          patches: patches,
+          expressFlash: req.flash('message')
+        });
+      });
+    });
 });
+
+router.get('/invitee', function(req, res) {
+  console.log('INVITE-- ', req.query);
+  var queryString = 'email=' + encodeURIComponent(req.query.email) + '&quilt=' + req.query.quilt,
+      token = req.query.token,
+      verifier = crypto.createVerify('RSA-SHA256'),
+      pub = fs.readFileSync(req.config.public_key).toString();
+  console.log('INCOMING** ', queryString);
+  verifier.update(queryString);
+
+  // Verify token
+  // No good
+  if (!verifier.verify(pub, token, 'hex')) { // Verification failed
+    req.flash('error', 'Invalid token.');
+    return res.redirect('/');
+
+    // Continue on
+  } else {
+
+    User.findOne({email: req.body.email}, function(err, user) {
+      if (!user) {
+        return res.redirect('/signup');
+      }
+      Quilt.findOne({'_id':req.params.id})
+        .populate('_theme')
+        .deepPopulate('_theme.colors')
+        .exec(function (err, quilt) {
+          if (err) return next(err);
+          Theme.find({})
+            .populate('colors')
+            .exec(function (err, themes) {
+              if (err) return next(err);
+              if (themes.length) {
+                themes[0]['active'] = 'active';
+              }
+              Patch.find({'_quilt': quilt.id}, function(err, patches) {
+                if (err) return next(err);
+                var simplePatchData = new Array();
+                _.forEach(patches, function(patch) {
+                  if (patch._user && req.user &&
+                    String(req.user.id) === String(patch._user) &&
+                    patch.status === 'progress') {
+                    patch.status = 'mine';
+                  }
+                  // Make sure the upcoming patch is new
+                  if (patch.uid === req.params.patchid && patch.status !== 'new') {
+                    req.params.patchid = '';
+                  }
+                  var simplePatch = {
+                    uid: patch.uid,
+                    status: patch.status
+                  };
+                  simplePatchData.push(simplePatch);
+                });
+                res.render('pages/quilts/view', {
+                  pageId: 'join-quilt',
+                  title: 'Join Quilt',
+                  quilt: quilt,
+                  quiltData: JSON.stringify(simplePatchData),
+                  patches: patches,
+                  expressFlash: req.flash('message')
+                });
+              });
+            });
+        });
+    });
+  }
+});
+
+function onInsert(err, docs) {
+  if (err) {
+    throw err;
+  } else {
+    console.info('%d potatoes were successfully stored.', docs.length);
+  }
+}

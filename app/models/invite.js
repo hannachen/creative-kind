@@ -1,10 +1,13 @@
 var mongoose = require('mongoose'),
+    deepPopulate = require('mongoose-deep-populate')(mongoose),
     Schema = mongoose.Schema;
 
 var InviteSchema = new Schema({
-  _user : { type: Schema.Types.ObjectId, ref: 'User' },
   _quilt: { type: Schema.Types.ObjectId, ref: 'Quilt' },
-  recipient: String
+  sender : { type: Schema.Types.ObjectId, ref: 'User' },
+  recipient : { type: Schema.Types.ObjectId, ref: 'User' },
+  key: String,
+  email: String
 });
 
 InviteSchema.virtual('date')
@@ -12,6 +15,8 @@ InviteSchema.virtual('date')
     return this._id.getTimestamp();
   });
 
-InviteSchema.index({ _user: 1, _quilt: 1, recipient: 1}, { unique: true });
+InviteSchema.plugin(deepPopulate);
+
+InviteSchema.index({ sender: 1, _quilt: 1, email: 1}, { unique: true });
 
 mongoose.model('Invite', InviteSchema);

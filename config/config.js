@@ -19,7 +19,7 @@ nodemailer: {
 var config = {
   development: {
     root: rootPath,
-    public_key: 'certs/public.pem',
+    public_key: rootPath + '/config/certs/public.pem',
     app: {
       name: 'qb-test'
     },
@@ -37,7 +37,7 @@ var config = {
 
   test: {
     root: rootPath,
-    public_key: 'certs/public.pem',
+    public_key: rootPath + '/config/certs/public.pem',
     app: {
       name: 'qb-test'
     },
@@ -55,7 +55,7 @@ var config = {
 
   staging: {
     root: rootPath,
-    public_key: 'certs/public.pem',
+    public_key: rootPath + '/config/certs/public.pem',
     app: {
       name: 'qb-stg'
     },
@@ -73,7 +73,7 @@ var config = {
 
   production: {
     root: rootPath,
-    public_key: 'certs/public.pem',
+    public_key: rootPath + '/config/certs/public.pem',
     app: {
       name: 'qb-test'
     },
