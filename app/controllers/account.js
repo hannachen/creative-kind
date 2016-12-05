@@ -145,11 +145,11 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
         var smtpTransport = nodemailer.createTransport(mgTransport(req.config.nodemailer));
         var templateOptions = {
           viewEngine: {
-            layoutsDir: req.config.root + 'app/views/email/',
+            layoutsDir: req.config.root + '/app/views/email/',
             defaultLayout : 'template',
-            partialsDir : req.config.root + 'app/views/partials/'
+            partialsDir : req.config.root + '/app/views/partials/'
           },
-          viewPath: req.config.root + 'app/views/email/'
+          viewPath: req.config.root + '/app/views/email/'
         };
         smtpTransport.use('compile', hbs(templateOptions));
         var mailOptions = {

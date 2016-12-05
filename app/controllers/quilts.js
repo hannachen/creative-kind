@@ -244,18 +244,18 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               });
             });
         });
-        
+
         console.log('ROOT', req.config.root);
 
         var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
         var mailTransport = nodemailer.createTransport(transport);
         var templateOptions = {
           viewEngine: {
-            layoutsDir: req.config.root + 'app/views/email/',
+            layoutsDir: req.config.root + '/app/views/email/',
             defaultLayout : 'template',
-            partialsDir : req.config.root + 'app/views/partials/'
+            partialsDir : req.config.root + '/app/views/partials/'
           },
-          viewPath: req.config.root + 'app/views/email/'
+          viewPath: req.config.root + '/app/views/email/'
         };
         mailTransport.use('compile', hbs(templateOptions));
         var mailOptions = {
