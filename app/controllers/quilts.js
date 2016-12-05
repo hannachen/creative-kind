@@ -237,20 +237,25 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               var newInvite = new Invite(inviteData);
               newInvite.save(function (err, invite) {
                 console.log('SAVED**', invite);
-                // if (err) throw err;
+                if (err) {
+                  console.log('ERROR');
+                  throw err;
+                }
               });
             });
         });
+        
+        console.log('ROOT', req.config.root);
 
         var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
         var mailTransport = nodemailer.createTransport(transport);
         var templateOptions = {
           viewEngine: {
-            layoutsDir: 'app/views/email/',
+            layoutsDir: req.config.root + 'app/views/email/',
             defaultLayout : 'template',
-            partialsDir : 'app/views/partials/'
+            partialsDir : req.config.root + 'app/views/partials/'
           },
-          viewPath: 'app/views/email/'
+          viewPath: req.config.root + 'app/views/email/'
         };
         mailTransport.use('compile', hbs(templateOptions));
         var mailOptions = {
