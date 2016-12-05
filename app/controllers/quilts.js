@@ -237,6 +237,10 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               var newInvite = new Invite(inviteData);
               newInvite.save(function (err, invite) {
                 console.log('SAVED**', invite);
+                if (err) {
+                  console.log('ERROR');
+                  throw err;
+                }
               });
             });
         });
