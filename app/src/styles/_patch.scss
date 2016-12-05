@@ -242,7 +242,7 @@
     }
   }
   .patch-item {
-    @include make-col(12);
+    @include make-col(3);
     @include media-breakpoint-up(sm) {
       @include make-col(6);
     }
@@ -266,6 +266,14 @@
     }
   }
   .patch-info {
+    @include media-breakpoint-down(sm) {
+      font-size: .5em;
+    }
+    h4 {
+      @include media-breakpoint-down(sm) {
+        font-size: 1em;
+      }
+    }
     .status {
       display: none;
     }
