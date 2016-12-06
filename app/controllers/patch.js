@@ -195,12 +195,22 @@ router.get('/download/:uid/:type?', function (req, res, next) {
 
 router.get('/svg/:uid', function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
+    .populate('_quilt')
+    .deepPopulate('_quilt._theme.colors')
     .exec(function (err, patch) {
       if (err) return next(err);
+      var themeSets = patch._quilt._theme.colors;
+      console.log('THEME SETS', themeSets);
+      var colorSetIndex = parseInt(patch.colorSet);
+      var patchColors = themeSets[colorSetIndex].colors;
+      console.log('patch colors', patchColors);
       var colors = [],
-          colorArray = patch.colors.split(',');
+          colorArray = patch.colorIndex.split(',');
       if (colorArray.length) {
-        colors = colorArray;
+        colors = colorArray.map(function(colorIndex) {
+          return '#' + patchColors[colorIndex];
+        });
+        console.log('color array', colors);
       } else {
         for (var i=0; i<200; i++) {
           colors.push('#828282');

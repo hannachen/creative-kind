@@ -46,9 +46,10 @@ var theme = (function($) {
         data: formData,
         statusCode: {
           200: function() {
+            location.reload();
           },
           404: function() {
-            alert( "page not found" );
+            alert('Error saving theme');
           }
         }
       });
