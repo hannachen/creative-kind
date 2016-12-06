@@ -59,7 +59,7 @@ var config = {
     app: {
       name: 'qb-stg'
     },
-    port: process.env.NODE_ENV || 8080,
+    port: 80,
     db: 'mongodb://localhost/quilting-bee',
     secret: secretKey,
     nodemailer: {
