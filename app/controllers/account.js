@@ -112,7 +112,7 @@ router.post('/register', function(req, res, next) {
 router.get('/recover-password', recaptcha.middleware.render, function(req, res) {
   res.render('pages/recover-password/index', {
     title: 'Forgot Password',
-    captcha:req.recaptcha,
+    captcha: req.recaptcha,
     pageId: 'forgot-password'
   });
 });

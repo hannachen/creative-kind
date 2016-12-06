@@ -6406,6 +6406,8 @@ label:hover:before {
 #flash-modal {
   width: 80%;
   margin: 0 auto; }
+  #flash-modal .flash {
+    color: #000000; }
   #flash-modal .modal-body {
     padding: 2em 1em; }
   #flash-modal .modal-footer .patch-actions {
