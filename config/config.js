@@ -48,7 +48,7 @@ var config = {
       service: 'Mailgun',
       auth: {
         api_key: 'key-ad0790abff28a38aab14bda682df47a1',
-        domain: 'api.mailgun.net/v3/creative-kind.fpo.website'
+        domain: 'https://api.mailgun.net/v3/creative-kind.fpo.website'
       }
     }
   },

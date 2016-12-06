@@ -238,9 +238,9 @@ router.post('/create', isAuthenticated, function (req, res, next) {
                 console.log('SAVED**', invite);
               });
             });
-
-          console.log('ROOT********', req.config.root);
         });
+
+        console.log('ROOT********', req.config.root);
 
         var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
         var mailTransport = nodemailer.createTransport(transport);
