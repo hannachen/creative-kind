@@ -232,19 +232,15 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               if (user) {
                 inviteData.recipient = user;
               }
-              console.log('INVITE DATA', inviteData);
+              console.log('INVITE DATA---', inviteData);
               var newInvite = new Invite(inviteData);
               newInvite.save(function (err, invite) {
                 console.log('SAVED**', invite);
-                if (err) {
-                  console.log('ERROR');
-                  throw err;
-                }
               });
             });
-        });
 
-        console.log('ROOT', req.config.root);
+          console.log('ROOT********', req.config.root);
+        });
 
         var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
         var mailTransport = nodemailer.createTransport(transport);
