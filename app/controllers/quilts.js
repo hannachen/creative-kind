@@ -273,7 +273,8 @@ router.post('/create', isAuthenticated, function (req, res, next) {
           if (err) return next(err);
           mailTransport.close();
           req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
-          res.json({ postData: quiltData });
+          // res.json({ postData: quiltData });
+          return res.redirect('/quilts/view/'+quilt.id);
         });
       }
     }
