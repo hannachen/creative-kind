@@ -24,7 +24,8 @@ var create = (function($) {
         type: 'post',
         data: formData,
         statusCode: {
-          200: function() {
+          200: function(data) {
+            window.location.replace('/quilts/view/'+data.quiltId);
           },
           404: function() {
             alert( "page not found" );

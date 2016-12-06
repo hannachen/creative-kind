@@ -9,7 +9,7 @@ var express = require('express'),
 
 var _ = require('lodash'),
     fs = require('fs'),
-    uuid = require('node-uuid'),
+    uuid = require('uuid'),
     crypto = require('crypto'),
     nodemailer = require('nodemailer'),
     mgTransport = require('nodemailer-mailgun-transport'),
@@ -66,12 +66,16 @@ router.delete('/:id', isAuthenticated, function (req, res) {
 });
 
 router.get('/view/:id/:patchid?', function (req, res, next) {
-  Quilt.findOne({'_id':req.params.id})
+  Quilt
+    .findOne({'_id':req.params.id})
     .populate('_user')
     .populate('_theme')
     .deepPopulate('_theme.colors')
     .exec(function (err, quilt) {
       if (err) return next(err);
+      if (!quilt) {
+        return res.redirect('/');
+      }
       Theme.find({})
         .populate('colors')
         .exec(function (err, themes) {
@@ -118,10 +122,10 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
  */
 router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
   var query = {'_id':req.params.id},
-      update = {'_theme':req.body.theme},
-      options = {'muti': false};
+      update = { $set: {'_theme':req.body.theme}};
   console.log(req.body);
-  Quilt.update(query, update, options, function(err, quilt) {
+  Quilt.update(query, update, function(err, quilt) {
+    console.log('UPDATED QUILT***', quilt);
     if (err) {
       res.sendStatus(400);
     } else {
@@ -274,8 +278,11 @@ router.post('/create', isAuthenticated, function (req, res, next) {
           mailTransport.close();
           req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
           // res.json({ postData: quiltData });
-          return res.redirect('/quilts/view/'+quilt.id);
+          res.json({ quiltId: quilt.id });
         });
+      } else {
+        req.flash('info', 'Quilt created!');
+        res.json({ quiltId: quilt.id });
       }
     }
   });

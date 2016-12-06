@@ -202,7 +202,7 @@ router.get('/reset', function(req, res) {
   if (!verifier.verify(fs.readFileSync(req.config.public_key), token, 'hex') || // Verification failed
     parseInt(req.query.expire) < parseInt(moment().unix())) { // Expired
 
-    req.flash('error', 'Password reset token expired or invalie token.');
+    req.flash('error', 'Password reset token expired or invalid token.');
     return res.redirect('/account/recover-password/');
 
     // Continue on

@@ -10,15 +10,24 @@ var theme = (function($) {
       let $input = $($themeCarousel.data('target')),
           $themes = $themeCarousel.find('.theme'),
           $selectedTheme = $('.selected-theme');
-      $themeCarousel.on('init', function(e, slick) {
-        setActiveTheme($input, $selectedTheme, $themes.get(slick.currentSlide));
+
+      // Carousel options
+      var options = {};
+      options.mobileFirst = true;
+
+      // Set active theme, either from input or theme
+      if (_.isEmpty($input.val())) {
+        $themeCarousel.on('init', function(e, slick) {
+          setActiveTheme($input, $selectedTheme, $themes.get(slick.currentSlide));
+        });
+      } else {
+        options.initialSlide = $themes.index($themes.filter('[data-id='+$input.val()+']'));
+      }
+
+      $themeCarousel.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
+        setActiveTheme($input, $selectedTheme, $themes.get(nextSlide));
       });
-      $themeCarousel.on('afterChange', function(e, slick, currentSlide) {
-        setActiveTheme($input, $selectedTheme, $themes.get(currentSlide));
-      });
-      $themeCarousel.slick({
-        mobileFirst: true
-      });
+      $themeCarousel.slick(options);
 
       initEvents();
     }
@@ -52,7 +61,7 @@ var theme = (function($) {
     console.log(themeName, themeId);
     $input.val(themeId);
     $selectedTheme.text(themeName);
-    console.log(currentTheme);
+    console.log('CURRENT THEME', currentTheme);
   }
 
   return {
