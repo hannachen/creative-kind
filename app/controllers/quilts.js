@@ -16,7 +16,7 @@ var _ = require('lodash'),
     smtpTransport = require('nodemailer-smtp-transport'),
     hbs = require('nodemailer-express-handlebars');
 
-var totalPatch = 41;
+var totalPatch = 25;
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
