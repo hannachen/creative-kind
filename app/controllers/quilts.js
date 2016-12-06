@@ -216,16 +216,14 @@ router.post('/create', isAuthenticated, function (req, res, next) {
       var emails = req.body.invites ? req.body.invites.split(',') : {};
       if (emails.length) {
         var invitesVariables = {};
-        var inviteData = {
-          '_quilt': quilt.id,
-          'sender': req.user
-        };
         _.forEach(emails, function (invite) {
-          // Update recipient email
-          inviteData.email = invite.trim();
-          var key = uuid.v1();
-          // Update key
-          inviteData.key = key;
+          var key = uuid.v1(),
+              inviteData = {
+                '_quilt': quilt.id,
+                'sender': req.user,
+                'email': invite.trim(),
+                'key': key
+              };
           invitesVariables[inviteData.email] = {
             'cta': 'http://' + req.headers.host + '/quilts/invite/' + key
           };
@@ -234,6 +232,7 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               if (user) {
                 inviteData.recipient = user;
               }
+              console.log('INVITE DATA', inviteData);
               var newInvite = new Invite(inviteData);
               newInvite.save(function (err, invite) {
                 console.log('SAVED**', invite);
