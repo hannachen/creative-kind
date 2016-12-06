@@ -59,7 +59,7 @@ var config = {
     app: {
       name: 'qb-stg'
     },
-    port: 8080,
+    port: process.env.NODE_ENV || 8080,
     db: 'mongodb://localhost/quilting-bee',
     secret: secretKey,
     nodemailer: {
@@ -77,7 +77,7 @@ var config = {
     app: {
       name: 'qb-test'
     },
-    port: 8080,
+    port: process.env.NODE_ENV || 8080,
     db: 'mongodb://localhost/quilting-bee',
     secret: secretKey, // Use environment variables (save in bash_profile??)
     nodemailer: {
