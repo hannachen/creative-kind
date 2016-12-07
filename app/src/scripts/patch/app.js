@@ -8,7 +8,7 @@
   $(function() {
     switch(currentPage) {
       case 'view-patch':
-        // viewPatch.init();
+        viewPatch.init();
         break;
       case 'edit-patch':
         console.log('INIT???');

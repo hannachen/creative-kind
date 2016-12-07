@@ -6414,6 +6414,9 @@ label:hover:before {
     margin: 0; }
     #flash-modal .modal-footer .patch-actions li {
       line-height: 100%; }
+    #flash-modal .modal-footer .patch-actions .download {
+      border-bottom: 1px solid #b2b2b2;
+      padding: 1em 0; }
     #flash-modal .modal-footer .patch-actions .shares {
       margin: 1em 0; }
     #flash-modal .modal-footer .patch-actions .btn, #flash-modal .modal-footer .patch-actions form .button-facebook, form #flash-modal .modal-footer .patch-actions .button-facebook,
@@ -7393,7 +7396,7 @@ label:hover:before {
 #view-patch .patch-actions {
   margin: 2em 0; }
   #view-patch .patch-actions .download {
-    display: none; }
+    text-align: center; }
   #view-patch .patch-actions .shares {
     margin-right: 0;
     margin-left: 0; }

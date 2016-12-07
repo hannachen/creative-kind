@@ -181,6 +181,10 @@ router.get('/download/:uid/:type?', function (req, res, next) {
     function(patch, callback) {
       var filename = patch.uid + '.' + req.params.type,
           filePath = req.config.root + '/public/patches/' + filename;
+      var file = {
+        name: filename,
+        path: filePath
+      };
 
       // Check if file exists
       fs.access(filePath, function(err) {
@@ -188,13 +192,9 @@ router.get('/download/:uid/:type?', function (req, res, next) {
         // File doesn't exist, create png
         if (err && err.code === 'ENOENT') {
           savePatchAsPng(patch, filePath, res, next, function() {
-            callback(null, filePath);
+            callback(null, file);
           });
         } else {
-          var file = {
-            name: filename,
-            path: filePath
-          };
           callback(null, file);
         }
       });
@@ -203,6 +203,7 @@ router.get('/download/:uid/:type?', function (req, res, next) {
 
     // res.setHeader('content-type', 'image/png; charset=utf-8');
     if (file && Object.keys(file).length) {
+      console.log('FILE***', file);
       // Force download if incoming action is download
       res.setHeader('Content-disposition', 'attachment; filename=' + file.name);
       res.sendFile(file.path);
@@ -230,13 +231,14 @@ function savePatchAsPng(patch, filePath, res, next, cb) {
         });
       }
 
-      // Render and get svg as a string
+      // Render and get svg as string
       res.render('partials/svg/patch', {
         layout: 'svg',
         lines: false,
         colors: colors
       }, function(err, svg) {
 
+        // Convert svg to png and save to path
         var buf = new Buffer(svg);
         gm(buf, 'patch.svg')
           .resize(1000, 1000)
@@ -252,61 +254,21 @@ function savePatchAsPng(patch, filePath, res, next, cb) {
     });
 }
 
-router.get('/svgtest/:uid', function (req, res, next) {
-  Patch.findOne({'uid':req.params.uid })
-    .populate('_quilt')
-    .deepPopulate('_quilt._theme.colors')
-    .exec(function (err, patch) {
-      if (err) return next(err);
-      var themeSets = patch._quilt._theme.colors;
-      console.log('THEME SETS', themeSets);
-      var colorSetIndex = parseInt(patch.colorSet);
-      var patchColors = themeSets[colorSetIndex].colors;
-      console.log('patch colors', patchColors);
-      var colors = [],
-          colorArray = patch.colorIndex.split(',');
-      if (colorArray.length) {
-        colors = colorArray.map(function(colorIndex) {
-          return '#' + patchColors[colorIndex];
-        });
-        console.log('color array', colors);
-      } else {
-        for (var i=0; i<200; i++) {
-          colors.push('#828282');
-        }
-      }
-      res.render('partials/svg/patch', {
-        layout: 'svg',
-        lines: false,
-        colors: colors
-      }, function(err, html) {
-        console.log(html);
-        res.render('partials/svg/test', {
-          layout: false,
-          svg: html
-        });
-      });
-    });
-});
-
 router.get('/svg/:uid', function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .populate('_quilt')
     .deepPopulate('_quilt._theme.colors')
     .exec(function (err, patch) {
       if (err) return next(err);
-      var themeSets = patch._quilt._theme.colors;
-      console.log('THEME SETS', themeSets);
-      var colorSetIndex = parseInt(patch.colorSet);
-      var patchColors = themeSets[colorSetIndex].colors;
-      console.log('patch colors', patchColors);
-      var colors = [],
-          colorArray = patch.colorIndex.split(',');
+      var themeSets = patch._quilt._theme.colors,
+          colorSetIndex = parseInt(patch.colorSet),
+          patchColors = themeSets[colorSetIndex].colors,
+          colorArray = patch.colorIndex.split(','),
+          colors = [];
       if (colorArray.length) {
         colors = colorArray.map(function(colorIndex) {
           return '#' + patchColors[colorIndex];
         });
-        console.log('color array', colors);
       } else {
         for (var i=0; i<200; i++) {
           colors.push('#828282');
@@ -316,7 +278,6 @@ router.get('/svg/:uid', function (req, res, next) {
       res.render('partials/svg/patch', {
         layout: 'svg',
         lines: false,
-        patch: patch,
         colors: colors
       });
     });

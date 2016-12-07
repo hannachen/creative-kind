@@ -58,9 +58,9 @@ router.delete('/:id', isAuthenticated, function (req, res) {
             if (err) {
               res.sendStatus(400);
             } else {
-              for(var i=0; i<patches.length; i++) {
-                patches[i].remove();
-              }
+              _.forEach(patches, function (patch) {
+                patch.remove();
+              });
               res.sendStatus(204);
             }
           });
@@ -176,28 +176,6 @@ router.post('/create', isAuthenticated, function (req, res, next) {
     'type': req.body.type
   };
   // create a new quilt
-  console.log('creating quilt');
-  // if (invites.length) {
-  //   var inviteData = invites.map(function(inputData) {
-  //         var returnData = {
-  //           '_user': req.user,
-  //           '_quilt': '123',
-  //           'recipient': inputData
-  //         };
-  //         return returnData;
-  //       });
-  //   console.log('RETURN DATA ---', returnData);
-  //   Invite.insertMany(inviteData)
-  //     .then(function(docs) {
-  //       // do something with docs
-  //       console.log('DOCS**', docs);
-  //     })
-  //     .catch(function(err) {
-  //       // error handling here
-  //       if (err) throw err;
-  //     });
-  // }
-
   var newQuilt = new Quilt(quiltData);
   newQuilt.save(function(err, quilt) {
     if (err) throw err;
@@ -246,8 +224,6 @@ router.post('/create', isAuthenticated, function (req, res, next) {
               });
             });
         });
-
-        console.log('ROOT********', req.config.root);
 
         var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
         var mailTransport = nodemailer.createTransport(transport);

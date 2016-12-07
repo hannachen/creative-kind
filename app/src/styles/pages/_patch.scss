@@ -12,7 +12,7 @@
     margin: 2em 0;
 
     .download {
-      display: none;
+      text-align: center;
     }
     .shares {
       @include make-row($no-grid-gutter-widths);

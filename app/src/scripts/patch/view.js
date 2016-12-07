@@ -24,12 +24,7 @@ var viewPatch = (function($) {
   }
 
   function initEvents() {
-    $patchContents.find('.download-link').on('click', onDownload);
     $patchContents.find('.social-link a').on('click', onShare);
-  }
-
-  function onDownload(e) {
-    e.preventDefault();
   }
 
   function onShare(e) {

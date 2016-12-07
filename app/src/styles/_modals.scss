@@ -172,8 +172,13 @@
   .modal-footer {
     .patch-actions {
       margin: 0;
+
       li {
         line-height: 100%;
+      }
+      .download {
+        border-bottom: 1px solid $gray;
+        padding: 1em 0;
       }
       .shares {
         margin: 1em 0;
