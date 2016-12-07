@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
     deepPopulate = require('mongoose-deep-populate')(mongoose),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    config = require('../../config/config.js'),
+    fs = require('fs');
 
 var PatchSchema = new Schema({
       _user : { type: Schema.Types.ObjectId, ref: 'User' },
@@ -14,6 +16,11 @@ var PatchSchema = new Schema({
       colorIndex: String,
       colors: String
     }, { collection: 'patches' });
+
+PatchSchema.post('remove', function(doc) {
+  var filePath = config.root + '/public/patches/' + doc.uid + '.png';
+  fs.unlink(filePath, function(err) {});
+});
 
 PatchSchema.virtual('date')
   .get(function(){

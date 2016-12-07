@@ -53,11 +53,14 @@ router.delete('/:id', isAuthenticated, function (req, res) {
       if (err) {
         res.sendStatus(400);
       } else {
-        Patch.remove({ _quilt: removed })
-          .exec(function (err, removedFromQuilt) {
+        Patch.find({ _quilt: removed })
+          .exec(function(err, patches) {
             if (err) {
               res.sendStatus(400);
             } else {
+              for(var i=0; i<patches.length; i++) {
+                patches[i].remove();
+              }
               res.sendStatus(204);
             }
           });

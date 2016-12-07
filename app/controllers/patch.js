@@ -2,7 +2,10 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     Quilt = mongoose.model('Quilt'),
-    Patch = mongoose.model('Patch');
+    Patch = mongoose.model('Patch'),
+    async = require('async'),
+    fs = require('fs'),
+    gm = require('gm');
 
 var isAuthenticated = function (req, res, next) {
   // if user is authenticated in the session, call the next() to call the next request handler
@@ -162,33 +165,126 @@ router.get('/download/:uid/:type?', function (req, res, next) {
   if (allowedTypes.indexOf(req.params.type) < 0) {
     req.params.type = 'png'; // Default to PNG
   }
-  Patch.findOne({'uid':req.params.uid })
-    .exec(function (err, patch) {
-      if (err) return next(err);
+  async.waterfall([
+    function(callback) {
 
-      // switch(req.params.type) {
-      //   case 'png':
-      //   default:
-      // }
-
+      Patch.findOne({'uid':req.params.uid })
+        .exec(function (err, patch) {
+          if (err) return next(err);
+          callback(null, patch);
+          // switch(req.params.type) {
+          //   case 'png':
+          //   default:
+          // }
+        });
+    },
+    function(patch, callback) {
       var filename = patch.uid + '.' + req.params.type,
           filePath = req.config.root + '/public/patches/' + filename;
 
       // Check if file exists
       fs.access(filePath, function(err) {
 
-        // Create file
+        // File doesn't exist, create png
         if (err && err.code === 'ENOENT') {
-          fs.readFile('/patch/svg/')
-            .then(svg2png)
-            .then(buffer => fs.writeFile(filePath, buffer))
-            .catch(e => console.error(e));
+          savePatchAsPng(patch, filePath, res, next, function() {
+            callback(null, filePath);
+          });
+        } else {
+          var file = {
+            name: filename,
+            path: filePath
+          };
+          callback(null, file);
         }
+      });
+    }
+  ], function (err, file) {
 
-        // Force download if incoming action is download
-        // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-        res.setHeader('content-type', 'image/png; charset=utf-8');
-        res.sendFile(filePath);
+    // res.setHeader('content-type', 'image/png; charset=utf-8');
+    if (file && Object.keys(file).length) {
+      // Force download if incoming action is download
+      res.setHeader('Content-disposition', 'attachment; filename=' + file.name);
+      res.sendFile(file.path);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+function savePatchAsPng(patch, filePath, res, next, cb) {
+  Quilt
+    .findOne({'_id':patch._quilt})
+    .populate('_theme')
+    .deepPopulate('_theme.colors')
+    .exec(function (err, quilt) {
+      if (err) return next(err);
+      var themeSets = quilt._theme.colors,
+        colorSetIndex = parseInt(patch.colorSet),
+        patchColors = themeSets[colorSetIndex].colors,
+        colorArray = patch.colorIndex.split(','),
+        colors = [];
+      if (colorArray.length) {
+        colors = colorArray.map(function(colorIndex) {
+          return '#' + patchColors[colorIndex];
+        });
+      }
+
+      // Render and get svg as a string
+      res.render('partials/svg/patch', {
+        layout: 'svg',
+        lines: false,
+        colors: colors
+      }, function(err, svg) {
+
+        var buf = new Buffer(svg);
+        gm(buf, 'patch.svg')
+          .resize(1000, 1000)
+          .write(filePath, function (err) {
+            if (err) {
+              console.log('GM error', err);
+              return next(err);
+            } else {
+              cb.call();
+            }
+          });
+      });
+    });
+}
+
+router.get('/svgtest/:uid', function (req, res, next) {
+  Patch.findOne({'uid':req.params.uid })
+    .populate('_quilt')
+    .deepPopulate('_quilt._theme.colors')
+    .exec(function (err, patch) {
+      if (err) return next(err);
+      var themeSets = patch._quilt._theme.colors;
+      console.log('THEME SETS', themeSets);
+      var colorSetIndex = parseInt(patch.colorSet);
+      var patchColors = themeSets[colorSetIndex].colors;
+      console.log('patch colors', patchColors);
+      var colors = [],
+          colorArray = patch.colorIndex.split(',');
+      if (colorArray.length) {
+        colors = colorArray.map(function(colorIndex) {
+          return '#' + patchColors[colorIndex];
+        });
+        console.log('color array', colors);
+      } else {
+        for (var i=0; i<200; i++) {
+          colors.push('#828282');
+        }
+      }
+      res.render('partials/svg/patch', {
+        layout: 'svg',
+        lines: false,
+        colors: colors
+      }, function(err, html) {
+        console.log(html);
+        res.render('partials/svg/test', {
+          layout: false,
+          svg: html
+        });
       });
     });
 });
@@ -218,7 +314,6 @@ router.get('/svg/:uid', function (req, res, next) {
       }
       res.setHeader('content-type', 'image/svg+xml; charset=utf-8');
       res.render('partials/svg/patch', {
-        title: 'View Patch',
         layout: 'svg',
         lines: false,
         patch: patch,
