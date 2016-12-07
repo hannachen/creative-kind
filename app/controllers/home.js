@@ -20,7 +20,7 @@ router.get('/', function (req, res, next) {
       if (err) return next(err);
 
       _.forEach(quilts, function(quilt) {
-        Patch.find({'_quilt': quilt.id}, function(err, patches) {
+        Patch.find({'_quilt': quilt.id}, null, {sort: {'_id': -1}}, function(err, patches) {
           if (err) return next(err);
           _.forEach(patches, function(patch) {
             if (patch._user && req.user &&

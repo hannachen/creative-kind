@@ -138,10 +138,6 @@ var patch = (function($) {
   }
 
   function setColor(shapeArea, i) {
-    console.log('shape area', shapeArea);
-    console.log('setting colour...', shapeArea.data.colorIndex);
-    console.log(colorSet[shapeArea.data.colorIndex]);
-    console.log('color index data', colorIndexData[i]);
     if (shapeArea === undefined) {
       return;
     }
@@ -186,7 +182,6 @@ var patch = (function($) {
 
     console.log(postUrl);
     if (status === 'complete') {
-      console.log('TEST');
       var $submitPatchModal = $('#submit-patch-modal');
       $submitPatchModal.find('.btn').on('click', function() {
         $(this).off('click');
@@ -212,7 +207,8 @@ var patch = (function($) {
 
     // Collect color index
     _.forEach(colourAreas, function(shapeArea) {
-      colorData.push(shapeArea.data.colorIndex);
+      var colorIndex = shapeArea.data.colorIndex || '';
+      colorData.push(colorIndex);
     });
 
     // Collect shape colors

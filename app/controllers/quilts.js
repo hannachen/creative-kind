@@ -86,7 +86,7 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
           if (themes.length) {
             themes[0]['active'] = 'active';
           }
-          Patch.find({'_quilt': quilt.id}, function(err, patches) {
+          Patch.find({'_quilt': quilt.id}, null, {sort: {'_id': -1}}, function(err, patches) {
             if (err) return next(err);
             var simplePatchData = new Array();
             _.forEach(patches, function(patch) {
@@ -200,72 +200,80 @@ router.post('/create', isAuthenticated, function (req, res, next) {
       // Handle invites
       var emails = req.body.invites ? req.body.invites.split(',') : {};
       if (emails.length) {
-        var invitesVariables = {};
-        _.forEach(emails, function (invite) {
-          var key = uuid.v1(),
-              inviteData = {
-                '_quilt': quilt.id,
-                'sender': req.user,
-                'email': invite.trim(),
-                'key': key
-              };
-          invitesVariables[inviteData.email] = {
-            'cta': 'http://' + req.headers.host + '/quilts/invite/' + key
-          };
-          User.findOne({email: invite})
-            .exec(function (err, user) {
-              if (user) {
-                inviteData.recipient = user;
-              }
-              console.log('INVITE DATA---', inviteData);
-              var newInvite = new Invite(inviteData);
-              newInvite.save(function (err, invite) {
-                console.log('SAVED**', invite);
-              });
-            });
-        });
-
-        var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
-        var mailTransport = nodemailer.createTransport(transport);
-        var templateOptions = {
-          viewEngine: {
-            layoutsDir: req.config.root + '/app/views/email/',
-            defaultLayout : 'template',
-            partialsDir : req.config.root + '/app/views/partials/'
-          },
-          viewPath: req.config.root + '/app/views/email/'
-        };
-        mailTransport.use('compile', hbs(templateOptions));
-        var mailOptions = {
-          to: emails,
-          from: 'invite@creative-kind.com',
-          subject: 'You\'ve been invited',
-          'h:Reply-To': 'local@localhost',
-          template: 'email.body.invite',
-          'recipient-variables': invitesVariables,
-          'X-Mailgun-Recipient-Variables': invitesVariables,
-          context: {
-            name: req.user.username,
-            message: req.body.message
-          }
-        };
-        mailTransport.sendMail(mailOptions, function(err) {
-          if (err) {
-            console.log(err);
-          }
-          if (err) return next(err);
-          mailTransport.close();
-          req.flash('info', 'Invitations sent to: ' + quiltData.invites + '.');
-          // res.json({ postData: quiltData });
+        sendInvitation(req, quilt, emails, function() {
           res.json({ quiltId: quilt.id });
         });
-      } else {
-        req.flash('info', 'Quilt created!');
-        res.json({ quiltId: quilt.id });
       }
+    } else {
+      req.flash('info', 'Quilt created!');
+      res.json({ quiltId: quilt.id });
     }
   });
 });
+
+function sendInvitation(req, quilt, emails, cb) {
+
+  var invitesVariables = {};
+  _.forEach(emails, function (invite) {
+    var key = uuid.v1(),
+      inviteData = {
+        '_quilt': quilt.id,
+        'sender': req.user,
+        'email': invite.trim(),
+        'key': key
+      };
+    invitesVariables[inviteData.email] = {
+      'cta': 'http://' + req.headers.host + '/quilts/invite/' + key
+    };
+    User.findOne({email: invite})
+      .exec(function (err, user) {
+        if (user) {
+          inviteData.recipient = user;
+        }
+        console.log('INVITE DATA---', inviteData);
+        var newInvite = new Invite(inviteData);
+        newInvite.save(function (err, invite) {
+          console.log('SAVED**', invite);
+        });
+      });
+  });
+
+  var transport = req.config.nodemailer.service === 'Smtp' ? smtpTransport(req.config.nodemailer) : mgTransport(req.config.nodemailer);
+  var mailTransport = nodemailer.createTransport(transport);
+  var templateOptions = {
+    viewEngine: {
+      layoutsDir: req.config.root + '/app/views/email/',
+      defaultLayout : 'template',
+      partialsDir : req.config.root + '/app/views/partials/'
+    },
+    viewPath: req.config.root + '/app/views/email/'
+  };
+  mailTransport.use('compile', hbs(templateOptions));
+  var mailOptions = {
+    to: emails,
+    from: 'invite@creative-kind.com',
+    subject: 'You\'ve been invited',
+    'h:Reply-To': 'local@localhost',
+    template: 'email.body.invite',
+    'recipient-variables': invitesVariables,
+    'X-Mailgun-Recipient-Variables': invitesVariables,
+    context: {
+      name: req.user.username,
+      message: req.body.message
+    }
+  };
+  mailTransport.sendMail(mailOptions, function(err) {
+    if (err) {
+      console.log(err);
+    }
+    if (err) return next(err);
+    mailTransport.close();
+    req.flash('info', 'Invitations sent!');
+    // res.json({ postData: quiltData });
+    // res.json({ quiltId: quilt.id });
+    cb.call();
+  });
+}
 
 router.get('/invite/:id', function(req, res) {
   console.log('INVITE-- ', req.params);
@@ -276,7 +284,7 @@ router.get('/invite/:id', function(req, res) {
     .exec(function (err, invite) {
       if (err) throw err;
       console.log('INVITE***', invite);
-      Patch.find({'_quilt': invite._quilt.id}, function(err, patches) {
+      Patch.find({'_quilt': invite._quilt.id}, null, {sort: {'_id': -1}}, function(err, patches) {
         if (err) return next(err);
         var simplePatchData = new Array();
         _.forEach(patches, function(patch) {
@@ -342,7 +350,7 @@ router.get('/invitee', function(req, res) {
               if (themes.length) {
                 themes[0]['active'] = 'active';
               }
-              Patch.find({'_quilt': quilt.id}, function(err, patches) {
+              Patch.find({'_quilt': quilt.id}, null, {sort: {'_id': -1}}, function(err, patches) {
                 if (err) return next(err);
                 var simplePatchData = new Array();
                 _.forEach(patches, function(patch) {

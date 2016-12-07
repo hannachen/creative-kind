@@ -135,8 +135,15 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
               url = '/patch/view/'+patch.uid;
               break;
           }
-          console.log('URL', url);
-          res.json({ url: url });
+          if (patch.status === 'complete') {
+            var filename = patch.uid + '.png',
+                filePath = req.config.root + '/public/patches/' + filename;
+            savePatchAsPng(patch, filePath, res, next, function() {
+              res.json({ url: url });
+            });
+          } else {
+            res.json({ url: url });
+          }
         });
       }
     });
