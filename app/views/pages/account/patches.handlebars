@@ -1,3 +1,4 @@
+<h2>{{title}}</h2>
 {{#if patches}}
   <ul class="patch-list">
     {{#each patches}}
@@ -8,6 +9,11 @@
         <li class="patch-item">
           <div class="patch-thumb">
             <a href="/patch/view/{{uid}}" class="thumb"><img src="/patch/svg/{{uid}}" /></a>
+            {{#if_eq status 'complete'}}
+              <a href="/patch/download/{{uid}}/png" class="download-link">
+                <span class="icon icon-arrow-down"></span>
+              </a>
+            {{/if_eq}}
           </div>
           <div class="patch-info">
             <h4><a href="/quilts/view/{{_quilt._id}}">{{_quilt.title}}</a></h4>

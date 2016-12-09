@@ -1,12 +1,12 @@
 'use strict';
 var viewPatch = (function($) {
 
-  var $patchContents = $('.patch-actions');
+  var $patchActions = $('.patch-actions');
   var $flashModal = $('#flash-modal');
 
   function init() {
     // Check for patch action contents
-    if ($patchContents.length) {
+    if ($patchActions.length) {
 
       initEvents();
 
@@ -14,7 +14,7 @@ var viewPatch = (function($) {
       if ($flashModal.length) {
 
         // Prepare contents for download and shares
-        var $modalActions = $patchContents.clone();
+        var $modalActions = $patchActions.clone();
         $modalActions.append('<button class="btn" data-dismiss="modal">Skip</button>');
 
         // Append patch data to modal
@@ -24,11 +24,21 @@ var viewPatch = (function($) {
   }
 
   function initEvents() {
-    $patchContents.find('.social-link a').on('click', onShare);
+    $patchActions.find('.social-link a').on('click', onShare);
   }
 
   function onShare(e) {
     e.preventDefault();
+
+    var $patchActions = function() {
+      document.getElementById('shareBtn').onclick = function() {
+        FB.ui({
+          method: 'share',
+          display: 'popup',
+          href: 'https://developers.facebook.com/docs/',
+        }, function(response){});
+      }
+    }
   }
 
   return {

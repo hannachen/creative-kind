@@ -14,6 +14,8 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var recaptcha = require('express-recaptcha');
 
+var fbConfig = require('../config/fb.js');
+
 module.exports = function(app, config) {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
@@ -78,6 +80,7 @@ module.exports = function(app, config) {
     res.locals.user = req.user;
     res.locals.flash = req.flash();
     req.config = config;
+    req.fbConfig = fbConfig;
     next();
   });
 

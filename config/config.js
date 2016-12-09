@@ -18,6 +18,7 @@ nodemailer: {
 
 var config = {
   development: {
+    host: 'localhost',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
     app: {
@@ -36,6 +37,7 @@ var config = {
   },
 
   test: {
+    host: 'localhost',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
     app: {
@@ -54,6 +56,7 @@ var config = {
   },
 
   staging: {
+    host: 'creative-kind.fpo.website',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
     app: {
@@ -72,6 +75,7 @@ var config = {
   },
 
   production: {
+    host: 'creative-kind.com',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
     app: {

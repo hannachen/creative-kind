@@ -7008,7 +7008,9 @@ label:hover:before {
         width: 33.33333%; } }
   @media (max-width: 767px) {
     .patch-list .patch-thumb {
-      padding: 0.9em 0; } }
+      margin: 0.9em 0; } }
+  .patch-list .patch-thumb .thumb {
+    display: block; }
   .patch-list .patch-thumb img {
     width: 100%;
     height: auto; }
@@ -7304,7 +7306,8 @@ label:hover:before {
 
 #forgot-password {
   color: #ffffff;
-  background-color: #F25F5C; }
+  background-color: #F25F5C;
+  height: 100%; }
   #forgot-password .header-menu {
     border-bottom: 0; }
     #forgot-password .header-menu a,
@@ -7337,6 +7340,53 @@ label:hover:before {
 
 #my-squares .contents {
   padding-top: 0; }
+#my-squares .patch-thumb {
+  position: relative;
+  border: 1px solid #565656;
+  overflow: hidden; }
+  #my-squares .patch-thumb .download-link {
+    position: absolute;
+    width: 85%;
+    height: 0;
+    bottom: 0;
+    right: 0;
+    transform: translateX(75%) translateY(60%) rotate(-45deg);
+    transform-origin: bottom right;
+    opacity: 0;
+    /*
+    &:before {
+      width: 0;
+      height: 0;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      opacity: .85;
+      @include triangle-bottom-right(2.5em, $white);
+      @include media-breakpoint-up(md) {
+        @include triangle-bottom-right(3.5em, $white);
+      }
+    }
+    */ }
+    #my-squares .patch-thumb .download-link:hover {
+      opacity: 1; }
+    #my-squares .patch-thumb .download-link:before, #my-squares .patch-thumb .download-link:after {
+      content: '';
+      display: block; }
+    #my-squares .patch-thumb .download-link:after {
+      padding-bottom: 100%;
+      transform: translateY(-100%);
+      background-color: #ffffff;
+      border-top: 1px solid #565656;
+      opacity: .85; }
+    #my-squares .patch-thumb .download-link .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(110%) translateY(-235%) rotate(45deg);
+      z-index: 500;
+      color: rgba(86, 86, 86, 0.85); }
+  #my-squares .patch-thumb .thumb:hover + .download-link {
+    opacity: 1; }
 
 #my-quilts li {
   display: block;

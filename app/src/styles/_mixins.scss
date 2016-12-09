@@ -13,3 +13,8 @@
     height: 0;
   }
 }
+@mixin triangle-bottom-right($size: 1em, $color: $white) {
+  border-left: $size solid transparent;
+  border-top: $size solid transparent;
+  border-bottom: $size solid $color;
+}

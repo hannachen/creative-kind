@@ -2,6 +2,67 @@
   .contents {
     padding-top: 0;
   }
+  .patch-thumb {
+    position: relative;
+    border: 1px solid $gray-dark;
+    overflow: hidden;
+
+    .download-link {
+      position: absolute;
+      width: 85%;
+      height: 0;
+      bottom: 0;
+      right: 0;
+      transform: translateX(75%) translateY(60%) rotate(-45deg);
+      transform-origin: bottom right;
+      opacity: 0;
+
+      &:hover {
+        opacity: 1;
+      }
+      &:before,
+      &:after {
+        content: '';
+        display: block;
+      }
+      /*
+      &:before {
+        width: 0;
+        height: 0;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        opacity: .85;
+        @include triangle-bottom-right(2.5em, $white);
+        @include media-breakpoint-up(md) {
+          @include triangle-bottom-right(3.5em, $white);
+        }
+      }
+      */
+      &:after {
+        padding-bottom: 100%;
+        transform: translateY(-100%);
+        background-color: $white;
+        border-top: 1px solid $gray-dark;
+        opacity: .85;
+      }
+      .icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(110%) translateY(-235%) rotate(45deg);
+        z-index: 500;
+        color: rgba($gray-dark, .85);
+      }
+    }
+    .thumb {
+      &:hover {
+        &+.download-link {
+          opacity: 1;
+        }
+      }
+    }
+  }
 }
 #my-quilts {
   li {
