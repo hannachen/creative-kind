@@ -6353,16 +6353,27 @@ label:hover:before {
 #welcome-modal {
   top: 0;
   height: auto;
-  background-color: #247ba0; }
+  background-color: #f0ede6; }
   #welcome-modal .modal-content {
     background-color: transparent;
     border: none;
-    color: #ffffff; }
+    color: #565656; }
+  #welcome-modal .modal-header .logo {
+    color: #247ba0;
+    text-align: center; }
+    #welcome-modal .modal-header .logo em {
+      font-style: normal; }
+  #welcome-modal .modal-header .modal-title {
+    line-height: 130%;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin-bottom: 1em; }
   #welcome-modal .modal-body {
     text-align: center; }
     #welcome-modal .modal-body p {
       width: 100%; }
   #welcome-modal .modal-footer {
+    display: none;
     border-top: 0; }
     #welcome-modal .modal-footer .btn, #welcome-modal .modal-footer form .button-facebook, form #welcome-modal .modal-footer .button-facebook,
     #welcome-modal .modal-footer form .button-twitter,
@@ -6531,6 +6542,21 @@ label:hover:before {
     color: #247ba0; }
   #submenu-drawer .drawer-toggle {
     float: right; }
+
+footer {
+  border-top: 1px solid #efede6; }
+  footer .footer-items {
+    width: 100%; }
+  footer .footer-copyright {
+    display: none; }
+  footer .social {
+    width: 100%;
+    text-align: center; }
+    footer .social a {
+      font-size: 1.25em;
+      color: #565656;
+      display: inline-block;
+      padding: .5em 1em; }
 
 #quilt-container #canvas-overlay {
   background-color: rgba(36, 123, 160, 0.85);
@@ -6772,7 +6798,8 @@ label:hover:before {
     z-index: 1; }
   .patch-container .color-toolbar {
     margin-right: 0;
-    margin-left: 0; }
+    margin-left: 0;
+    padding: .5em 0; }
     .patch-container .color-toolbar::after {
       content: "";
       display: table;
@@ -6793,6 +6820,7 @@ label:hover:before {
       .patch-container .color-toolbar {
         margin-right: 0;
         margin-left: 0; } }
+  .patch-container .color-palette-toggle,
   .patch-container .color-palette,
   .patch-container .apply-button {
     position: relative;
@@ -6800,121 +6828,279 @@ label:hover:before {
     padding-right: 0;
     padding-left: 0; }
     @media (min-width: 576px) {
+      .patch-container .color-palette-toggle,
       .patch-container .color-palette,
       .patch-container .apply-button {
         padding-right: 0;
         padding-left: 0; } }
     @media (min-width: 768px) {
+      .patch-container .color-palette-toggle,
       .patch-container .color-palette,
       .patch-container .apply-button {
         padding-right: 0;
         padding-left: 0; } }
     @media (min-width: 992px) {
+      .patch-container .color-palette-toggle,
       .patch-container .color-palette,
       .patch-container .apply-button {
         padding-right: 0;
         padding-left: 0; } }
     @media (min-width: 1200px) {
+      .patch-container .color-palette-toggle,
       .patch-container .color-palette,
       .patch-container .apply-button {
         padding-right: 0;
         padding-left: 0; } }
+  .patch-container .color-palette-toggle {
+    float: left;
+    width: 12.5%;
+    padding-left: .5em; }
+    .patch-container .color-palette-toggle .btn, .patch-container .color-palette-toggle form .button-facebook, form .patch-container .color-palette-toggle .button-facebook,
+    .patch-container .color-palette-toggle form .button-twitter,
+    form .patch-container .color-palette-toggle .button-twitter, .patch-container .color-palette-toggle form .btn-submit, form .patch-container .color-palette-toggle .btn-submit, .patch-container .color-palette-toggle #create-quilt-form .submit-create-quilt, #create-quilt-form .patch-container .color-palette-toggle .submit-create-quilt {
+      padding: .45em 0; }
+      .patch-container .color-palette-toggle .btn .icon, .patch-container .color-palette-toggle form .button-facebook .icon, form .patch-container .color-palette-toggle .button-facebook .icon,
+      .patch-container .color-palette-toggle form .button-twitter .icon,
+      form .patch-container .color-palette-toggle .button-twitter .icon, .patch-container .color-palette-toggle form .btn-submit .icon, form .patch-container .color-palette-toggle .btn-submit .icon, .patch-container .color-palette-toggle #create-quilt-form .submit-create-quilt .icon, #create-quilt-form .patch-container .color-palette-toggle .submit-create-quilt .icon {
+        display: block; }
+        .patch-container .color-palette-toggle .btn .icon:before, .patch-container .color-palette-toggle form .button-facebook .icon:before, form .patch-container .color-palette-toggle .button-facebook .icon:before,
+        .patch-container .color-palette-toggle form .button-twitter .icon:before,
+        form .patch-container .color-palette-toggle .button-twitter .icon:before, .patch-container .color-palette-toggle form .btn-submit .icon:before, form .patch-container .color-palette-toggle .btn-submit .icon:before, .patch-container .color-palette-toggle #create-quilt-form .submit-create-quilt .icon:before, #create-quilt-form .patch-container .color-palette-toggle .submit-create-quilt .icon:before {
+          color: #565656;
+          font-size: 2.5em; }
+      .patch-container .color-palette-toggle .btn .icon-angle-up, .patch-container .color-palette-toggle form .button-facebook .icon-angle-up, form .patch-container .color-palette-toggle .button-facebook .icon-angle-up,
+      .patch-container .color-palette-toggle form .button-twitter .icon-angle-up,
+      form .patch-container .color-palette-toggle .button-twitter .icon-angle-up, .patch-container .color-palette-toggle form .btn-submit .icon-angle-up, form .patch-container .color-palette-toggle .btn-submit .icon-angle-up, .patch-container .color-palette-toggle #create-quilt-form .submit-create-quilt .icon-angle-up, #create-quilt-form .patch-container .color-palette-toggle .submit-create-quilt .icon-angle-up {
+        transform: rotate(180deg);
+        transition: transform .3s; }
+    .patch-container .color-palette-toggle .collapsed .icon-angle-up {
+      transform: rotate(0deg); }
   .patch-container .color-palette {
     float: left;
-    width: 83.33333%;
-    padding: 10px 5px;
-    border-right: 1px solid #b2b2b2; }
+    width: 75%;
+    padding: 10px 5px; }
     .patch-container .color-palette .color {
       list-style-type: none;
       margin: 0;
-      padding: 0 5px;
+      padding: 0 8px;
       width: 20%;
       float: left; }
       @media (min-width: 768px) {
         .patch-container .color-palette .color {
           max-width: 100px;
-          padding: 0 8px; } }
+          padding: 0 10px; } }
     .patch-container .color-palette .color-button {
       display: block;
       width: 100%;
       padding-top: 100%;
       border: 0;
-      border-radius: 50%; }
+      border-radius: 50%;
+      position: relative; }
+      .patch-container .color-palette .color-button:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border: 3px solid rgba(0, 0, 0, 0.25);
+        border-radius: 50%; }
   .patch-container .apply-button {
     float: left;
-    width: 16.66667%; }
+    width: 12.5%;
+    background-color: #b2b2b2;
+    border-top-left-radius: 2.5em;
+    border-bottom-left-radius: 2.5em;
+    margin-top: .2em; }
     .patch-container .apply-button .btn, .patch-container .apply-button form .button-facebook, form .patch-container .apply-button .button-facebook,
     .patch-container .apply-button form .button-twitter,
     form .patch-container .apply-button .button-twitter, .patch-container .apply-button form .btn-submit, form .patch-container .apply-button .btn-submit, .patch-container .apply-button #create-quilt-form .submit-create-quilt, #create-quilt-form .patch-container .apply-button .submit-create-quilt {
       width: 100%;
       border: 0;
-      padding: .75em 0;
+      padding: .5em 0;
       border-radius: 0; }
     .patch-container .apply-button .icon {
-      font-size: 2.5rem;
+      font-size: 2rem;
       line-height: 100%; }
-  .patch-container .palette-selector legend {
-    text-align: center;
+  .patch-container .palette-selector-anchor {
+    position: relative;
     width: 100%;
-    display: block;
-    border: 1px solid #b2b2b2; }
-    .patch-container .palette-selector legend .btn, .patch-container .palette-selector legend form .button-facebook, form .patch-container .palette-selector legend .button-facebook,
-    .patch-container .palette-selector legend form .button-twitter,
-    form .patch-container .palette-selector legend .button-twitter, .patch-container .palette-selector legend form .btn-submit, form .patch-container .palette-selector legend .btn-submit, .patch-container .palette-selector legend #create-quilt-form .submit-create-quilt, #create-quilt-form .patch-container .palette-selector legend .submit-create-quilt {
-      padding: 1em;
+    z-index: 1500; }
+  .patch-container .palette-selector {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff; }
+    .patch-container .palette-selector legend {
+      display: none;
       width: 100%;
-      color: #b2b2b2;
-      vertical-align: middle; }
-    .patch-container .palette-selector legend .icon {
-      vertical-align: middle;
-      font-size: 2em;
-      line-height: 100%;
-      position: relative;
-      top: -6px; }
-  .patch-container .palette-selector .form-group {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    overflow: hidden; }
-  .patch-container .palette-selector .color-sets {
-    padding: 1em 1em 2em; }
-    .patch-container .palette-selector .color-sets li,
-    .patch-container .palette-selector .color-sets .swatches {
+      text-align: center;
+      border: 1px solid #b2b2b2; }
+      .patch-container .palette-selector legend .btn, .patch-container .palette-selector legend form .button-facebook, form .patch-container .palette-selector legend .button-facebook,
+      .patch-container .palette-selector legend form .button-twitter,
+      form .patch-container .palette-selector legend .button-twitter, .patch-container .palette-selector legend form .btn-submit, form .patch-container .palette-selector legend .btn-submit, .patch-container .palette-selector legend #create-quilt-form .submit-create-quilt, #create-quilt-form .patch-container .palette-selector legend .submit-create-quilt {
+        padding: 1em;
+        width: 100%;
+        color: #b2b2b2;
+        vertical-align: middle; }
+      .patch-container .palette-selector legend .icon {
+        vertical-align: middle;
+        font-size: 2em;
+        line-height: 100%;
+        position: relative;
+        top: -6px; }
+    .patch-container .palette-selector .form-group {
+      padding: 0;
+      margin: 0;
+      border: 0;
       overflow: hidden; }
-    .patch-container .palette-selector .color-sets li {
-      list-style-type: none; }
-    .patch-container .palette-selector .color-sets .color-set .set-name {
-      display: none; }
-    .patch-container .palette-selector .color-sets .swatches {
-      margin: .5em 0; }
-      .patch-container .palette-selector .color-sets .swatches .swatch {
-        width: 20%;
-        float: left;
-        height: 3em; }
-    .patch-container .palette-selector .color-sets .selection,
-    .patch-container .palette-selector .color-sets .label {
-      vertical-align: middle;
-      display: inline-block; }
-    .patch-container .palette-selector .color-sets .selection {
-      width: 10%; }
-    .patch-container .palette-selector .color-sets .label {
-      width: 85%; }
+    .patch-container .palette-selector .color-sets {
+      padding: 1em 0 0; }
+      .patch-container .palette-selector .color-sets li,
+      .patch-container .palette-selector .color-sets .swatches {
+        overflow: hidden; }
+      .patch-container .palette-selector .color-sets li {
+        list-style-type: none; }
+      .patch-container .palette-selector .color-sets .color-set.selected,
+      .patch-container .palette-selector .color-sets .color-set .selection,
+      .patch-container .palette-selector .color-sets .color-set .set-name {
+        display: none; }
+      .patch-container .palette-selector .color-sets .color-set {
+        border-bottom: 1px solid #cccccc; }
+      .patch-container .palette-selector .color-sets .swatches {
+        margin-right: 0;
+        margin-left: 0;
+        margin: 1.15em 3.45em; }
+        .patch-container .palette-selector .color-sets .swatches::after {
+          content: "";
+          display: table;
+          clear: both; }
+        @media (min-width: 576px) {
+          .patch-container .palette-selector .color-sets .swatches {
+            margin-right: 0;
+            margin-left: 0; } }
+        @media (min-width: 768px) {
+          .patch-container .palette-selector .color-sets .swatches {
+            margin-right: 0;
+            margin-left: 0; } }
+        @media (min-width: 992px) {
+          .patch-container .palette-selector .color-sets .swatches {
+            margin-right: 0;
+            margin-left: 0; } }
+        @media (min-width: 1200px) {
+          .patch-container .palette-selector .color-sets .swatches {
+            margin-right: 0;
+            margin-left: 0; } }
+        .patch-container .palette-selector .color-sets .swatches .swatch {
+          position: relative;
+          min-height: 1px;
+          padding-right: 0;
+          padding-left: 0;
+          float: left;
+          width: 20%;
+          padding: 0 .5em; }
+          @media (min-width: 576px) {
+            .patch-container .palette-selector .color-sets .swatches .swatch {
+              padding-right: 0;
+              padding-left: 0; } }
+          @media (min-width: 768px) {
+            .patch-container .palette-selector .color-sets .swatches .swatch {
+              padding-right: 0;
+              padding-left: 0; } }
+          @media (min-width: 992px) {
+            .patch-container .palette-selector .color-sets .swatches .swatch {
+              padding-right: 0;
+              padding-left: 0; } }
+          @media (min-width: 1200px) {
+            .patch-container .palette-selector .color-sets .swatches .swatch {
+              padding-right: 0;
+              padding-left: 0; } }
+        .patch-container .palette-selector .color-sets .swatches .swatch-color {
+          display: block;
+          border-radius: 50%;
+          border: 3px solid rgba(0, 0, 0, 0.25); }
+          .patch-container .palette-selector .color-sets .swatches .swatch-color:before, .patch-container .palette-selector .color-sets .swatches .swatch-color:after {
+            content: '';
+            display: block; }
+          .patch-container .palette-selector .color-sets .swatches .swatch-color:before {
+            width: 100%;
+            padding-top: 100%; }
+          .patch-container .palette-selector .color-sets .swatches .swatch-color:after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 50%; }
+      .patch-container .palette-selector .color-sets .selection,
+      .patch-container .palette-selector .color-sets .label {
+        vertical-align: middle; }
+      .patch-container .palette-selector .color-sets .label {
+        display: block; }
   .patch-container #saveData {
     display: none !important; }
 
 .buttons-container {
-  background-color: rgba(178, 178, 178, 0.5);
-  margin: 0;
-  padding: 1em 0 3em; }
-  .buttons-container .complete-form .action-button {
-    display: block;
-    width: 50%;
-    padding: 1em 1.5em;
-    font-size: 1em;
-    margin: 0 auto; }
-  .buttons-container .complete-form .btn-submit {
-    color: #ffffff;
-    background-color: #247ba0; }
+  border-top: 1px solid rgba(178, 178, 178, 0.5);
+  border-bottom: 1px solid rgba(178, 178, 178, 0.5);
+  margin: 0 0 3em;
+  padding: 0; }
+  .buttons-container .complete-form {
+    margin-right: 0;
+    margin-left: 0; }
+    .buttons-container .complete-form::after {
+      content: "";
+      display: table;
+      clear: both; }
+    @media (min-width: 576px) {
+      .buttons-container .complete-form {
+        margin-right: 0;
+        margin-left: 0; } }
+    @media (min-width: 768px) {
+      .buttons-container .complete-form {
+        margin-right: 0;
+        margin-left: 0; } }
+    @media (min-width: 992px) {
+      .buttons-container .complete-form {
+        margin-right: 0;
+        margin-left: 0; } }
+    @media (min-width: 1200px) {
+      .buttons-container .complete-form {
+        margin-right: 0;
+        margin-left: 0; } }
+    .buttons-container .complete-form .action-button,
+    .buttons-container .complete-form .btn-submit {
+      position: relative;
+      min-height: 1px;
+      padding-right: 15px;
+      padding-left: 15px;
+      float: left;
+      width: 50%;
+      padding: 1.25em; }
+      @media (min-width: 576px) {
+        .buttons-container .complete-form .action-button,
+        .buttons-container .complete-form .btn-submit {
+          padding-right: 15px;
+          padding-left: 15px; } }
+      @media (min-width: 768px) {
+        .buttons-container .complete-form .action-button,
+        .buttons-container .complete-form .btn-submit {
+          padding-right: 15px;
+          padding-left: 15px; } }
+      @media (min-width: 992px) {
+        .buttons-container .complete-form .action-button,
+        .buttons-container .complete-form .btn-submit {
+          padding-right: 15px;
+          padding-left: 15px; } }
+      @media (min-width: 1200px) {
+        .buttons-container .complete-form .action-button,
+        .buttons-container .complete-form .btn-submit {
+          padding-right: 15px;
+          padding-left: 15px; } }
+    .buttons-container .complete-form .action-button {
+      font-size: 1em;
+      border-right: 1px solid rgba(178, 178, 178, 0.5); }
 
 .start-patch-form .theme {
   margin: 1em 0; }
@@ -7133,6 +7319,66 @@ label:hover:before {
   content: 'Invalid Email';
   font-size: .75rem; }
 
+.static-page .header-menu {
+  border-bottom: 0; }
+.static-page section {
+  margin-right: -15px;
+  margin-left: -15px; }
+  .static-page section::after {
+    content: "";
+    display: table;
+    clear: both; }
+  @media (min-width: 576px) {
+    .static-page section {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 768px) {
+    .static-page section {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 992px) {
+    .static-page section {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 1200px) {
+    .static-page section {
+      margin-right: -15px;
+      margin-left: -15px; } }
+.static-page article {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  float: left;
+  width: 83.33333%;
+  left: 8.33333%; }
+  @media (min-width: 576px) {
+    .static-page article {
+      padding-right: 15px;
+      padding-left: 15px; } }
+  @media (min-width: 768px) {
+    .static-page article {
+      padding-right: 15px;
+      padding-left: 15px; } }
+  @media (min-width: 992px) {
+    .static-page article {
+      padding-right: 15px;
+      padding-left: 15px; } }
+  @media (min-width: 1200px) {
+    .static-page article {
+      padding-right: 15px;
+      padding-left: 15px; } }
+.static-page p {
+  margin: 1em 0; }
+.static-page footer {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+.static-page .contents {
+  position: relative; }
+
 #home {
   /*
   &.modal-open {
@@ -7223,86 +7469,166 @@ label:hover:before {
         #home #quilt-thumbnails-container #quilt-thumbnails .quilt-thumbnail.active .thumb {
           background-color: #247ba0; }
 
-#login-signup {
+#login-signup a,
+#login-signup button,
+#login a,
+#login button,
+#signup a,
+#signup button {
+  color: #ffffff; }
+#login-signup .header-menu,
+#login .header-menu,
+#signup .header-menu {
+  border-bottom: none; }
+  #login-signup .header-menu .title,
+  #login .header-menu .title,
+  #signup .header-menu .title {
+    color: white; }
+#login-signup .nav,
+#login .nav,
+#signup .nav {
+  display: none; }
+#login-signup .login-signup,
+#login .login-signup,
+#signup .login-signup {
+  padding: 0; }
+  #login-signup .login-signup h2,
+  #login .login-signup h2,
+  #signup .login-signup h2 {
+    margin-bottom: 1.75em; }
+  #login-signup .login-signup label,
+  #login-signup .login-signup .input-field,
+  #login .login-signup label,
+  #login .login-signup .input-field,
+  #signup .login-signup label,
+  #signup .login-signup .input-field {
+    color: #ffffff;
+    text-align: left; }
+  #login-signup .login-signup ::-webkit-input-placeholder,
+  #login .login-signup ::-webkit-input-placeholder,
+  #signup .login-signup ::-webkit-input-placeholder {
+    color: #ffffff; }
+  #login-signup .login-signup :-moz-placeholder,
+  #login .login-signup :-moz-placeholder,
+  #signup .login-signup :-moz-placeholder {
+    /* Firefox 18- */
+    color: #ffffff; }
+  #login-signup .login-signup ::-moz-placeholder,
+  #login .login-signup ::-moz-placeholder,
+  #signup .login-signup ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #ffffff; }
+  #login-signup .login-signup :-ms-input-placeholder,
+  #login .login-signup :-ms-input-placeholder,
+  #signup .login-signup :-ms-input-placeholder {
+    color: #ffffff; }
+  #login-signup .login-signup input,
+  #login-signup .login-signup input:-webkit-autofill,
+  #login .login-signup input,
+  #login .login-signup input:-webkit-autofill,
+  #signup .login-signup input,
+  #signup .login-signup input:-webkit-autofill {
+    color: #247ba0;
+    border-bottom: 1px solid #ffffff; }
+    #login-signup .login-signup input:focus,
+    #login-signup .login-signup input:-webkit-autofill:focus,
+    #login .login-signup input:focus,
+    #login .login-signup input:-webkit-autofill:focus,
+    #signup .login-signup input:focus,
+    #signup .login-signup input:-webkit-autofill:focus {
+      box-shadow: 0 1px 0 0 #247ba0;
+      border-bottom: 1px solid #247ba0; }
+  #login-signup .login-signup input:-webkit-autofill,
+  #login .login-signup input:-webkit-autofill,
+  #signup .login-signup input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #9bd5d0 inset;
+    -webkit-text-fill-color: #247ba0 !important; }
+#login-signup .signup-form .signup-field,
+#login .signup-form .signup-field,
+#signup .signup-form .signup-field {
+  text-align: center; }
+#login-signup .login-form .user-utils,
+#login .login-form .user-utils,
+#signup .login-form .user-utils {
+  margin: .5em auto 1.75em;
+  margin-right: -15px;
+  margin-left: -15px; }
+  #login-signup .login-form .user-utils::after,
+  #login .login-form .user-utils::after,
+  #signup .login-form .user-utils::after {
+    content: "";
+    display: table;
+    clear: both; }
+  @media (min-width: 576px) {
+    #login-signup .login-form .user-utils,
+    #login .login-form .user-utils,
+    #signup .login-form .user-utils {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 768px) {
+    #login-signup .login-form .user-utils,
+    #login .login-form .user-utils,
+    #signup .login-form .user-utils {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 992px) {
+    #login-signup .login-form .user-utils,
+    #login .login-form .user-utils,
+    #signup .login-form .user-utils {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  @media (min-width: 1200px) {
+    #login-signup .login-form .user-utils,
+    #login .login-form .user-utils,
+    #signup .login-form .user-utils {
+      margin-right: -15px;
+      margin-left: -15px; } }
+  #login-signup .login-form .user-utils li,
+  #login .login-form .user-utils li,
+  #signup .login-form .user-utils li {
+    font-size: .85em;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+    width: 50%; }
+    @media (min-width: 576px) {
+      #login-signup .login-form .user-utils li,
+      #login .login-form .user-utils li,
+      #signup .login-form .user-utils li {
+        padding-right: 15px;
+        padding-left: 15px; } }
+    @media (min-width: 768px) {
+      #login-signup .login-form .user-utils li,
+      #login .login-form .user-utils li,
+      #signup .login-form .user-utils li {
+        padding-right: 15px;
+        padding-left: 15px; } }
+    @media (min-width: 992px) {
+      #login-signup .login-form .user-utils li,
+      #login .login-form .user-utils li,
+      #signup .login-form .user-utils li {
+        padding-right: 15px;
+        padding-left: 15px; } }
+    @media (min-width: 1200px) {
+      #login-signup .login-form .user-utils li,
+      #login .login-form .user-utils li,
+      #signup .login-form .user-utils li {
+        padding-right: 15px;
+        padding-left: 15px; } }
+    #login-signup .login-form .user-utils li.forgot-password,
+    #login .login-form .user-utils li.forgot-password,
+    #signup .login-form .user-utils li.forgot-password {
+      text-align: right; }
+
+#login {
   color: #ffffff;
   background-color: #247ba0; }
-  #login-signup a,
-  #login-signup button {
-    color: #ffffff; }
-  #login-signup .header-menu {
-    border-bottom: none; }
-    #login-signup .header-menu .title {
-      color: white; }
-  #login-signup .login-signup {
-    padding: 1em 0; }
-    #login-signup .login-signup label,
-    #login-signup .login-signup .input-field {
-      color: #ffffff;
-      text-align: left; }
-    #login-signup .login-signup ::-webkit-input-placeholder {
-      color: #ffffff; }
-    #login-signup .login-signup :-moz-placeholder {
-      /* Firefox 18- */
-      color: #ffffff; }
-    #login-signup .login-signup ::-moz-placeholder {
-      /* Firefox 19+ */
-      color: #ffffff; }
-    #login-signup .login-signup :-ms-input-placeholder {
-      color: #ffffff; }
-    #login-signup .login-signup .input-email {
-      border-bottom: 1px solid #ffffff; }
-  #login-signup .signup-form .signup-field {
-    text-align: center; }
-  #login-signup .login-form .user-utils {
-    margin: .5em auto 1.75em;
-    margin-right: -15px;
-    margin-left: -15px; }
-    #login-signup .login-form .user-utils::after {
-      content: "";
-      display: table;
-      clear: both; }
-    @media (min-width: 576px) {
-      #login-signup .login-form .user-utils {
-        margin-right: -15px;
-        margin-left: -15px; } }
-    @media (min-width: 768px) {
-      #login-signup .login-form .user-utils {
-        margin-right: -15px;
-        margin-left: -15px; } }
-    @media (min-width: 992px) {
-      #login-signup .login-form .user-utils {
-        margin-right: -15px;
-        margin-left: -15px; } }
-    @media (min-width: 1200px) {
-      #login-signup .login-form .user-utils {
-        margin-right: -15px;
-        margin-left: -15px; } }
-    #login-signup .login-form .user-utils li {
-      font-size: .85em;
-      position: relative;
-      min-height: 1px;
-      padding-right: 15px;
-      padding-left: 15px;
-      float: left;
-      width: 50%; }
-      @media (min-width: 576px) {
-        #login-signup .login-form .user-utils li {
-          padding-right: 15px;
-          padding-left: 15px; } }
-      @media (min-width: 768px) {
-        #login-signup .login-form .user-utils li {
-          padding-right: 15px;
-          padding-left: 15px; } }
-      @media (min-width: 992px) {
-        #login-signup .login-form .user-utils li {
-          padding-right: 15px;
-          padding-left: 15px; } }
-      @media (min-width: 1200px) {
-        #login-signup .login-form .user-utils li {
-          padding-right: 15px;
-          padding-left: 15px; } }
-      #login-signup .login-form .user-utils li.forgot-password {
-        text-align: right; }
+
+#signup {
+  color: #ffffff;
+  background-color: #9bd5d0; }
 
 #forgot-password {
   color: #ffffff;
@@ -7343,7 +7669,8 @@ label:hover:before {
 #my-squares .patch-thumb {
   position: relative;
   border: 1px solid #565656;
-  overflow: hidden; }
+  overflow: hidden;
+  /* Rotate the link block to create a triangular hit area */ }
   #my-squares .patch-thumb .download-link {
     position: absolute;
     width: 85%;
@@ -7352,21 +7679,7 @@ label:hover:before {
     right: 0;
     transform: translateX(75%) translateY(60%) rotate(-45deg);
     transform-origin: bottom right;
-    opacity: 0;
-    /*
-    &:before {
-      width: 0;
-      height: 0;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      opacity: .85;
-      @include triangle-bottom-right(2.5em, $white);
-      @include media-breakpoint-up(md) {
-        @include triangle-bottom-right(3.5em, $white);
-      }
-    }
-    */ }
+    opacity: 0; }
     #my-squares .patch-thumb .download-link:hover {
       opacity: 1; }
     #my-squares .patch-thumb .download-link:before, #my-squares .patch-thumb .download-link:after {
@@ -7382,6 +7695,7 @@ label:hover:before {
       position: absolute;
       top: 0;
       left: 0;
+      /* Rotate in the opposite direction and position */
       transform: translateX(110%) translateY(-235%) rotate(45deg);
       z-index: 500;
       color: rgba(86, 86, 86, 0.85); }
@@ -7524,6 +7838,7 @@ body {
 h1,
 h2,
 h3 {
+  text-align: center;
   letter-spacing: -0.05em; }
 
 h1 {
@@ -7561,9 +7876,6 @@ a {
 
 form li {
   list-style-type: none; }
-
-footer {
-  display: none; }
 
 .browserupgrade {
   margin: 0.2em 0;
@@ -7609,6 +7921,23 @@ form .button-twitter, form .btn-submit, #create-quilt-form .submit-create-quilt 
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1030; }
+
+.logo {
+  font-family: "Times New Roman", serif;
+  font-style: italic;
+  color: #247ba0;
+  margin: .325em 0; }
+  @media (min-width: 576px) {
+    .logo {
+      margin: .425em 0; } }
+  .logo a {
+    color: #247ba0; }
+  .logo em {
+    text-transform: uppercase;
+    font-size: 80%;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    letter-spacing: .05em; }
 
 @media (max-width: 767px) {
   .contents {
@@ -7696,23 +8025,7 @@ form .button-twitter, form .btn-submit, #create-quilt-form .submit-create-quilt 
     text-align: right; }
   .header-menu .title {
     float: left;
-    width: 66.66667%;
-    text-align: center; }
-    .header-menu .title h1 {
-      margin: .325em 0;
-      font-family: "Times New Roman", serif;
-      font-style: italic; }
-      @media (min-width: 576px) {
-        .header-menu .title h1 {
-          margin: .425em 0; } }
-      .header-menu .title h1 a {
-        color: #247ba0; }
-      .header-menu .title h1 em {
-        text-transform: uppercase;
-        font-size: 80%;
-        font-family: "Roboto", sans-serif;
-        font-style: normal;
-        letter-spacing: .05em; }
+    width: 66.66667%; }
     .header-menu .title h2 {
       display: none; }
 
@@ -7730,10 +8043,3 @@ form .button-twitter, form .btn-submit, #create-quilt-form .submit-create-quilt 
       height: 75vh;
       width: 75vh;
       padding-top: 0; } }
-
-.static-page .contents {
-  position: relative; }
-.static-page footer {
-  display: block;
-  position: absolute;
-  bottom: 0; }

@@ -64,25 +64,52 @@
   }
   .color-toolbar {
     @include make-row($no-grid-gutter-widths);
+    padding: .5em 0;
   }
+  .color-palette-toggle,
   .color-palette,
   .apply-button {
     @include make-col-ready($no-grid-gutter-widths);
   }
+  .color-palette-toggle {
+    @include make-col(1.5);
+    padding-left: .5em;
+
+    .btn {
+      padding: .45em 0;
+
+      .icon {
+        display: block;
+
+        &:before {
+          color: $gray-dark;
+          font-size: 2.5em;
+        }
+      }
+      .icon-angle-up {
+        transform: rotate(180deg);
+        transition: transform .3s;
+      }
+    }
+    .collapsed {
+      .icon-angle-up {
+        transform: rotate(0deg);
+      }
+    }
+  }
   .color-palette {
-    @include make-col(10);
+    @include make-col(9);
     padding: 10px 5px;
-    border-right: 1px solid $gray;
 
     .color {
       list-style-type: none;
       margin: 0;
-      padding: 0 5px;
+      padding: 0 8px;
       width: 20%;
       float: left;
       @include media-breakpoint-up(md) {
         max-width: 100px;
-        padding: 0 8px;
+        padding: 0 10px;
       }
     }
     .color-button {
@@ -91,28 +118,54 @@
       padding-top: 100%;
       border: 0;
       border-radius: 50%;
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border: 3px solid rgba($black, .25);
+        border-radius: 50%;
+      }
     }
   }
   .apply-button {
-    @include make-col(2);
+    @include make-col(1.5);
+    background-color: $gray;
+    border-top-left-radius: 2.5em;
+    border-bottom-left-radius: 2.5em;
+    margin-top: .2em;
 
     .btn {
       width: 100%;
       border: 0;
-      padding: .75em 0;
+      padding: .5em 0;
       border-radius: 0;
     }
     .icon {
-      font-size: 2.5rem;
+      font-size: 2rem;
       line-height: 100%;
     }
   }
+  .palette-selector-anchor {
+    position: relative;
+    width: 100%;
+    z-index: 1500;
+  }
   .palette-selector {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $white;
 
     legend {
-      text-align: center;
+      display: none;
       width: 100%;
-      display: block;
+      text-align: center;
       border: 1px solid $gray;
 
       .btn {
@@ -136,7 +189,7 @@
       overflow: hidden;
     }
     .color-sets {
-      padding: 1em 1em 2em;
+      padding: 1em 0 0;
 
       li,
       .swatches {
@@ -146,29 +199,55 @@
         list-style-type: none;
       }
       .color-set {
+        &.selected,
+        .selection,
         .set-name {
           display: none;
         }
       }
+      .color-set {
+        border-bottom: 1px solid $gray-light;
+      }
       .swatches {
-        margin: .5em 0;
+        @include make-row($no-grid-gutter-widths);
+        margin: 1.15em 3.45em;
 
         .swatch {
-          width: 20%;
-          float: left;
-          height: 3em;
+          @include make-col-ready($no-grid-gutter-widths);
+          @include make-col(2.4);
+          padding: 0 .5em;
+        }
+        .swatch-color {
+          display: block;
+          border-radius: 50%;
+          border: 3px solid rgba($black, .25);
+
+          &:before,
+          &:after {
+            content: '';
+            display: block;
+          }
+
+          &:before {
+            width: 100%;
+            padding-top: 100%;
+          }
+          &:after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 50%;
+          }
         }
       }
       .selection,
       .label {
         vertical-align: middle;
-        display: inline-block;
-      }
-      .selection {
-        width: 10%;
       }
       .label {
-        width: 85%;
+        display: block;
       }
     }
   }
@@ -177,21 +256,24 @@
   }
 }
 .buttons-container {
-  background-color: rgba($gray, .5);
-  margin: 0;
-  padding: 1em 0 3em;
+  border-top: 1px solid rgba($gray, .5);
+  border-bottom: 1px solid rgba($gray, .5);
+  margin: 0 0 3em;
+  padding: 0;
 
   .complete-form {
+    @include make-row($no-grid-gutter-widths);
+    .action-button,
+    .btn-submit {
+      @include make-col-ready();
+      @include make-col(6);
+      padding: 1.25em;
+    }
     .action-button {
-      display: block;
-      width: 50%;
-      padding: 1em 1.5em;
       font-size: 1em;
-      margin: 0 auto;
+      border-right: 1px solid rgba($gray, .5);
     }
     .btn-submit {
-      color: $white;
-      background-color: $primary-brand-color;
     }
   }
 }

@@ -7,6 +7,7 @@
     border: 1px solid $gray-dark;
     overflow: hidden;
 
+    /* Rotate the link block to create a triangular hit area */
     .download-link {
       position: absolute;
       width: 85%;
@@ -25,20 +26,6 @@
         content: '';
         display: block;
       }
-      /*
-      &:before {
-        width: 0;
-        height: 0;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        opacity: .85;
-        @include triangle-bottom-right(2.5em, $white);
-        @include media-breakpoint-up(md) {
-          @include triangle-bottom-right(3.5em, $white);
-        }
-      }
-      */
       &:after {
         padding-bottom: 100%;
         transform: translateY(-100%);
@@ -50,6 +37,7 @@
         position: absolute;
         top: 0;
         left: 0;
+        /* Rotate in the opposite direction and position */
         transform: translateX(110%) translateY(-235%) rotate(45deg);
         z-index: 500;
         color: rgba($gray-dark, .85);

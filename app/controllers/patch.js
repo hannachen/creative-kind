@@ -127,7 +127,7 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
           var url = '/';
           switch(patch.status) {
             case 'progress':
-              req.flash('success', 'Save Complete!');
+              req.flash('success', 'Saved. See you soon!');
               url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':

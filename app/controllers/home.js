@@ -47,6 +47,7 @@ router.get('/about', function (req, res, next) {
   res.render('pages/static/about', {
     title: 'About',
     pageId: 'about',
+    returnHeader: true,
     pageClass: 'static-page'
   });
 });
@@ -57,6 +58,7 @@ router.get('/terms-conditions', function (req, res, next) {
   res.render('pages/static/terms', {
     title: 'Terms',
     pageId: 'terms',
+    returnHeader: true,
     pageClass: 'static-page'
   });
 });

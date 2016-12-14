@@ -6,6 +6,7 @@ var express = require('express'),
     recaptcha = require('express-recaptcha'),
     async = require('async'),
     fs = require('fs'),
+    _ = require('lodash'),
     nodemailer = require('nodemailer'),
     mgTransport = require('nodemailer-mailgun-transport'),
     crypto = require('crypto'),
@@ -90,8 +91,23 @@ router.get('/quilts', isAuthenticated, function(req, res) {
   });
 });
 
-router.get('/register', function(req, res) {
-  res.redirect('/login-signup/#signup');
+// Login/signup routes
+var loginRoutes = ['/login', '/signup'];
+_.forEach(loginRoutes, function(routeName) {
+  router.get(routeName, function(req, res) {
+    if (req.isAuthenticated()) {
+      res.redirect('/account');
+    } else {
+      var cb = req.query.cb,
+          action = routeName.replace('/', '');
+      res.render(action, {
+        title: 'Creative KIND',
+        pageId: action,
+        returnHeader: true, // Replace user menu toggle with back link
+        cb: cb
+      });
+    }
+  });
 });
 
 router.post('/register', function(req, res, next) {
@@ -101,7 +117,7 @@ router.post('/register', function(req, res, next) {
   };
   User.register(new User(userdata), req.body.user.password, function(err) {
     if (err) {
-      console.log('error while user register!', err);
+      console.log('error while registering user.', err);
       return next(err);
     }
 

@@ -15,7 +15,41 @@
     <div class="grid-spacer" id="grid-spacer"></div>
     <canvas id="coloring-area" class="coloring-area"></canvas>
   </div>
+
+  <div class="palette-selector-anchor">
+    <form class="palette-selector" method="post" id="paletteSelector">
+      <input type="hidden" class="selected-set" id="selectedSet" value="{{patch.colorSet}}" />
+      <fieldset class="form-group">
+        <legend>
+          Change colour palette
+        </legend>
+        <ul class="color-sets collapse" id="colorSetSelector">
+          {{#each patch._quilt._theme.colors}}
+            <li class="color-set{{#if_eq @index ../patch.colorSet}} selected{{/if_eq}}">
+              <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}"{{#if_eq @index ../patch.colorSet}} checked{{/if_eq}} />
+              <label class="label" for="set{{@index}}">
+                <span class="set-name">Colour set {{@index}}</span>
+                <ul class="swatches">
+                  {{#each colors}}
+                    <li class="swatch" data-index="{{@index}}" data-hex="#{{this}}">
+                      <span class="swatch-color" style="background-color:#{{this}}"></span>
+                    </li>
+                  {{/each}}
+                </ul>
+              </label>
+            </li>
+          {{/each}}
+        </ul>
+      </fieldset>
+    </form>
+  </div>
+
   <div class="color-toolbar">
+    <div class="color-palette-toggle">
+      <button class="btn collapsed" type="button" title="Change colour palette" data-toggle="collapse" data-target="#colorSetSelector" aria-expanded="false" aria-controls="colorSetSelector">
+        <span class="icon icon-angle-up"></span>
+      </button>
+    </div>
     <ul class="color-palette">
       {{#each patch._quilt._theme.colors}}
       {{!--NOW {{../../../../colorSet}} --}}
@@ -38,32 +72,6 @@
     </div>
   </div>
 
-  <form class="palette-selector" method="post" id="paletteSelector">
-    <input type="hidden" class="selected-set" id="selectedSet" value="{{patch.colorSet}}" />
-    <fieldset class="form-group">
-      <legend>
-        <button class="btn" type="button" data-toggle="collapse" data-target="#colorSetSelector" aria-expanded="false" aria-controls="colorSetSelector">
-          <span class="icon icon-angle-down"></span>Change colour palette
-        </button>
-      </legend>
-      <ul class="color-sets collapse" id="colorSetSelector">
-        {{#each patch._quilt._theme.colors}}
-        <li class="color-set">
-          <input class="selection" type="radio" name="colorSet" value="{{@index}}" id="set{{@index}}" />
-          <label class="label" for="set{{@index}}">
-            <span class="set-name">Colour set {{@index}}</span>
-            <ul class="swatches">
-              {{#each colors}}
-                <li class="swatch" style="background-color:#{{this}}" data-index="{{@index}}" data-hex="#{{this}}">&nbsp;</li>
-              {{/each}}
-            </ul>
-          </label>
-        </li>
-        {{/each}}
-      </ul>
-    </fieldset>
-  </form>
-
   <div id="saveData">
     <span class="color-data">{{patch.colors}}</span>
     <span class="color-index-data">{{patch.colorIndex}}</span>
@@ -73,7 +81,7 @@
 
 <div class="buttons-container">
   <form class="complete-form" action="/patch/save/{{patch.uid}}" method="post" id="formActions">
-    <button class="btn action-button btb-save" name="saveAction" data-target="#formActions" value="progress">Save</button>
+    <button class="btn action-button btb-save" name="saveAction" data-target="#formActions" value="progress">Save Draft</button>
     <button class="btn action-button btn-submit" name="completeAction" data-target="#formActions" value="complete">Submit Design</button>
   </form>
 </div>

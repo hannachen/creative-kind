@@ -89,12 +89,29 @@
 #welcome-modal {
   top: 0;
   height: auto;
-  background-color: $primary-brand-color;
+  background-color: $welcome-background;
 
   .modal-content {
     background-color: transparent;
     border: none;
-    color: $white;
+    color: $gray-dark;
+  }
+  .modal-header {
+
+    .logo {
+      color: $primary-brand-color;
+      text-align: center;
+
+      em {
+        font-style: normal;
+      }
+    }
+    .modal-title {
+      line-height: 130%;
+      font-size: 1.5em;
+      font-weight: normal;
+      margin-bottom: 1em;
+    }
   }
   .modal-body {
     text-align: center;
@@ -104,6 +121,7 @@
     }
   }
   .modal-footer {
+    display: none;
     border-top: 0;
 
     .btn {

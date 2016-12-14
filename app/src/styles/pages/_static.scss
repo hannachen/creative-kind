@@ -1,0 +1,27 @@
+.static-page {
+
+  .header-menu {
+    border-bottom: 0;
+  }
+  section {
+    @include make-row($grid-gutter-widths);
+  }
+  article {
+    @include make-col-ready($grid-gutter-widths);
+    @include make-col(10);
+    @include make-col-push(1);
+  }
+  p {
+    margin: 1em 0;
+  }
+  footer {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .contents {
+    position: relative;
+  }
+}

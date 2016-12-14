@@ -127,10 +127,8 @@ var patch = (function($) {
     $colorButtons.on('touchstart click', applyColor);
     $applyColorButton.on('touchstart click', clearSelected);
     $colorPalette.on('changeSet', function(e) {
-      console.log('changeset', $paletteSelectons.filter(':checked').val());
       // Update color set
       colorSet = e.colorData;
-      console.log('colourSet', colorSet);
       selectedSet.value = $paletteSelectons.filter(':checked').val();
       _.forEach(colourAreas, setColor);
       view.draw();
@@ -144,8 +142,6 @@ var patch = (function($) {
     if (colorIndexData[i] !== null || colorIndexData[i] === undefined) {
       var currentColor = shapeArea.fillColor.toCSS(true), // Convert Paper.js Color object into hex
           newColor = colorSet[shapeArea.data.colorIndex];
-      console.log('current:', currentColor);
-      console.log('new:', newColor);
       if (newColor && newColor !== currentColor) {
         shapeArea.fillColor = newColor;
       }

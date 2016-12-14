@@ -9,7 +9,7 @@
       this.initPage();
     },
     initVariables: function() {
-      // this.$welcomeModal = $('#welcome-modal');
+      this.$welcomeModal = $('#welcome-modal');
       this.$quiltOverlay = $('#canvas-overlay');
     },
     initEvents: function() {
@@ -32,23 +32,28 @@
           _this.$quiltOverlay.removeClass('open');
           _this.setVisited();
         });
-        // this.$welcomeModal.on('hide.bs.modal', this.setVisited);
-        // this.$welcomeModal.on('click', '.btn', this.setVisited);
-        // this.$welcomeModal.modal('show');
-        // this.$welcomeModal.find('.signup-link').on('click', function(e) {
-        //   e.preventDefault();
-        //   var link = document.domain + e.currentTarget.getAttribute('href');
-        //   window.location = e.currentTarget.getAttribute('href');
-        //   console.log(document.domain);
-        //   console.log(e.currentTarget.getAttribute('href'));
-        // });
-        // this.$welcomeModal.find('[data-toggle]').on('click', function(e) {
-        //   e.preventDefault();
-        //   var $target = $(e.currentTarget.getAttribute('data-target'));
-        //   if ($target.length) {
-        //     $target.addClass('open');
-        //   }
-        // });
+        this.$welcomeModal.on('hide.bs.modal', this.setVisited);
+        this.$welcomeModal.modal('show');
+        setTimeout(function() {
+          _this.$welcomeModal.addClass('fade').modal('hide');
+        }, 15000);
+        /*
+        this.$welcomeModal.on('click', '.btn', this.setVisited);
+        this.$welcomeModal.find('.signup-link').on('click', function(e) {
+          e.preventDefault();
+          var link = document.domain + e.currentTarget.getAttribute('href');
+          window.location = e.currentTarget.getAttribute('href');
+          console.log(document.domain);
+          console.log(e.currentTarget.getAttribute('href'));
+        });
+        this.$welcomeModal.find('[data-toggle]').on('click', function(e) {
+          e.preventDefault();
+          var $target = $(e.currentTarget.getAttribute('data-target'));
+          if ($target.length) {
+            $target.addClass('open');
+          }
+        });
+        */
       }
     },
     setVisited: function() {

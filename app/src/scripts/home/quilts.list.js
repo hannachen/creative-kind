@@ -86,7 +86,7 @@ var quiltsList = (function($) {
         view.emit('onMouseUp');
         // Add cb to buttons
         $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
-        $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
+        $loginModal.find('.signup-link').attr('href', '/account/signup/?cb=' + targetUrl);
         $loginModal.modal('show');
       }
     } else {

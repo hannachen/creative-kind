@@ -1,5 +1,6 @@
-#login-signup {
-  @include dark-background();
+#login-signup,
+#login,
+#signup {
 
   a,
   button {
@@ -12,9 +13,15 @@
       color: white;
     }
   }
+  .nav {
+    display: none;
+  }
   .login-signup {
-    padding: 1em 0;
+    padding: 0;
 
+    h2 {
+      margin-bottom: 1.75em;
+    }
     label,
     .input-field {
       color: $white;
@@ -32,8 +39,19 @@
     :-ms-input-placeholder {
       color: $white;
     }
-    .input-email {
+    input,
+    input:-webkit-autofill {
+      color: $primary-brand-color;
       border-bottom: 1px solid $white;
+
+      &:focus {
+        box-shadow: 0 1px 0 0 $primary-brand-color;
+        border-bottom: 1px solid $primary-brand-color;
+      }
+    }
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px $secondary-brand-color inset;
+      -webkit-text-fill-color: $primary-brand-color !important;
     }
   }
   .signup-form {
@@ -57,4 +75,10 @@
       }
     }
   }
+}
+#login {
+  @include dark-background();
+}
+#signup {
+  @include light-background();
 }

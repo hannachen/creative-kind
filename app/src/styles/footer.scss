@@ -1,0 +1,21 @@
+footer {
+  border-top: 1px solid $off-gray;
+
+  .footer-items {
+    width: 100%;
+  }
+  .footer-copyright {
+    display: none;
+  }
+  .social {
+    width: 100%;
+    text-align: center;
+
+    a {
+      font-size: 1.25em;
+      color: $gray-dark;
+      display: inline-block;
+      padding: .5em 1em;
+    }
+  }
+}

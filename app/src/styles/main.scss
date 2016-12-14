@@ -26,10 +26,12 @@
 @import "./checkbox";
 @import "./modals";
 @import "./menu";
+@import "./footer";
 @import "./quilt";
 @import "./patch";
 @import "./modules/quilt-nav";
 @import "./modules/invite";
+@import "./pages/static";
 @import "./pages/home";
 @import "./pages/login-signup";
 @import "./pages/forgot-password";
@@ -58,6 +60,7 @@ body {
 h1,
 h2,
 h3 {
+  text-align: center;
   letter-spacing: -0.05em;
 }
 h1 {
@@ -100,9 +103,6 @@ form {
   li {
     list-style-type: none;
   }
-}
-footer {
-  display: none;
 }
 .browserupgrade {
   margin: 0.2em 0;
@@ -151,6 +151,26 @@ footer {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1030;
 }
+.logo {
+  font-family: "Times New Roman", serif;
+  font-style: italic;
+  color: $primary-brand-color;
+  margin: .325em 0;
+  @include media-breakpoint-up(sm) {
+    margin: .425em 0;
+  }
+
+  a {
+    color: $primary-brand-color;
+  }
+  em {
+    text-transform: uppercase;
+    font-size: 80%;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    letter-spacing: .05em;
+  }
+}
 .contents {
   @include media-breakpoint-down(sm) {
     @include make-container();
@@ -191,27 +211,7 @@ footer {
   }
   .title {
     @include make-col(8);
-    text-align: center;
 
-    h1 {
-      margin: .325em 0;
-      font-family: "Times New Roman", serif;
-      font-style: italic;
-      @include media-breakpoint-up(sm) {
-        margin: .425em 0;
-      }
-
-      a {
-        color: $primary-brand-color;
-      }
-      em {
-        text-transform: uppercase;
-        font-size: 80%;
-        font-family: "Roboto", sans-serif;
-        font-style: normal;
-        letter-spacing: .05em;
-      }
-    }
     h2 {
       display: none;
     }
@@ -232,16 +232,5 @@ footer {
     height: 75vh;
     width: 75vh;
     padding-top: 0;
-  }
-}
-
-.static-page {
-  .contents {
-    position: relative;
-  }
-  footer {
-    display: block;
-    position: absolute;
-    bottom: 0;
   }
 }

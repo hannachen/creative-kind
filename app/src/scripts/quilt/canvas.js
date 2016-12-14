@@ -59,7 +59,7 @@ var quiltCanvas = (function($) {
       if (_.isEmpty(user)) {
         if (patchData.status === 'new') {
           $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
-          $loginModal.find('.signup-link').attr('href', '/account/register/?cb=' + targetUrl);
+          $loginModal.find('.signup-link').attr('href', '/account/signup/?cb=' + targetUrl);
           $loginModal.modal('show');
         }
       } else {

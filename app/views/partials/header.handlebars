@@ -1,7 +1,7 @@
 <div class="container-fluid header-menu">
   <div class="row">
     <div class="col account-nav-toggle">
-      {{#if_eq pageId 'login-signup'}}
+      {{#if_eq returnHeader true}}
         <a class="drawer-toggle signup-menu" href="/">
           <span class="icon icon-chevron-left"></span>
         </a>
@@ -12,7 +12,7 @@
       {{/if_eq}}
     </div>
     <div class="col title">
-      <h1><a href="/">Creative <em>Kind</em></a></h1>
+      <h1 class="logo"><a href="/">Creative <em>Kind</em></a></h1>
       <h2>{{title}}</h2>
     </div>
     <div class="col sub-menu-toggle">

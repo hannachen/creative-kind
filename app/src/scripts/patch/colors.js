@@ -1,7 +1,7 @@
 'use strict';
 var colors = (function($) {
 
-  var $colorSetSelector = $('.palette-selector'),
+  var $colorSetSelector = $('#colorSetSelector'),
       $colorSets = $colorSetSelector.find('.selection'),
       $colorPalette = $('.color-palette'),
       $colorButtons = $colorPalette.find('.color-button'),
@@ -10,18 +10,14 @@ var colors = (function($) {
   function init() {
 
     if ($colorSetSelector.length > 0) {
-      var selectedSetValue = parseInt($colorSetSelector.find('.selected-set').val()),
-
-          // Get radio element by value
-          $selectedSet = $colorSets.filter('[value='+selectedSetValue+']'),
+      var // Get selected radio element
+          $selectedSet = $colorSets.filter(':checked'),
 
           // Get radio option label
           $selectedSetLabel = $colorSetSelector.find('[for='+$selectedSet.attr('id')+']'),
 
           // Get radio option colours
           $swatches = $selectedSetLabel.find('.swatch');
-
-      selectedSet.value = selectedSetValue;
 
       // Set element as checked
       $selectedSet.attr('checked', true);
@@ -52,11 +48,11 @@ var colors = (function($) {
 
     $colorSets.on('change', function(e) {
       e.preventDefault();
-      console.log('current selection', e.currentTarget);
       var $currentTarget = $(e.currentTarget),
           $selectedSetLabel = $colorSetSelector.find('[for='+$currentTarget.attr('id')+']'),
           $swatches = $selectedSetLabel.find('.swatch');
       updateColors($colorButtons, $swatches);
+      $colorSetSelector.collapse('hide');
     });
   }
 
