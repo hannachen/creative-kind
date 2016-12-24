@@ -113,6 +113,7 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
 router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
   var patchData = req.body.patchData;
   Patch.findOne({'uid':req.params.uid })
+    .populate('_quilt')
     .exec(function (err, patch) {
       if (err) return next(err);
       if (isMine(req, res, patch) || req.user.isAdmin) {
@@ -128,13 +129,14 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
           switch(patch.status) {
             case 'progress':
               req.flash('success', 'Saved. See you soon!');
-              url = '/patch/edit/'+patch.uid;
+              // url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':
               req.flash('success', 'Thanks for contributing!');
-              url = '/patch/view/'+patch.uid;
+              // url = '/patch/view/'+patch.uid;
               break;
           }
+          url = '/quilts/view/'+patch._quilt.id;
           if (patch.status === 'complete') {
             var filename = patch.uid + '.png',
                 filePath = req.config.root + '/public/patches/' + filename;

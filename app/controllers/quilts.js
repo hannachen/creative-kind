@@ -142,8 +142,8 @@ router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
 router.post('/rename/:id', isAuthenticated, function (req, res) {
   console.log('renaming quilt');
   var query = {'_id':req.params.id},
-    update = {'title':req.body.title},
-    options = {'muti': false};
+      update = {'title':req.body.title},
+      options = {'muti': false};
   Quilt.update(query, update, options, function(err) {
     if (err) {
       res.sendStatus(400);
@@ -313,6 +313,25 @@ router.get('/invite/:id', function(req, res) {
           expressFlash: req.flash('message')
         });
       });
+    });
+});
+
+router.post('/invite/:id', isAuthenticated, function (req, res, next) {
+  Quilt
+    .findOne({'_id':req.params.id})
+    .exec(function (err, quilt) {
+      if (err) return next(err);
+      if (!quilt) {
+        return res.redirect('/');
+      }
+      var emails = req.body.invites ? req.body.invites.split(',') : {};
+      if (emails.length) {
+        sendInvitation(req, quilt, emails, function() {
+          return res.redirect('/quilts/view/'+quilt.id);
+        });
+      } else {
+        return res.redirect('/');
+      }
     });
 });
 

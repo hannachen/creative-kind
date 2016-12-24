@@ -187,7 +187,15 @@ var patch = (function($) {
       });
       $submitPatchModal.modal('show');
     } else {
-      savePatch(postUrl);
+      var $savePatchModal = $('#save-patch-modal');
+      console.log('modal', $savePatchModal);
+      $savePatchModal.find('.btn').on('click', function() {
+        $(this).off('click');
+      });
+      $savePatchModal.find('.btn-save-design').on('click', function() {
+        savePatch(postUrl);
+      });
+      $savePatchModal.modal('show');
     }
 
   }

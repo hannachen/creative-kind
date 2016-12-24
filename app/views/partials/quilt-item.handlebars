@@ -21,5 +21,8 @@
 {{>theme }}
 
 {{#if_eq user.id quilt._user.id}}
-  {{>invite}}
+  <form action="/quilts/invite/{{quilt.id}}" id="invite-form" method="post">
+    {{>invite}}
+    <button type="submit" class="btn btn-invite">Invite</button>
+  </form>
 {{/if_eq}}

@@ -278,7 +278,7 @@ var quiltsList = (function($) {
     $quiltNav.on('click', onNavClick);
 
     setButtonState();
-    initQuiltListEvents();
+    // initQuiltListEvents();
   }
 
   function goToNextIndex() {

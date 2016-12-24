@@ -81,9 +81,10 @@
 
 <div class="buttons-container">
   <form class="complete-form" action="/patch/save/{{patch.uid}}" method="post" id="formActions">
-    <button class="btn action-button btb-save" name="saveAction" data-target="#formActions" value="progress">Save Draft</button>
+    <button class="btn action-button btn-save" name="saveAction" data-target="#formActions" value="progress">Save Draft</button>
     <button class="btn action-button btn-submit" name="completeAction" data-target="#formActions" value="complete">Submit Design</button>
   </form>
 </div>
 
+{{>modal/patch-save }}
 {{>modal/patch-submit }}

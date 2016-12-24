@@ -6411,6 +6411,7 @@ label:hover:before {
     top: 0;
     left: 0; }
 
+#save-patch-modal .btn-cancel,
 #submit-patch-modal .btn-cancel {
   float: left; }
 
