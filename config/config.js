@@ -63,7 +63,7 @@ var config = {
       name: 'qb-stg'
     },
     port: 8080,
-    db: 'mongodb://localhost:27007/creative-kind',
+    db: 'mongodb://queenbee:#1c2W87U$zl2@localhost:27007/creative-kind',
     secret: secretKey,
     nodemailer: {
       service: 'Mailgun',
