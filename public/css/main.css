@@ -6206,7 +6206,7 @@ form .or {
 form .btn-submit {
   width: 100%;
   font-size: 1.5em;
-  color: #247ba0;
+  color: #247ba0 !important;
   background-color: #ffffff; }
 
 /* Base for label styling */
@@ -7529,7 +7529,7 @@ footer {
   #login .login-signup input:-webkit-autofill,
   #signup .login-signup input,
   #signup .login-signup input:-webkit-autofill {
-    color: #247ba0;
+    color: #ffffff;
     border-bottom: 1px solid #ffffff; }
     #login-signup .login-signup input:focus,
     #login-signup .login-signup input:-webkit-autofill:focus,
@@ -7537,13 +7537,13 @@ footer {
     #login .login-signup input:-webkit-autofill:focus,
     #signup .login-signup input:focus,
     #signup .login-signup input:-webkit-autofill:focus {
-      box-shadow: 0 1px 0 0 #247ba0;
-      border-bottom: 1px solid #247ba0; }
+      box-shadow: 0 1px 0 0 #ffffff;
+      border-bottom: 1px solid #ffffff; }
   #login-signup .login-signup input:-webkit-autofill,
   #login .login-signup input:-webkit-autofill,
   #signup .login-signup input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #9bd5d0 inset;
-    -webkit-text-fill-color: #247ba0 !important; }
+    -webkit-text-fill-color: #ffffff !important; }
 #login-signup .signup-form .signup-field,
 #login .signup-form .signup-field,
 #signup .signup-form .signup-field {

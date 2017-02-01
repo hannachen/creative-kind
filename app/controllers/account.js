@@ -149,11 +149,13 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
       function(user, done) {
         var pwdHash = crypto.createHash('sha256').update(user.hash),
             oldPwd = pwdHash.digest('hex').substring(0, 15),
-            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'day'),
-            sign = crypto.createHmac('sha256', req.config.secret);
-        sign.update(queryString);
+            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'week'),
+            signer = crypto.createSign('RSA-SHA256');
+        signer.update(queryString);
+        signer.end();
 
-        var token = sign.digest('hex'),
+        var signature = signer.sign(fs.readFileSync(req.config.private_key)),
+            token = signature.toString('hex'),
             url = queryString + '&token=' + token;
         done(null, url, user);
       },
@@ -208,10 +210,11 @@ router.get('/reset', function(req, res) {
       token = req.query.token,
       verifier = crypto.createVerify('RSA-SHA256');
   verifier.update(queryString);
+  verifier.end();
 
   // Verify token
-  console.log('not expired', parseInt(req.query.expire) < parseInt(moment().unix()));
-  console.log('expire:', parseInt(req.query.expire));
+  console.log('expired:', parseInt(req.query.expire) < parseInt(moment().unix()));
+  console.log('expires:', parseInt(req.query.expire));
   console.log('date:', parseInt(moment().unix()));
 
   // No good
@@ -223,8 +226,7 @@ router.get('/reset', function(req, res) {
 
     // Continue on
   } else {
-
-    User.findOne({email: req.body.email}, function(err, user) {
+    User.findOne({email: req.query.email}, function(err, user) {
       if (!user) {
         req.flash('error', 'Password reset token is invalid or has expired.');
         return res.redirect('back');

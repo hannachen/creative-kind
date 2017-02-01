@@ -41,17 +41,17 @@
     }
     input,
     input:-webkit-autofill {
-      color: $primary-brand-color;
+      color: $white;
       border-bottom: 1px solid $white;
 
       &:focus {
-        box-shadow: 0 1px 0 0 $primary-brand-color;
-        border-bottom: 1px solid $primary-brand-color;
+        box-shadow: 0 1px 0 0 $white;
+        border-bottom: 1px solid $white;
       }
     }
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px $secondary-brand-color inset;
-      -webkit-text-fill-color: $primary-brand-color !important;
+      -webkit-text-fill-color: $white !important;
     }
   }
   .signup-form {
@@ -73,6 +73,9 @@
           text-align: right;
         }
       }
+    }
+    .btn-submit {
+
     }
   }
 }

@@ -21,6 +21,7 @@ var config = {
     host: 'localhost',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
+    private_key: rootPath + '/config/certs/private.pem',
     app: {
       name: 'qb-test'
     },
@@ -40,6 +41,7 @@ var config = {
     host: 'localhost',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
+    private_key: rootPath + '/config/certs/private.pem',
     app: {
       name: 'qb-test'
     },
@@ -59,6 +61,7 @@ var config = {
     host: 'creative-kind.fpo.website',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
+    private_key: rootPath + '/config/certs/private.pem',
     app: {
       name: 'qb-stg'
     },
@@ -78,6 +81,7 @@ var config = {
     host: 'creative-kind.com',
     root: rootPath,
     public_key: rootPath + '/config/certs/public.pem',
+    private_key: rootPath + '/config/certs/private.pem',
     app: {
       name: 'qb-test'
     },

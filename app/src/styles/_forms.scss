@@ -46,7 +46,7 @@ form {
     @extend .btn;
     width: 100%;
     font-size: 1.5em;
-    color: $primary-brand-color;
+    color: $primary-brand-color !important;
     background-color: $white;
   }
 }
