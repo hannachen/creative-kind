@@ -232,7 +232,7 @@ router.get('/reset', function(req, res) {
         return res.redirect('back');
       }
       res.render('pages/recover-password/reset', {
-        user: user
+        username: user.username
       });
     });
   }
