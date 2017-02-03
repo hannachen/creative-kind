@@ -3,7 +3,7 @@
 {{messages.success}}
 
 <form class="recover-password-form" action="/account/reset" method="post">
-  <input type="hidden" name="email" value="{{user.email}}" />
+  <input type="hidden" name="username" value="{{user.username}}" />
 
   <h1>Enter new password</h1>
   <h2>...</h2>
@@ -16,7 +16,7 @@
       <input type="password" name="password-confirm" class="input-password" placeholder="Confirm password" />
     </li>
     <li class="recover-password-button">
-      <input type="submit" value="Recover Password" class="submit-recover-password">
+      <input type="submit" value="Update Password" class="submit-recover-password">
     </li>
   </ul>
 

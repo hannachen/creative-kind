@@ -1,8 +1,6 @@
 'use strict';
 var Quilt = function(svg, quiltId, quiltData) {
 
-  console.log('NEW');
-
   this.$patchPreview = $('#patch-preview');
   this.quiltId = quiltId;
   this.myPatch = '';

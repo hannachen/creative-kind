@@ -138,8 +138,8 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
   if (!req.recaptcha.error) {
     async.waterfall([
       function(done) {
-        User.findOne({ email: req.body.user.email }, 'email hash', function(err, user) {
-          if (!user || !user.hash) {
+        User.findOne({ email: req.body.user.email }, 'email hash username', function(err, user) {
+          if (!user || !user.hash || !user.username) {
             req.flash('error', 'No account with that email address exists.');
             return res.redirect('/account/recover-password/');
           }
@@ -149,7 +149,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
       function(user, done) {
         var pwdHash = crypto.createHash('sha256').update(user.hash),
             oldPwd = pwdHash.digest('hex').substring(0, 15),
-            queryString = 'email=' + encodeURIComponent(user.email) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'week'),
+            queryString = 'username=' + encodeURIComponent(user.username) + '&old=' + oldPwd + '&expire=' + moment().add(1, 'week'),
             signer = crypto.createSign('RSA-SHA256');
         signer.update(queryString);
         signer.end();
@@ -206,7 +206,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
 });
 
 router.get('/reset', function(req, res) {
-  var queryString = 'email=' + encodeURIComponent(req.query.email) + '&old=' + req.query.old + '&expire=' + req.query.expire,
+  var queryString = 'username=' + encodeURIComponent(req.query.username) + '&old=' + req.query.old + '&expire=' + req.query.expire,
       token = req.query.token,
       verifier = crypto.createVerify('RSA-SHA256');
   verifier.update(queryString);
@@ -224,9 +224,9 @@ router.get('/reset', function(req, res) {
     req.flash('error', 'Password reset token expired or invalid token.');
     return res.redirect('/account/recover-password/');
 
-    // Continue on
+  // Continue on
   } else {
-    User.findOne({email: req.query.email}, function(err, user) {
+    User.findOne({username: req.query.username}, function(err, user) {
       if (!user) {
         req.flash('error', 'Password reset token is invalid or has expired.');
         return res.redirect('back');
@@ -238,30 +238,21 @@ router.get('/reset', function(req, res) {
   }
 });
 
-router.post('/reset', function(req, res) {
-  console.log(req.body);
-  console.log('email', req.body.email);
-  async.waterfall([
-    function(done) {
-      User.findOne({email: req.body.email}, function(err, user) {
-        if (!user) {
-          req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
-        }
-        user.save(function(err) {
-          if (err) return next(err);
-          req.logIn(user, function(err) {
-            done(err, user);
-          });
-        });
+router.post('/reset', function(req, res, next) {
+  console.log('**REQUEST BODY**',req.body);
+  console.log('username', req.body.username);
+
+  User.findByUsername(req.body.username).then(function(user) {
+    if (user) {
+      user.setPassword(req.body.password, function () {
+        user.save();
+        req.flash('success', 'Success! Your password has been changed.');
+        res.redirect('/account/');
       });
-    },
-    function(user, done) {
-      req.flash('success', 'Success! Your password has been changed.');
-      done(err);
+    } else {
+      req.flash('error', 'Unable to update password, please reset your password again.');
+      res.redirect('back');
     }
-  ], function(err) {
-    res.redirect('/');
   });
 });
 
