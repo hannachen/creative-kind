@@ -15,6 +15,11 @@
   //    height: 90%;
   //  }
   //}
+  .contents {
+    .patch-actions {
+      display: none;
+    }
+  }
 }
 #create-quilt-form {
   .selected-theme {

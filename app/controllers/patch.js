@@ -125,18 +125,16 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
         patch.save(function(err) {
           if (err) return next(err);
           console.log('STATUS', patch.status);
-          var url = '/';
           switch(patch.status) {
             case 'progress':
               req.flash('success', 'Saved. See you soon!');
-              // url = '/patch/edit/'+patch.uid;
               break;
             case 'complete':
+              req.session['showPatchActions'] = patch.uid;
               req.flash('success', 'Thanks for contributing!');
-              // url = '/patch/view/'+patch.uid;
               break;
           }
-          url = '/quilts/view/'+patch._quilt.id;
+          var url = '/quilts/view/'+patch._quilt.id;
           if (patch.status === 'complete') {
             var filename = patch.uid + '.png',
                 filePath = req.config.root + '/public/patches/' + filename;

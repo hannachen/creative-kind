@@ -1,5 +1,5 @@
 'use strict';
-var viewPatch = (function($) {
+var sharePatch = (function($) {
 
   var $patchActions = $('.patch-actions');
   var $flashModal = $('#flash-modal');
@@ -9,6 +9,17 @@ var viewPatch = (function($) {
     if ($patchActions.length) {
 
       initEvents();
+
+      // Check for flash message modal
+      if ($flashModal.length) {
+
+        // Prepare contents for download and shares
+        var $modalActions = $patchActions.clone();
+        $modalActions.append('<button class="btn" data-dismiss="modal">Skip</button>');
+
+        // Append patch data to modal
+        $modalActions.appendTo($flashModal.find('.modal-footer'));
+      }
     }
   }
 

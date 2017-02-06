@@ -187,6 +187,10 @@
       }
       .shares {
         margin: 1em 0;
+
+        .social-link {
+          display: inline-block;
+        }
       }
       .btn {
         width: 100%;

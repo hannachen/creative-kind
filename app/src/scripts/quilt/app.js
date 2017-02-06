@@ -9,5 +9,6 @@
     theme.init();
     invite.init();
     create.init();
+    sharePatch.init();
   });
 })(jQuery,window);

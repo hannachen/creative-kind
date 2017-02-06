@@ -6420,6 +6420,8 @@ label:hover:before {
       padding: 1em 0; }
     #flash-modal .modal-footer .patch-actions .shares {
       margin: 1em 0; }
+      #flash-modal .modal-footer .patch-actions .shares .social-link {
+        display: inline-block; }
     #flash-modal .modal-footer .patch-actions .btn, #flash-modal .modal-footer .patch-actions form .button-facebook, form #flash-modal .modal-footer .patch-actions .button-facebook,
     #flash-modal .modal-footer .patch-actions form .button-twitter,
     form #flash-modal .modal-footer .patch-actions .button-twitter, #flash-modal .modal-footer .patch-actions form .btn-submit, form #flash-modal .modal-footer .patch-actions .btn-submit, #flash-modal .modal-footer .patch-actions #create-quilt-form .submit-create-quilt, #create-quilt-form #flash-modal .modal-footer .patch-actions .submit-create-quilt {
@@ -7732,6 +7734,9 @@ footer {
   display: inline-block; }
 #my-quilts .edit-mode .icon-edit,
 #my-quilts .edit-mode .view-link {
+  display: none; }
+
+#view-quilt .contents .patch-actions {
   display: none; }
 
 #create-quilt-form .selected-theme {

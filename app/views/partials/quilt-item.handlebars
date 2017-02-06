@@ -11,6 +11,10 @@
   </div>
 {{/if}}
 
+{{#if showActions}}
+  {{>patch-actions patchId=showActions}}
+{{/if}}
+
 <h2 class="quilt-name {{quilt.type}}">
   {{quilt.title}}
   {{#if_eq quilt.type "private"}}

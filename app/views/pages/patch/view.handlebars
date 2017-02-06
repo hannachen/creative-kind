@@ -6,26 +6,4 @@
     <img src="/patch/svg/{{patch.uid}}" class="grid-spacer" />
   </div>
 </div>
-<ul class="patch-actions">
-  <li class="download"><a href="/patch/download/{{patch.uid}}/png" class="download-link">Download</a></li>
-  <li class="social">
-    <ul class="shares">
-      <li class="social-label">Share</li>
-      <li class="social-link">
-        <a class="link" href="#" data-type="instagram">
-          <span class="icon icon-instagram"></span>
-        </a>
-      </li>
-      <li class="social-link">
-        <a class="link" href="https://www.facebook.com/dialog/share?app_id={{fbConfig.appID}}&display=popup&href=http://{{host}}/patches/view/{{patch.uid}}&redirect_uri=http://{{host}}/patches/view/{{patch.uid}}" data-type="facebook">
-          <span class="icon icon-facebook"></span>
-        </a>
-      </li>
-      <li class="social-link">
-        <a class="link" href="https://pinterest.com/pin/create/button/?url=http://{{host}}/patch/view/{{patch.uid}}&media=http://{{host}}/public/patches/{{patch.uid}}.png&description=Created%20by%20me%20on%20Creative%20Kind." data-type="pinterest">
-          <span class="icon icon-pinterest"></span>
-        </a>
-      </li>
-    </ul>
-  </li>
-</ul>
+{{>patch-actions patchId=patch.uid}}

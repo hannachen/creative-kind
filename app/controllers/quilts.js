@@ -105,6 +105,8 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
               };
               simplePatchData.push(simplePatch);
             });
+            var showPatchActions = req.session['showPatchActions'];
+            req.session['showPatchActions'] = null;
             res.render('pages/quilts/view', {
               pageId: 'view-quilt',
               title: 'View Quilt',
@@ -113,7 +115,7 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
               patches: patches,
               themes: themes,
               newPatch: req.params.patchid,
-              expressFlash: req.flash('message')
+              showActions: showPatchActions
             });
           });
         });
@@ -309,8 +311,7 @@ router.get('/invite/:id', function(req, res) {
           sender: invite.sender,
           quilt: invite._quilt,
           quiltData: JSON.stringify(simplePatchData),
-          patches: patches,
-          expressFlash: req.flash('message')
+          patches: patches
         });
       });
     });
@@ -393,8 +394,7 @@ router.get('/invitee', function(req, res) {
                   title: 'Join Quilt',
                   quilt: quilt,
                   quiltData: JSON.stringify(simplePatchData),
-                  patches: patches,
-                  expressFlash: req.flash('message')
+                  patches: patches
                 });
               });
             });
