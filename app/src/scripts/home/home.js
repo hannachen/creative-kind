@@ -32,13 +32,13 @@
           _this.$quiltOverlay.removeClass('open');
           _this.setVisited();
         });
-        this.$welcomeModal.on('hide.bs.modal', this.setVisited);
+        // this.$welcomeModal.on('hide.bs.modal', this.setVisited);
         this.$welcomeModal.modal('show');
         setTimeout(function() {
           _this.$welcomeModal.addClass('fade').modal('hide');
         }, 15000);
+        this.$welcomeModal.on('click', '.get-started-link', this.setVisited);
         /*
-        this.$welcomeModal.on('click', '.btn', this.setVisited);
         this.$welcomeModal.find('.signup-link').on('click', function(e) {
           e.preventDefault();
           var link = document.domain + e.currentTarget.getAttribute('href');

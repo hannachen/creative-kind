@@ -121,40 +121,26 @@
     }
   }
   .modal-footer {
-    display: none;
     border-top: 0;
 
     .btn {
       margin: 1em auto;
       float: none;
+
+      &:hover {
+        text-decoration: none;
+        opacity: .8;
+      }
     }
   }
-  .signup-link,
-  .btn-cancel {
+  .get-started-link {
     display: block;
-  }
-  .signup-link,
-  .signin-link {
     width: 90%;
+    color: $white;
+    background-color: $primary-brand-color;
     @include media-breakpoint-up(md) {
       width: 50%;
     }
-  }
-  .signup-link {
-    margin: 1em auto;
-    color: $white;
-    background-color: transparent;
-    border: 1px solid $white;
-  }
-  .signin-link {
-    border: 0;
-    color: $primary-brand-color;
-    background-color: $white;
-  }
-  .btn-cancel {
-    padding: 1em;
-    margin: 0 auto;
-    opacity: .75;
   }
 }
 #confirmation-modal {
