@@ -6373,36 +6373,25 @@ label:hover:before {
     #welcome-modal .modal-body p {
       width: 100%; }
   #welcome-modal .modal-footer {
-    display: none;
     border-top: 0; }
     #welcome-modal .modal-footer .btn, #welcome-modal .modal-footer form .button-facebook, form #welcome-modal .modal-footer .button-facebook,
     #welcome-modal .modal-footer form .button-twitter,
     form #welcome-modal .modal-footer .button-twitter, #welcome-modal .modal-footer form .btn-submit, form #welcome-modal .modal-footer .btn-submit, #welcome-modal .modal-footer #create-quilt-form .submit-create-quilt, #create-quilt-form #welcome-modal .modal-footer .submit-create-quilt {
       margin: 1em auto;
       float: none; }
-  #welcome-modal .signup-link,
-  #welcome-modal .btn-cancel {
-    display: block; }
-  #welcome-modal .signup-link,
-  #welcome-modal .signin-link {
-    width: 90%; }
-    @media (min-width: 768px) {
-      #welcome-modal .signup-link,
-      #welcome-modal .signin-link {
-        width: 50%; } }
-  #welcome-modal .signup-link {
-    margin: 1em auto;
+      #welcome-modal .modal-footer .btn:hover, #welcome-modal .modal-footer form .button-facebook:hover, form #welcome-modal .modal-footer .button-facebook:hover,
+      #welcome-modal .modal-footer form .button-twitter:hover,
+      form #welcome-modal .modal-footer .button-twitter:hover, #welcome-modal .modal-footer form .btn-submit:hover, form #welcome-modal .modal-footer .btn-submit:hover, #welcome-modal .modal-footer #create-quilt-form .submit-create-quilt:hover, #create-quilt-form #welcome-modal .modal-footer .submit-create-quilt:hover {
+        text-decoration: none;
+        opacity: .8; }
+  #welcome-modal .get-started-link {
+    display: block;
+    width: 90%;
     color: #ffffff;
-    background-color: transparent;
-    border: 1px solid #ffffff; }
-  #welcome-modal .signin-link {
-    border: 0;
-    color: #247ba0;
-    background-color: #ffffff; }
-  #welcome-modal .btn-cancel {
-    padding: 1em;
-    margin: 0 auto;
-    opacity: .75; }
+    background-color: #247ba0; }
+    @media (min-width: 768px) {
+      #welcome-modal .get-started-link {
+        width: 50%; } }
 
 #donation-modal .btn-donate {
   position: relative; }
