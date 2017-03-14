@@ -7174,16 +7174,16 @@ footer {
       text-transform: capitalize; }
   .patch-list .patch-item {
     float: left;
-    width: 25%;
+    width: 50%;
     padding-bottom: 1em; }
     @media (min-width: 576px) {
       .patch-list .patch-item {
         float: left;
-        width: 50%; } }
+        width: 33.33333%; } }
     @media (min-width: 768px) {
       .patch-list .patch-item {
         float: left;
-        width: 33.33333%; } }
+        width: 25%; } }
   @media (max-width: 767px) {
     .patch-list .patch-thumb {
       margin: 0.9em 0; } }

@@ -247,8 +247,9 @@ function savePatchAsPng(patch, filePath, res, next, cb) {
 
         // Convert svg to png and save to path
         var buf = new Buffer(svg);
+
         gm(buf, 'patch.svg')
-          .resize(1000, 1000)
+          .scale(1000, 1000)
           .write(filePath, function (err) {
             if (err) {
               console.log('GM error', err);
@@ -270,7 +271,7 @@ router.get('/svg/:uid', function (req, res, next) {
       var themeSets = patch._quilt._theme.colors,
           colorSetIndex = parseInt(patch.colorSet),
           patchColors = themeSets[colorSetIndex].colors,
-          colorArray = patch.colorIndex.split(','),
+          colorArray = (patch.colorIndex) ? patch.colorIndex.split(',') : [],
           colors = [];
       if (colorArray.length) {
         colors = colorArray.map(function(colorIndex) {
