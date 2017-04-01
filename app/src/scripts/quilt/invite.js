@@ -12,7 +12,8 @@ var invite = (function($) {
           delimiter: [',',' ',"\n","\r"],
           minLength: 3,
           limit: 5,
-          inputType: 'email'
+          inputType: 'email',
+          createTokensOnBlur: true
         });
       initEvents();
     }

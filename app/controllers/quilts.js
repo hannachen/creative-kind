@@ -88,35 +88,40 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
           }
           Patch.find({'_quilt': quilt.id}, null, {sort: {'_id': -1}}, function(err, patches) {
             if (err) return next(err);
-            var simplePatchData = new Array();
-            _.forEach(patches, function(patch) {
-              if (patch._user && req.user &&
-                String(req.user.id) === String(patch._user) &&
-                patch.status === 'progress') {
-                patch.status = 'mine';
-              }
-              // Make sure the upcoming patch is new
-              if (patch.uid === req.params.patchid && patch.status !== 'new') {
-                req.params.patchid = '';
-              }
-              var simplePatch = {
-                uid: patch.uid,
-                status: patch.status
-              };
-              simplePatchData.push(simplePatch);
-            });
-            var showPatchActions = req.session['showPatchActions'];
-            req.session['showPatchActions'] = null;
-            res.render('pages/quilts/view', {
-              pageId: 'view-quilt',
-              title: 'View Quilt',
-              quilt: quilt,
-              quiltData: JSON.stringify(simplePatchData),
-              patches: patches,
-              themes: themes,
-              newPatch: req.params.patchid,
-              showActions: showPatchActions
-            });
+            Invite.find({'_quilt': quilt.id}, null, {sort: {'_id': -1}}, function(err, invites) {
+
+              var simplePatchData = new Array();
+              _.forEach(patches, function(patch) {
+                if (patch._user && req.user &&
+                  String(req.user.id) === String(patch._user) &&
+                  patch.status === 'progress') {
+                  patch.status = 'mine';
+                }
+                // Make sure the upcoming patch is new
+                if (patch.uid === req.params.patchid && patch.status !== 'new') {
+                  req.params.patchid = '';
+                }
+                var simplePatch = {
+                  uid: patch.uid,
+                  status: patch.status
+                };
+                simplePatchData.push(simplePatch);
+              });
+              var showPatchActions = req.session['showPatchActions'];
+              req.session['showPatchActions'] = null;
+              res.render('pages/quilts/view', {
+                pageId: 'view-quilt',
+                title: 'View Quilt',
+                quilt: quilt,
+                quiltData: JSON.stringify(simplePatchData),
+                patches: patches,
+                themes: themes,
+                invites: invites,
+                newPatch: req.params.patchid,
+                showActions: showPatchActions
+              });
+
+            })
           });
         });
     });
