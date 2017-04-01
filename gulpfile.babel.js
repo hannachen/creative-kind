@@ -76,7 +76,7 @@ gulp.task('js:vendor', function() {
     ])
     .pipe(sourcemaps.init())
     .pipe(concat('vendor.min.js'))
-    .pipe(uglify({options: {'preserveComments':'all'}}).on('error', gutil.log))
+    .pipe(uglify({'preserveComments':'license'}).on('error', gutil.log))
     .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
@@ -86,7 +86,7 @@ gulp.task('js:main', function() {
     .pipe(babel())
     .pipe(sourcemaps.init())
     .pipe(concat('main.min.js'))
-    .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
+    .pipe(uglify().on('error', gutil.log))
     .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
     .pipe(livereload());
