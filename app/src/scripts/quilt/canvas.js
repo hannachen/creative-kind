@@ -4,6 +4,7 @@ var quiltCanvas = (function($) {
   var $loginModal = $('#login-modal').modal('hide'),
       $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
+      $loginInviteModal = $('#login-invite-modal').modal('hide'),
       $alertModal = $('#alert-modal').modal('hide'),
       $quiltArea = $('#grid-area');
 
@@ -79,6 +80,11 @@ var quiltCanvas = (function($) {
         }
       }
     });
+
+    // Login prompt for invited users
+    if (_.isEmpty(user)) {
+      $loginInviteModal.modal('show');
+    }
   }
 
   function setupCanvas() {

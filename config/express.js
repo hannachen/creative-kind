@@ -65,11 +65,13 @@ module.exports = function(app, config) {
     saveUninitialized: true
   }));
   app.use(flash());
-  app.use(passport.initialize());
-  app.use(passport.session());
   app.use(compress());
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
+
+  // Configure passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // Initialize Passport
   var initPassport = require('../passport/init');

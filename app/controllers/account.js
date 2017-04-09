@@ -47,7 +47,6 @@ router.get('/', isAuthenticated, function (req, res, next) {
   });
 });
 
-
 router.get('/patches', isAuthenticated, function(req, res) {
   Patch
     .find({'_user': req.user.id})
@@ -110,18 +109,27 @@ _.forEach(loginRoutes, function(routeName) {
   });
 });
 
-router.post('/register', function(req, res, next) {
+router.post('/signup', function(req, res) {
   var userdata = {
-    'username': req.body.user.username,
-    'email': req.body.user.email
+    'username': req.body.username,
+    'email': req.body.email
   };
-  User.register(new User(userdata), req.body.user.password, function(err) {
+  User.register(new User(userdata), req.body.password, function(err, user) {
+    var cb = req.body.cb,
+        failRedirect = '/signup' + cb ? '?cb=' + cb : '';
     if (err) {
       console.log('error while registering user.', err);
-      return next(err);
+      req.flash('error', err.message);
+      return res.redirect(failRedirect);
     }
-
-    res.redirect('/account');
+    // log the user in after it is created
+    passport.authenticate('local')(req, res, function() {
+      if (cb) {
+        res.redirect(cb);
+      } else {
+        res.redirect('/account');
+      }
+    });
   });
 });
 
@@ -173,7 +181,7 @@ router.post('/recover-password', recaptcha.middleware.verify, function(req, res,
         var mailOptions = {
           to: user.email,
           from: 'passwordreset@demo.com',
-          subject: 'Quilting Bee Password Reset',
+          subject: 'Creative KIND Password Reset',
           'h:Reply-To': 'local@localhost',
           template: 'email.body.reset-password',
           context: {

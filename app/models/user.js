@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    mongooseValidation = require('mongoose-beautiful-unique-validation'),
+    passportLocalMongoose = require('passport-local-mongoose');
 
 var UserSchema = new Schema({
       username: {
@@ -27,8 +29,8 @@ var UserSchema = new Schema({
       }
     });
 
-UserSchema.plugin(require('mongoose-beautiful-unique-validation'));
-UserSchema.plugin(require('passport-local-mongoose'));
+UserSchema.plugin(mongooseValidation);
+UserSchema.plugin(passportLocalMongoose);
 
 UserSchema.virtual('date')
   .get(function(){

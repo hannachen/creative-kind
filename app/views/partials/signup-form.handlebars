@@ -1,15 +1,18 @@
-<form class="signup-form" action="/account/register" method="post" autocomplete="off">
+<form class="signup-form" action="/account/signup" method="post" autocomplete="off">
+  {{#if cb}}
+    <input type="hidden" name="cb" value="{{cb}}" />
+  {{/if}}
   <ul>
     <li class="input-field signup-field">
-      <input type="email" name="user[email]" id="user-email" class="input-email" />
+      <input type="email" name="email" id="user-email" class="input-email" />
       <label for="user-email">E-mail</label>
     </li>
     <li class="input-field signup-field">
-      <input type="text" name="user[username]" id="user-username" class="input-username" autocomplete="off" />
+      <input type="text" name="username" id="user-username" class="input-username" autocomplete="off" />
       <label for="user-username">Username</label>
     </li>
     <li class="input-field signup-field">
-      <input type="password" name="user[password]" id="user-password" class="input-password" autocomplete="off" />
+      <input type="password" name="password" id="user-password" class="input-password" autocomplete="off" />
       <label for="user-password">Password</label>
     </li>
     <li class="signup-button">

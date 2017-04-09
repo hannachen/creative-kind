@@ -1,25 +1,17 @@
 var facebook = require('./facebook');
     twitter = require('./twitter'),
     mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function(passport){
-
-	// Passport needs to be able to serialize and deserialize users to support persistent login sessions
-  passport.serializeUser(function(user, done) {
-      console.log('serializing user: ');console.log(user);
-      done(null, user._id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-      User.findById(id, function(err, user) {
-          console.log('deserializing user:',user);
-          done(err, user);
-      });
-  });
+module.exports = function(passport) {
 
   // use static authenticate method of model in LocalStrategy
   passport.use(User.createStrategy());
+
+  // use static serialize and deserialize of model for passport session support
+  passport.serializeUser(User.serializeUser());
+  passport.deserializeUser(User.deserializeUser());
 
   // Setting up Passport Strategies for Facebook and Twitter
   facebook(passport);

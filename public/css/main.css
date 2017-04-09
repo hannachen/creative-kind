@@ -6400,6 +6400,10 @@ label:hover:before {
     top: 0;
     left: 0; }
 
+#login-invite-modal .get-started-link {
+  display: block;
+  width: 100%; }
+
 #save-patch-modal .btn-cancel,
 #submit-patch-modal .btn-cancel {
   float: left; }
@@ -6949,6 +6953,9 @@ footer {
       overflow: hidden; }
     .patch-container .palette-selector .color-sets {
       padding: 1em 0 0; }
+      @media (min-width: 576px) {
+        .patch-container .palette-selector .color-sets {
+          padding: 1em 5em; } }
       .patch-container .palette-selector .color-sets li,
       .patch-container .palette-selector .color-sets .swatches {
         overflow: hidden; }
@@ -7008,6 +7015,9 @@ footer {
             .patch-container .palette-selector .color-sets .swatches .swatch {
               padding-right: 0;
               padding-left: 0; } }
+          @media (min-width: 576px) {
+            .patch-container .palette-selector .color-sets .swatches .swatch {
+              padding: 0 .5em; } }
         .patch-container .palette-selector .color-sets .swatches .swatch-color {
           display: block;
           border-radius: 50%;

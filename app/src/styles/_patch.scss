@@ -191,6 +191,10 @@
     .color-sets {
       padding: 1em 0 0;
 
+      @include media-breakpoint-up(sm) {
+        padding: 1em 5em;
+      }
+
       li,
       .swatches {
         overflow: hidden; // TODO: replace this with actual clearfix
@@ -216,6 +220,10 @@
           @include make-col-ready($no-grid-gutter-widths);
           @include make-col(2.4);
           padding: 0 .5em;
+
+          @include media-breakpoint-up(sm) {
+            padding: 0 .5em;
+          }
         }
         .swatch-color {
           display: block;
