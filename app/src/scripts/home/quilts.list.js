@@ -1,6 +1,10 @@
 'use strict';
 var quiltsList = (function($) {
 
+  var options = {
+    showDonationModal: false
+  };
+
   var $document = $(document),
       $loginModal = $('#login-modal').modal('hide'),
       $donationModal = $('#donation-modal').modal('hide'),
@@ -100,9 +104,18 @@ var quiltsList = (function($) {
           // $confirmationButton.attr('href', targetUrl);
           targetUrl = '/patch/start/' + patchData.uid;
           $confirmationModal.modal('show');
-          $donationModal.find('.btn-secondary').on('click', function () {
-            window.location.href = targetUrl;
-          });
+
+          // Show modal based on feature toggle
+          if (options.showDonationModal) {
+            $donationModal.find('.btn-secondary').on('click', function() {
+              window.location.href = targetUrl;
+            });
+          } else {
+            // Go straight to patch if donation toggle is turned off
+            $confirmationModal.find('.btn-primary').off('click').on('click', function() {
+              window.location.href = targetUrl;
+            })
+          }
         }
         view.emit('onMouseUp');
       }

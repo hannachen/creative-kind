@@ -1,6 +1,10 @@
 'use strict';
 var quiltCanvas = (function($) {
 
+  var options = {
+    showDonationModal: false
+  };
+
   var $loginModal = $('#login-modal').modal('hide'),
       $donationModal = $('#donation-modal').modal('hide'),
       $confirmationModal = $('#confirmation-modal').modal('hide'),
@@ -73,9 +77,17 @@ var quiltCanvas = (function($) {
           } else {
             targetUrl = '/patch/start/' + patchData.uid;
             $confirmationModal.modal('show');
-            $donationModal.find('.btn-secondary').on('click', function() {
-              window.location.href = targetUrl;
-            });
+            // Show modal based on feature toggle
+            if (options.showDonationModal) {
+              $donationModal.find('.btn-secondary').on('click', function() {
+                window.location.href = targetUrl;
+              });
+            } else {
+              // Go straight to patch if donation toggle is turned off
+              $confirmationModal.find('.btn-primary').off('click').on('click', function() {
+                window.location.href = targetUrl;
+              })
+            }
           }
         }
       }
