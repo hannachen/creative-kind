@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>{{title }}</title>
+  <link href="//file.myfontastic.com/bXrdBu7rFyNefEZQFxwjCm/icons.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/vendor.min.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/admin.css">
@@ -13,24 +14,31 @@
     <script src="http://localhost:35729/livereload.js"></script>
   {{/if}}
 </head>
-<body class="has-canvas">
+<body class="has-canvas{{#if pageClass}} {{pageClass}}{{/if}}"{{#if pageId}} id="{{pageId}}"{{/if}}>
   <!--[if lt IE 10]>
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
   {{>header}}
 
-  <div class="container">
+  {{>account-menu }}
+
+  <div class="container contents">
     {{{body}}}
   </div><!-- end .contents -->
 
   {{>sub-menu }}
 
+  {{>modal/flash flash }}
+
   {{>fb-js}}
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  {{>user-data}}
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="/js/vendor.min.js"></script>
   <script src="/js/main.min.js"></script>
+
   {{{_sections.footer}}}
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

@@ -5105,8 +5105,6 @@ a {
 .valign-wrapper {
   display: flex;
   align-items: center; }
-  .valign-wrapper .valign {
-    display: block; }
 
 .clearfix {
   clear: both; }
@@ -5114,7 +5112,7 @@ a {
 .z-depth-0 {
   box-shadow: none !important; }
 
-.z-depth-1 {
+.z-depth-1, .dropdown-content {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); }
 
 .z-depth-1-half {
@@ -5318,14 +5316,15 @@ ul.staggered-list li {
   .center-on-small-only {
     text-align: center; } }
 
-footer.page-footer {
-  margin-top: 20px;
+.page-footer {
   padding-top: 20px;
   background-color: #ee6e73; }
-  footer.page-footer .footer-copyright {
+  .page-footer .footer-copyright {
     overflow: hidden;
-    height: 50px;
-    line-height: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
     color: rgba(255, 255, 255, 0.8);
     background-color: rgba(51, 51, 51, 0.08); }
 
@@ -5481,53 +5480,6 @@ td, th {
 .collapsible .collection {
   margin: 0;
   border: none; }
-
-span.badge {
-  min-width: 3rem;
-  padding: 0 6px;
-  margin-left: 14px;
-  text-align: center;
-  font-size: 1rem;
-  line-height: inherit;
-  color: #757575;
-  float: right;
-  box-sizing: border-box; }
-  span.badge.new {
-    font-weight: 300;
-    font-size: 0.8rem;
-    color: #fff;
-    background-color: #26a69a;
-    border-radius: 2px; }
-  span.badge.new:after {
-    content: " new"; }
-  span.badge[data-badge-caption]::after {
-    content: " " attr(data-badge-caption); }
-
-nav ul a span.badge {
-  display: inline-block;
-  float: none;
-  margin-left: 4px;
-  line-height: 22px;
-  height: 22px; }
-
-.side-nav span.badge.new,
-.collapsible span.badge.new {
-  position: relative;
-  background-color: transparent; }
-  .side-nav span.badge.new::before,
-  .collapsible span.badge.new::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 0;
-    bottom: 10px;
-    left: 0;
-    background-color: #26a69a;
-    border-radius: 2px;
-    z-index: -1; }
-
-.collapsible span.badge.new {
-  z-index: 1; }
 
 .video-container {
   position: relative;
@@ -5709,7 +5661,7 @@ strong {
 small {
   font-size: 75%; }
 
-.light, footer.page-footer .footer-copyright {
+.light, .page-footer .footer-copyright {
   font-weight: 300; }
 
 .thin {
@@ -6077,10 +6029,11 @@ textarea.materialize-textarea {
     left: 0;
     font-size: 1rem;
     cursor: text;
-    transition: .2s ease-out; }
-  .input-field label.active {
-    font-size: 0.8rem;
-    transform: translateY(-140%); }
+    transition: .2s ease-out;
+    text-align: initial; }
+    .input-field label:not(.label-icon).active {
+      font-size: 0.8rem;
+      transform: translateY(-140%); }
   .input-field .prefix {
     position: absolute;
     width: 2.5rem;
@@ -6151,11 +6104,13 @@ textarea {
   overflow-wrap: break-word;
   /* future version of deprecated 'word-wrap' */
   padding-top: 1.2rem;
-  /* prevents text jump on Enter keypress */ }
+  /* prevents text jump on Enter keypress */
+  position: absolute;
+  top: 0; }
 
 /* Autocomplete */
 .autocomplete-content {
-  margin-top: -15px;
+  margin-top: -20px;
   display: block;
   opacity: 1;
   position: static; }
@@ -6165,6 +6120,153 @@ textarea {
     height: 40px;
     width: 40px;
     margin: 5px 15px; }
+
+/* Select Field
+   ========================================================================== */
+select {
+  display: none; }
+
+select.browser-default {
+  display: block; }
+
+select {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+  height: 2.5rem; }
+
+.select-label {
+  position: absolute; }
+
+.select-wrapper {
+  position: relative; }
+  .select-wrapper input.select-dropdown {
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+    padding: 0;
+    display: block; }
+  .select-wrapper span.caret {
+    color: initial;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 10px;
+    margin: auto 0;
+    font-size: 10px;
+    line-height: 10px; }
+    .select-wrapper span.caret.disabled {
+      color: rgba(0, 0, 0, 0.26); }
+  .select-wrapper + label {
+    position: absolute;
+    top: -14px;
+    font-size: 0.8rem; }
+
+select:disabled {
+  color: rgba(0, 0, 0, 0.3); }
+
+.select-wrapper input.select-dropdown:disabled {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: default;
+  -webkit-user-select: none;
+  /* webkit (safari, chrome) browsers */
+  -moz-user-select: none;
+  /* mozilla browsers */
+  -ms-user-select: none;
+  /* IE10+ */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3); }
+
+.select-wrapper i {
+  color: rgba(0, 0, 0, 0.3); }
+
+.select-dropdown li.disabled,
+.select-dropdown li.disabled > span,
+.select-dropdown li.optgroup {
+  color: rgba(0, 0, 0, 0.3);
+  background-color: transparent; }
+
+.prefix ~ .select-wrapper {
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem); }
+
+.prefix ~ label {
+  margin-left: 3rem; }
+
+.select-dropdown li img {
+  height: 40px;
+  width: 40px;
+  margin: 5px 15px;
+  float: right; }
+
+.select-dropdown li.optgroup {
+  border-top: 1px solid #eee; }
+  .select-dropdown li.optgroup.selected > span {
+    color: rgba(0, 0, 0, 0.7); }
+  .select-dropdown li.optgroup > span {
+    color: rgba(0, 0, 0, 0.4); }
+  .select-dropdown li.optgroup ~ li.optgroup-option {
+    padding-left: 1rem; }
+
+.dropdown-content {
+  background-color: #fff;
+  margin: 0;
+  display: none;
+  min-width: 100px;
+  max-height: 650px;
+  overflow-y: auto;
+  opacity: 0;
+  position: absolute;
+  z-index: 999;
+  will-change: width, height; }
+  .dropdown-content li {
+    clear: both;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+    min-height: 50px;
+    line-height: 1.5rem;
+    width: 100%;
+    text-align: left;
+    text-transform: none; }
+    .dropdown-content li:hover, .dropdown-content li.active, .dropdown-content li.selected {
+      background-color: #eee; }
+    .dropdown-content li.active.selected {
+      background-color: #e1e1e1; }
+    .dropdown-content li.divider {
+      min-height: 0;
+      height: 1px; }
+    .dropdown-content li > a, .dropdown-content li > span {
+      font-size: 16px;
+      color: #26a69a;
+      display: block;
+      line-height: 22px;
+      padding: 14px 16px; }
+    .dropdown-content li > span > label {
+      top: 1px;
+      left: 0;
+      height: 18px; }
+    .dropdown-content li > a > i {
+      height: inherit;
+      line-height: inherit;
+      float: left;
+      margin: 0 24px 0 0;
+      width: 24px; }
+
+.input-field.col .dropdown-content [type="checkbox"] + label {
+  top: 1px;
+  left: 0;
+  height: 18px; }
 
 /* Keyframes for the fade-in */
 @keyframes fadeIn {
@@ -7704,46 +7806,98 @@ footer {
   #my-squares .patch-thumb .thumb:hover + .download-link {
     opacity: 1; }
 
-#my-quilts li {
+#my-quilts .quilt-item,
+#all-quilts .quilt-item {
   display: block;
-  padding: 0 0 .75em 0; }
-#my-quilts .icon-lock {
+  padding: 0 0 .75em 0;
+  min-height: 2.75rem;
+  box-sizing: border-box; }
+#my-quilts .icon-lock,
+#all-quilts .icon-lock {
   position: relative;
-  bottom: -.15em; }
+  bottom: -.20em; }
 #my-quilts .icon-lock,
 #my-quilts .icon-trash,
 #my-quilts .edit-action,
-#my-quilts .delete-action {
+#my-quilts .delete-action,
+#my-quilts .input-field,
+#all-quilts .icon-lock,
+#all-quilts .icon-trash,
+#all-quilts .edit-action,
+#all-quilts .delete-action,
+#all-quilts .input-field {
   display: inline-block; }
 #my-quilts .icon-android-close,
 #my-quilts .edit-input,
-#my-quilts .delete-action {
+#my-quilts .delete-action,
+#my-quilts .input-field,
+#all-quilts .icon-android-close,
+#all-quilts .edit-input,
+#all-quilts .delete-action,
+#all-quilts .input-field {
   display: none; }
 #my-quilts .view-link,
-#my-quilts .icon-edit {
-  display: inline; }
-#my-quilts .view-link {
-  padding-left: .2em; }
+#my-quilts .icon-edit,
+#all-quilts .view-link,
+#all-quilts .icon-edit {
+  display: inline-block; }
+#my-quilts .edit-input,
+#all-quilts .edit-input {
+  width: 45%;
+  margin: 0; }
+#my-quilts .view-link,
+#all-quilts .view-link {
+  padding: .25em .2em;
+  height: 2.55rem;
+  vertical-align: middle; }
+#my-quilts .input-field,
+#all-quilts .input-field {
+  width: 30%;
+  position: relative;
+  margin: 0;
+  height: 2.5rem;
+  box-sizing: border-box; }
+  #my-quilts .input-field input[type=text],
+  #all-quilts .input-field input[type=text] {
+    height: 2.5rem; }
+  #my-quilts .input-field .select-dropdown,
+  #all-quilts .input-field .select-dropdown {
+    font-size: 1em; }
+  #my-quilts .input-field .dropdown-content,
+  #all-quilts .input-field .dropdown-content {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.5); }
 #my-quilts .edit-action,
-#my-quilts .delete-action {
+#my-quilts .delete-action,
+#all-quilts .edit-action,
+#all-quilts .delete-action {
   vertical-align: middle;
   padding: 0 .2em;
   line-height: 100%;
   font-size: 1.15em;
   color: #222222;
   background-color: #efede6; }
-#my-quilts .delete-action {
+#my-quilts .delete-action,
+#all-quilts .delete-action {
   height: 1.5em;
   padding: 0 .25em; }
-  #my-quilts .delete-action .icon {
+  #my-quilts .delete-action .icon,
+  #all-quilts .delete-action .icon {
     vertical-align: middle;
     line-height: 1.4; }
 #my-quilts .edit-mode .icon-android-close,
 #my-quilts .edit-mode .delete-action,
-#my-quilts .edit-mode .edit-input {
+#my-quilts .edit-mode .edit-input,
+#my-quilts .edit-mode .input-field,
+#all-quilts .edit-mode .icon-android-close,
+#all-quilts .edit-mode .delete-action,
+#all-quilts .edit-mode .edit-input,
+#all-quilts .edit-mode .input-field {
   display: inline-block; }
 #my-quilts .edit-mode .icon-edit,
-#my-quilts .edit-mode .view-link {
+#my-quilts .edit-mode .view-link,
+#all-quilts .edit-mode .icon-edit,
+#all-quilts .edit-mode .view-link {
   display: none; }
 
 #view-quilt .contents .patch-actions {

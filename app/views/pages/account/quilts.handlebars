@@ -1,24 +1,32 @@
 {{#section 'footer'}}
   <script src="/js/account.min.js"></script>
 {{/section}}
-<h3>My Quilts</h3>
+<h3>{{title}}</h3>
 
 {{#if quilts}}
 <form action="/quilts/rename" id="quilts-form">
   <ul>
     {{#each quilts}}
-      <li id="quilt-item{{@index}}">
+      <li id="quilt-item{{@index}}" class="quilt-item" data-id="{{id}}">
         <button title="Rename" class="edit-action" data-target="#quilt-item{{@index}}">
           <span class="icon icon-edit"></span>
           <span class="icon icon-android-close"></span>
         </button>
-        <a href="/delete/{{id}}" title="Delete" data-id="{{id}}" class="delete-action">
+        <a href="/delete/{{id}}" title="Delete" class="delete-action">
           <span class="icon icon-trash"></span>
         </a>
         <input class="edit-input" value="{{title}}" data-id="{{id}}" />
+        <span class="input-field">
+          <select name="type" class="type-select" data-target="#quilt-item{{@index}}">
+            <option value="" disabled selected>Select Type</option>
+            <option value="private"{{#if_eq type 'private'}} selected aria-selected="true"{{/if_eq}}>Private</option>
+            <option value="public"{{#if_eq type 'public'}} selected aria-selected="true"{{/if_eq}}>Public</option>
+          </select>
+        </span>
         <a class="view-link" href="/quilts/view/{{id}}">
           {{#if title}}{{title}}{{else}}{{id}}{{/if}}
           {{#if_eq type 'private'}}<span class="icon icon-lock"></span>{{/if_eq}}
+          {{#if owner}}<span class="owner">{{_user.username}}</span>{{/if}}
         </a>
       </li>
     {{/each}}

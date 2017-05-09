@@ -15,7 +15,13 @@ var PatchSchema = new Schema({
       },
       colorIndex: String,
       colors: String
-    }, { collection: 'patches' });
+    }, {
+      collection: 'patches',
+      timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+      }
+    });
 
 PatchSchema.post('remove', function(doc) {
   var filePath = config.root + '/public/patches/' + doc.uid + '.png';

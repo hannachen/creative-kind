@@ -52,32 +52,61 @@
     }
   }
 }
-#my-quilts {
-  li {
+#my-quilts,
+#all-quilts {
+  .quilt-item {
     display: block;
     padding: 0 0 .75em 0;
+    min-height: 2.75rem;
+    box-sizing: border-box;
   }
   .icon-lock {
     position: relative;
-    bottom: -.15em;
+    bottom: -.20em;
   }
   .icon-lock,
   .icon-trash,
   .edit-action,
-  .delete-action {
+  .delete-action,
+  .input-field {
     display: inline-block;
   }
   .icon-android-close,
   .edit-input,
-  .delete-action {
+  .delete-action,
+  .input-field {
     display: none;
   }
   .view-link,
   .icon-edit {
-    display: inline;
+    display: inline-block;
+  }
+  .edit-input {
+    width: 45%;
+    margin: 0;
   }
   .view-link {
-    padding-left: .2em;
+    padding: .25em .2em;
+    height: 2.55rem;
+    vertical-align: middle;
+  }
+  .input-field {
+    width: 30%;
+    position: relative;
+    margin: 0;
+    height: 2.5rem;
+    box-sizing: border-box;
+
+    input[type=text] {
+      height: 2.5rem;
+    }
+    .select-dropdown {
+      font-size: 1em;
+    }
+    .dropdown-content {
+      background-color: $white;
+      box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
+    }
   }
   .edit-action,
   .delete-action {
@@ -100,7 +129,8 @@
   .edit-mode {
     .icon-android-close,
     .delete-action,
-    .edit-input {
+    .edit-input,
+    .input-field {
       display: inline-block;
     }
     .icon-edit,

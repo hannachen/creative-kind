@@ -146,6 +146,20 @@ router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
   });
 });
 
+router.patch('/update/:id/type/', isAuthenticated, function (req, res) {
+  console.log('change quilt type');
+  var query = {'_id':req.params.id},
+      update = {'type':req.body.type},
+      options = {'muti': false};
+  Quilt.update(query, update, options, function(err) {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 router.post('/rename/:id', isAuthenticated, function (req, res) {
   console.log('renaming quilt');
   var query = {'_id':req.params.id},

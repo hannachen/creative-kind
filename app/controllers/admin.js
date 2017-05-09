@@ -52,6 +52,7 @@ router.get('/patches/view', isAuthenticated, function (req, res, next) {
       res.render('pages/admin/patches-view', {
         layout: 'admin',
         title: 'Patches',
+        owner: true,
         patches: patches
       });
     });
@@ -61,10 +62,11 @@ router.get('/quilts/view', isAuthenticated, function (req, res, next) {
   Quilt.find({})
     .exec(function(err, quilts) {
       if (err) return next(err);
-      res.render('pages/quilts/list', {
+      res.render('pages/account/quilts', {
         layout: 'admin',
         title: 'Quilts',
-        quilts: quilts
+        quilts: quilts,
+        pageId: 'all-quilts'
       });
     });
 });
