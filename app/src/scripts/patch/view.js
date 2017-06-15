@@ -1,23 +1,23 @@
 'use strict';
 var viewPatch = (function($) {
 
-  var $patchActions = $('.patch-actions');
-  var $flashModal = $('#flash-modal');
+  var $patchActions = $('.patch-actions')
+  var $flashModal = $('#flash-modal')
 
   function init() {
     // Check for patch action contents
     if ($patchActions.length) {
 
-      initEvents();
+      initEvents()
     }
   }
 
   function initEvents() {
-    $patchActions.find('.social-link a').on('click', onShare);
+    $patchActions.find('.social-link a').on('click', onShare)
   }
 
   function onShare(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     var $patchActions = function() {
       document.getElementById('shareBtn').onclick = function() {
@@ -25,16 +25,16 @@ var viewPatch = (function($) {
           method: 'share',
           display: 'popup',
           href: 'https://developers.facebook.com/docs/',
-        }, function(response){});
+        }, function(response){})
       }
     }
   }
 
   return {
     init: function() {
-      init();
+      init()
     },
     deinit: function() {
     }
   }
-})(jQuery);
+})(jQuery)

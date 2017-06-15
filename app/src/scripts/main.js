@@ -1,4 +1,3 @@
-'use strict';
 (function($,window) {
 
   window.mobileMq = 'screen and (min-width: 48em)';

@@ -1,23 +1,21 @@
-'use strict';
 (function($,window) {
-  paper.install(window);
+  paper.install(window)
 
   var Home = {
     init: function() {
-      this.initVariables();
-      this.initEvents();
-      this.initPage();
+      this.initVariables()
+      this.initEvents()
+      this.initPage()
     },
     initVariables: function() {
-      this.$welcomeModal = $('#welcome-modal');
-      this.$quiltOverlay = $('#canvas-overlay');
+      this.$welcomeModal = $('#welcome-modal')
+      this.$quiltOverlay = $('#canvas-overlay')
     },
     initEvents: function() {
     },
     initPage: function() {
-      console.log('INIT');
-      quiltsList.init();
-      this.checkVisit();
+      quiltsList.init()
+      this.checkVisit()
     },
     checkVisit: function() {
       var visited = Boolean(Cookies.get('visited'));
@@ -33,9 +31,9 @@
           _this.setVisited();
         });
         // this.$welcomeModal.on('hide.bs.modal', this.setVisited);
-        this.$welcomeModal.modal('show');
+        this.$welcomeModal.modal('open');
         setTimeout(function() {
-          _this.$welcomeModal.addClass('fade').modal('hide');
+          _this.$welcomeModal.addClass('fade').modal('close');
         }, 15000);
         this.$welcomeModal.on('click', '.get-started-link', this.setVisited);
         /*

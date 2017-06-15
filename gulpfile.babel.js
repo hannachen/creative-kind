@@ -7,11 +7,13 @@ import babel from 'gulp-babel';
 import gutil from 'gulp-util';
 import nodemon from 'gulp-nodemon';
 import concat from 'gulp-concat';
+import sort from 'gulp-sort';
 import rename from 'gulp-rename';
 import uglify from 'gulp-uglify';
 import sourcemaps from 'gulp-sourcemaps';
 import cssmin from 'gulp-cssmin';
 import livereload from 'gulp-livereload';
+import connect from 'gulp-connect';
 import modernizr from 'modernizr';
 import sass from 'gulp-ruby-sass';
 import lodashAutobuild from 'gulp-lodash-autobuild';
@@ -26,7 +28,7 @@ function getFolders(dir) {
 gulp.task('sass', function () {
   return sass('app/src/styles/**/*.scss')
     .pipe(gulp.dest('public/css'))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 gulp.task('vendor-styles', function () {
   return gulp.src([
@@ -78,7 +80,7 @@ gulp.task('js:vendor', function() {
     .pipe(uglify({'preserveComments':'license'}).on('error', gutil.log))
     .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 gulp.task('js:main', function() {
   return gulp.src('app/src/scripts/*.js')
@@ -88,23 +90,20 @@ gulp.task('js:main', function() {
     .pipe(uglify().on('error', gutil.log))
     .pipe(sourcemaps.write('./maps'))
     .pipe(gulp.dest('public/js'))
-    .pipe(livereload());
+    .pipe(connect.reload());
 });
 gulp.task('js:pages', function() {
   var folders = getFolders('app/src/scripts');
   var tasks = folders.map(function(folder) {
     return gulp.src(path.join('app/src/scripts', folder, '/**/*.js'))
+      .pipe(sort({ asc: false})) // Sort files that files starting with _ is last in file concat
       .pipe(babel())
-      // concat into foldername.js
-      .pipe(concat(folder + '.js'))
-      // minify
-      .pipe(uglify({'outSourceMap': true}).on('error', gutil.log))
-      // write to output
-      .pipe(gulp.dest('.tmp/scripts/'))
-      // rename to folder.min.js
-      .pipe(rename(folder + '.min.js'))
-      // write to output again
-      .pipe(gulp.dest('public/js'));
+      .pipe(sourcemaps.init()) // Init source maps
+      .pipe(concat(folder + '.js')) // concat into foldername.js
+      .pipe(sourcemaps.write('./maps')) // write to sourcemap
+      .pipe(gulp.dest('.tmp/scripts/')) // write to output
+      .pipe(rename(folder + '.min.js')) // rename to folder.min.js
+      .pipe(gulp.dest('public/js')); // write to output again
   });
   return tasks;
 });
@@ -154,16 +153,20 @@ gulp.task('build-modernizr', function () {
   });
 });
 
-gulp.task('develop', function () {
-  livereload.listen();
+gulp.task('develop', function() {
+  connect.server({
+    root: 'app',
+    port: 35729,
+    livereload: true
+  });
   nodemon({
     script: 'app.js',
     ext: 'js handlebars',
     stdout: false
-  }).on('readable', function () {
-    this.stdout.on('data', function (chunk) {
-      if(/^Express server listening on port/.test(chunk)){
-        livereload.changed(__dirname);
+  }).on('readable', function() {
+    this.stdout.on('data', function(chunk) {
+      if(/^Express server listening on port/.test(chunk)) {
+        // connect.changed(__dirname);
       }
     });
     this.stdout.pipe(process.stdout);

@@ -1,4 +1,3 @@
-'use strict';
 var quiltsList = (function($) {
 
   var options = {

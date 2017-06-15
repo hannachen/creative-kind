@@ -22,6 +22,6 @@
     "materialize": "^0.98.2"
   },
   "resolutions": {
-    "bootstrap": "v4.0.0-alpha.5"
+    "bootstrap": "v4.0.0-alpha.6"
   }
 }

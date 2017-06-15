@@ -10,32 +10,32 @@ var quiltEdit = (function($) {
   function init() {
 
     if ($editButton.length > 0) {
-      $typeSelect.material_select();
-      initEvents();
+      $typeSelect.material_select()
+      initEvents()
     }
   }
 
   function initEvents() {
-    $editButton.on('click', onEditClick);
-    $deleteButton.on('click', onDeleteClick);
-    $typeSelect.on('change', onStatusChange);
-    $form.on('change', '.edit-input', onInputChange);
+    $editButton.on('click', onEditClick)
+    $deleteButton.on('click', onDeleteClick)
+    $typeSelect.on('change', onStatusChange)
+    $form.on('change', '.edit-input', onInputChange)
   }
 
   function onEditClick(e) {
-    e.preventDefault();
-    var $target = $(e.currentTarget.getAttribute('data-target'));
-    console.log('TARGET', $target);
-    $target.toggleClass('edit-mode');
+    e.preventDefault()
+    let $target = $(e.currentTarget.getAttribute('data-target'))
+    console.log('TARGET', $target)
+    $target.toggleClass('edit-mode')
   }
 
   function onDeleteClick(e) {
-    e.preventDefault();
+    e.preventDefault()
     var $currentTarget = $(e.currentTarget),
         $target = $(e.currentTarget.getAttribute('data-target')),
         actionUrl = '/quilts/' + $target.data('id');
-    $confirmModal.find('.btn-delete').on('click', onConfirmClick($currentTarget, actionUrl));
-    $confirmModal.modal('show');
+    $confirmModal.find('.btn-delete').on('click', onConfirmClick($currentTarget, actionUrl))
+    $confirmModal.modal('show')
   }
 
   function onConfirmClick($target, actionUrl) {
@@ -43,20 +43,20 @@ var quiltEdit = (function($) {
       type: 'delete',
       statusCode: {
         200: function() {
-          $target.closest('li').remove();
+          $target.closest('li').remove()
         },
         400: function() {
-          alert( "page not found" );
+          alert( "page not found" )
         }
       }
     });
-    $confirmModal.modal('hide');
-    $confirmModal.find('.btn-delete').off('click', onConfirmClick);
+    $confirmModal.modal('hide')
+    $confirmModal.find('.btn-delete').off('click', onConfirmClick)
   }
 
   function onStatusChange(e) {
-    e.preventDefault();
-    console.log(e.currentTarget.value);
+    e.preventDefault()
+    console.log(e.currentTarget.value)
     var $target = $(e.currentTarget.getAttribute('data-target')),
         actionUrl = '/quilts/update/' + $target.data('id') + '/type/',
         formData = {
@@ -88,10 +88,10 @@ var quiltEdit = (function($) {
       data: formData,
       statusCode: {
         200: function() {
-          $target.next('.view-link').html(newName);
+          $target.next('.view-link').html(newName)
         },
         400: function() {
-          alert( "not updated" );
+          alert( "not updated" )
         }
       }
     });
@@ -99,9 +99,9 @@ var quiltEdit = (function($) {
 
   return {
     init: function() {
-      init();
+      init()
     },
     deinit: function() {
     }
   }
-})(jQuery);
+})(jQuery)

@@ -3,22 +3,22 @@ var Quilt = (function() {
   'use strict';
   var Quilt = function(svg, quiltId, quiltData) {
 
-    this.$patchPreview = $('#patch-preview');
-    this.quiltId = quiltId;
-    this.myPatch = '';
-    this.patches = [];
-    this.clickedPatch;
-    this.patchStatus;
+    this.$patchPreview = $('#patch-preview')
+    this.quiltId = quiltId
+    this.myPatch = ''
+    this.patches = []
+    this.clickedPatch
+    this.patchStatus
 
-    this.setupQuilt(svg, quiltData);
+    this.setupQuilt(svg, quiltData)
   };
 
   Quilt.prototype = {
 
     disable: function() {
-      var _this = this;
+      var _this = this
       _.forEach(this.patches, function(patch) {
-        patch.off(_this.getPatchEvents());
+        patch.off(_this.getPatchEvents())
       });
     },
 
@@ -26,39 +26,39 @@ var Quilt = (function() {
       var _this = this;
       _.forEach(patchStatus, function(patch) {
         if (patch.status === 'mine') {
-          _this.myPatch = patch.uid;
+          _this.myPatch = patch.uid
         }
       });
       if (svg.hasChildren()) {
         let svgPatches = svg.children,
           indexOffset = 0;
-        console.log('LENGTH', svgPatches.length);
+        console.log('LENGTH', svgPatches.length)
         _.forEach(svgPatches, function(group, i) {
           if (group === undefined || group.hasChildren() === undefined || !patchStatus[i-indexOffset]) {
-            indexOffset++;
-            console.log("SKIP", group);
-            return;
+            indexOffset++
+            console.log("SKIP", group)
+            return
           }
-          let patch, plus, circle;
+          let patch, plus, circle
           if(group.hasChildren()) {
             _.forEach(group.children, function(item) {
-              let itemType = _this.getItemType(item);
+              let itemType = _this.getItemType(item)
               switch(itemType) {
                 case 'rectangle':
-                  patch = item;
-                  break;
+                  patch = item
+                  break
                 case 'path':
-                  plus = item;
-                  break;
+                  plus = item
+                  break
                 case 'circle':
-                  circle = item;
-                  break;
+                  circle = item
+                  break
               }
             });
           }
 
-          plus.locked = true;
-          plus.visible = false;
+          plus.locked = true
+          plus.visible = false
 
           circle.locked = true;
           circle.visible = false;
