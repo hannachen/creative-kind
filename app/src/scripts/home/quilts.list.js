@@ -2,13 +2,13 @@ var quiltsList = (function($) {
 
   var options = {
     showDonationModal: false
-  };
+  }
 
   var $document = $(document),
-      $loginModal = $('#login-modal').modal('hide'),
-      $donationModal = $('#donation-modal').modal('hide'),
-      $confirmationModal = $('#confirmation-modal').modal('hide'),
-      $alertModal = $('#alert-modal').modal('hide'),
+      $loginModal = $('#login-modal').modal(),
+      $donationModal = $('#donation-modal').modal(),
+      $confirmationModal = $('#confirmation-modal').modal(),
+      $alertModal = $('#alert-modal').modal(),
       $quilts = $('.quilt-list .quilt'),
       $quiltNavContainer = $('#quilt-nav-container'),
       $quiltNames = $quiltNavContainer.find('.quilt'),
@@ -19,8 +19,8 @@ var quiltsList = (function($) {
       $quiltThumbnails = $quiltThumbnailSlide.children(),
       $quiltLinks = $quiltThumbnails.filter(':not(.new)'),
       breakpoint = utils.breakpoint(window.mobileMq),
-      userData,
       padding = breakpoint === 'mobile' ? 12 : 32,
+      userData,
       quiltGroup,
       dragThreshold = 20, // Threshold in %
       dragStartMousePos,
@@ -28,7 +28,7 @@ var quiltsList = (function($) {
       dragDirection,
       dragging,
       currentQuiltIndex = 0,
-      initialPosition = new Point(0, 0);
+      initialPosition = [0, 0];
 
   var containerEl = document.getElementById('canvas-container'),
       grid,
@@ -39,10 +39,10 @@ var quiltsList = (function($) {
   function init() {
 
     if ($('#grid-area').length) {
-      initVariables();
-      initEvents();
-      setupCanvas();
-      resizeThumbnails();
+      initVariables()
+      initEvents()
+      setupCanvas()
+      resizeThumbnails()
     }
     $activeQuilt.addClass('active');
   }

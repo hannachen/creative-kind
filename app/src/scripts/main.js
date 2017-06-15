@@ -1,20 +1,20 @@
 (function($,window) {
 
-  window.mobileMq = 'screen and (min-width: 48em)';
+  window.mobileMq = 'screen and (min-width: 48em)'
 
   var QuiltingBee = {
     init: function() {
-      this.initVariables();
-      this.initEvents();
-      this.initPage();
+      this.initVariables()
+      this.initEvents()
+      this.initPage()
     },
     initVariables: function() {
-      this.$flashMsg = $('#flash-modal');
-      this.$drawerNav = $('#account-drawer, #submenu-drawer');
+      this.$flashMsg = $('#flash-modal')
+      this.$drawerNav = $('#account-drawer, #submenu-drawer')
     },
     initEvents: function() {
-      this.$drawerNav.on('show.bs.drawer', this.onDrawerOpen);
-      this.$drawerNav.on('hidden.bs.drawer', this.onDrawerClose);
+      this.$drawerNav.on('show.bs.drawer', this.onDrawerOpen)
+      this.$drawerNav.on('hidden.bs.drawer', this.onDrawerClose)
     },
     initPage: function() {
       // Allow Page URL to activate a tab's ID

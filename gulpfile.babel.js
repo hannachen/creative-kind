@@ -1,22 +1,21 @@
 'use strict';
 
-import gulp from 'gulp';
-import fs from 'fs';
-import path from 'path';
-import babel from 'gulp-babel';
-import gutil from 'gulp-util';
-import nodemon from 'gulp-nodemon';
-import concat from 'gulp-concat';
-import sort from 'gulp-sort';
-import rename from 'gulp-rename';
-import uglify from 'gulp-uglify';
-import sourcemaps from 'gulp-sourcemaps';
-import cssmin from 'gulp-cssmin';
-import livereload from 'gulp-livereload';
-import connect from 'gulp-connect';
-import modernizr from 'modernizr';
-import sass from 'gulp-ruby-sass';
-import lodashAutobuild from 'gulp-lodash-autobuild';
+import gulp from 'gulp'
+import fs from 'fs'
+import path from 'path'
+import babel from 'gulp-babel'
+import gutil from 'gulp-util'
+import nodemon from 'gulp-nodemon'
+import concat from 'gulp-concat'
+import sort from 'gulp-sort'
+import rename from 'gulp-rename'
+import uglify from 'gulp-uglify'
+import sourcemaps from 'gulp-sourcemaps'
+import cssmin from 'gulp-cssmin'
+import connect from 'gulp-connect'
+import modernizr from 'modernizr'
+import sass from 'gulp-ruby-sass'
+import lodashAutobuild from 'gulp-lodash-autobuild'
 
 function getFolders(dir) {
   return fs.readdirSync(dir)
