@@ -26,7 +26,7 @@ var config = {
       name: 'qb-test'
     },
     port: 3000,
-    db: 'mongodb://localhost/quilting-bee',
+    db: 'mongodb://localhost/creative-kind',
     secret: secretKey,
     nodemailer: {
       service: 'Mailgun',
