@@ -258,17 +258,18 @@ router.post('/reset', function(req, res, next) {
 
         // log the user in after password reset
         passport.authenticate('local')(req, res, function() {
-          req.flash('success', 'Success! Your password has been changed.');
+          req.flash('success', 'Success! Your password has been changed.')
+          let cb = req.query.cb
           if (cb) {
-            res.redirect(cb);
+            res.redirect(cb)
           } else {
-            res.redirect('/account/');
+            res.redirect('/account/')
           }
         });
       });
     } else {
-      req.flash('error', 'Unable to update password, please reset your password again.');
-      res.redirect('back');
+      req.flash('error', 'Unable to update password, please reset your password again.')
+      res.redirect('back')
     }
   });
 });
