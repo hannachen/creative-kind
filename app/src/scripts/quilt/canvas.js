@@ -3,24 +3,24 @@ var quiltCanvas = (function($) {
 
   var options = {
     showDonationModal: false
-  };
+  }
 
-  var $loginModal = $('#login-modal').modal('hide'),
-      $donationModal = $('#donation-modal').modal('hide'),
-      $confirmationModal = $('#confirmation-modal').modal('hide'),
-      $loginInviteModal = $('#login-invite-modal').modal('hide'),
-      $alertModal = $('#alert-modal').modal('hide'),
-      $quiltArea = $('#grid-area');
+  var $loginModal = $('#login-modal').modal('close'),
+      $donationModal = $('#donation-modal').modal('close'),
+      $confirmationModal = $('#confirmation-modal').modal('close'),
+      $loginInviteModal = $('#login-invite-modal').modal('close'),
+      $alertModal = $('#alert-modal').modal('close'),
+      $quiltArea = $('#grid-area')
 
   var containerEl, quiltData, userData, quiltId, newPatch, grid, patchStatus,
       myPatch = '',
-      user = {};
+      user = {}
 
   function init() {
     if ($quiltArea.length) {
-      initVariables();
-      setupCanvas();
-      initEvents();
+      initVariables()
+      setupCanvas()
+      initEvents()
     }
   }
 

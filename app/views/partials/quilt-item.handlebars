@@ -22,23 +22,25 @@
   {{/if_eq}}
 </h2>
 
-{{>theme }}
+{{>theme}}
 
-{{#if_eq user.id quilt._user.id}}
-  <div class="owner-options">
-    {{#if invites}}
-      <div class="invited">
-        <h4>Invited Friends:</h4>
-        <ul>
-          {{#each invites}}
-            <li class="invited-email">{{email}}</li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/if}}
-    <form action="/quilts/invite/{{quilt.id}}" id="invite-form" method="post">
-      {{>invite}}
-      <button type="submit" class="btn btn-invite">Invite</button>
-    </form>
-  </div>
+{{#if_eq quilt.type "private"}}
+  {{#if_eq user.id quilt._user.id}}
+    <div class="owner-options">
+      {{#if invites}}
+        <div class="invited">
+          <h4>Invited Friends:</h4>
+          <ul>
+            {{#each invites}}
+              <li class="invited-email">{{email}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+      <form action="/quilts/invite/{{quilt.id}}" id="invite-form" method="post">
+        {{>invite}}
+        <button type="submit" class="btn btn-invite">Invite</button>
+      </form>
+    </div>
+  {{/if_eq}}
 {{/if_eq}}

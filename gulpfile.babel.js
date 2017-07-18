@@ -50,7 +50,7 @@ var lodashOptions = {
   target: ".tmp/scripts/vendor/lodash.custom.js",
   settings: {}
 };
-gulp.task('lodash:autobuild', function (cb) {
+gulp.task('lodash:autobuild', function() {
   return gulp.src("/app/src/scripts/**", {buffer: false})
     .pipe(lodashAutobuild(lodashOptions))
     .on('error', function (err) {

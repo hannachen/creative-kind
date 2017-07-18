@@ -104,11 +104,15 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
                 var simplePatch = {
                   uid: patch.uid,
                   status: patch.status
-                };
-                simplePatchData.push(simplePatch);
+                }
+                simplePatchData.push(simplePatch)
               });
-              var showPatchActions = req.session['showPatchActions'];
-              req.session['showPatchActions'] = null;
+              let showPatchActions = req.session['showPatchActions']
+              let isAdmin = req.user && req.user.isAdmin
+              let isOwner = req.user && quilt._user && String(req.user.id) === String(quilt._user.id)
+              let showThemeSelector = isAdmin || isOwner
+
+              req.session['showPatchActions'] = null
               res.render('pages/quilts/view', {
                 pageId: 'view-quilt',
                 title: 'View Quilt',
@@ -118,7 +122,8 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
                 themes: themes,
                 invites: invites,
                 newPatch: req.params.patchid,
-                showActions: showPatchActions
+                showActions: showPatchActions,
+                showThemeSelector: showThemeSelector
               });
 
             })
@@ -131,19 +136,33 @@ router.get('/view/:id/:patchid?', function (req, res, next) {
  * Update the theme of a quilt. AJAX.
  */
 router.post('/update/:id/theme/', isAuthenticated, function (req, res, next) {
-  var query = {'_id':req.params.id},
-      update = { $set: {'_theme':req.body.theme}};
-  console.log(req.body);
-  Quilt.update(query, update, function(err, quilt) {
-    console.log('UPDATED QUILT***', quilt);
-    if (err) {
-      res.sendStatus(400);
-    } else {
-      var data = {};
-      res.sendStatus(200);
-      // res.send(data);
-    }
-  });
+  console.log(req.body)
+
+  // Prevent random people from updating the quilt
+  Quilt
+    .findOne({'_id':req.params.id})
+    .exec(function (err, quilt) {
+      if (err) return next(err);
+
+      let isAdmin = req.user && req.user.isAdmin
+      let isOwner = req.user && quilt._user && String(req.user.id) === String(quilt._user.id)
+      if (isAdmin || isOwner) {
+
+        let query = {'_id':req.params.id},
+            update = { $set: {'_theme':req.body.theme}}
+        Quilt.update(query, update, function(err, quilt) {
+          console.log('UPDATED QUILT***', quilt)
+          if (err) {
+            res.sendStatus(400)
+          } else {
+            res.sendStatus(200)
+          }
+        })
+
+      } else {
+        res.sendStatus(400)
+      }
+    });
 });
 
 router.patch('/update/:id/type/', isAuthenticated, function (req, res) {

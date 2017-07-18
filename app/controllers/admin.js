@@ -52,7 +52,7 @@ router.get('/patches/view', isAuthenticated, function (req, res, next) {
       res.render('pages/admin/patches-view', {
         layout: 'admin',
         title: 'Patches',
-        owner: true,
+        owner: true, // display owners
         patches: patches
       });
     });
@@ -60,12 +60,14 @@ router.get('/patches/view', isAuthenticated, function (req, res, next) {
 
 router.get('/quilts/view', isAuthenticated, function (req, res, next) {
   Quilt.find({})
+    .populate('_user')
     .exec(function(err, quilts) {
       if (err) return next(err);
       res.render('pages/account/quilts', {
         layout: 'admin',
         title: 'Quilts',
         quilts: quilts,
+        owner: true, // display owners
         pageId: 'all-quilts'
       });
     });

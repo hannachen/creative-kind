@@ -1,4 +1,4 @@
-{{#if_eq user.id quilt._user.id}}
+{{#if showThemeSelector}}
   {{>theme-selector}}
 {{else}}
   {{#if quilt._theme}}
@@ -25,5 +25,5 @@
   {{else}}
     No theme selected.
   {{/if}}
-{{/if_eq}}
+{{/if}}
 
