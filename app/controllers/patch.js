@@ -4,6 +4,7 @@ var express = require('express'),
     Quilt = mongoose.model('Quilt'),
     Patch = mongoose.model('Patch'),
     async = require('async'),
+    svg2png = require('svg2png'),
     fs = require('fs'),
     gm = require('gm');
 
@@ -82,10 +83,10 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
     .populate('_quilt')
     .deepPopulate('_quilt._theme.colors')
     .exec(function (err, patch) {
-      if (err) return next(err);
+      if (err) { return next(err) }
       if (patch.status === 'complete' && !req.user.isAdmin) {
         res.redirect('/quilts/view/'+patch._quilt);
-        return;
+        return
       }
       if (patch && patch._user) {
         if (String(req.user.id) === String(patch._user) || req.user.isAdmin) {
@@ -93,10 +94,10 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
             title: 'Edit Patch',
             patch: patch,
             pageId: 'edit-patch'
-          });
+          })
         } else {
           res.redirect('/quilts/view/'+patch._quilt);
-          return;
+          return
         }
       } else {
 
@@ -105,10 +106,10 @@ router.get('/edit/:uid*', isAuthenticated, function (req, res, next) {
           patch: patch,
           theme: patch._quilt._theme,
           pageId: 'edit-patch'
-        });
+        })
       }
-    });
-});
+    })
+})
 
 router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
   var patchData = req.body.patchData;
@@ -228,14 +229,14 @@ function savePatchAsPng(patch, filePath, res, next, cb) {
     .exec(function (err, quilt) {
       if (err) return next(err);
       var themeSets = quilt._theme.colors,
-        colorSetIndex = parseInt(patch.colorSet),
-        patchColors = themeSets[colorSetIndex].colors,
-        colorArray = patch.colorIndex.split(','),
-        colors = [];
+          colorSetIndex = parseInt(patch.colorSet),
+          patchColors = themeSets[colorSetIndex].colors,
+          colorArray = patch.colorIndex.split(','),
+          colors = [];
       if (colorArray.length) {
         colors = colorArray.map(function(colorIndex) {
           return '#' + patchColors[colorIndex];
-        });
+        })
       }
 
       // Render and get svg as string
@@ -246,20 +247,25 @@ function savePatchAsPng(patch, filePath, res, next, cb) {
       }, function(err, svg) {
 
         // Convert svg to png and save to path
-        var buf = new Buffer(svg);
+        var buf = new Buffer(svg)
 
-        gm(buf, 'patch.svg')
-          .scale(1000, 1000)
-          .write(filePath, function (err) {
-            if (err) {
-              console.log('GM error', err);
-              return next(err);
-            } else {
-              cb.call();
-            }
-          });
-      });
-    });
+        // Use PhantomJS to scale the SVG, then use gm to scale down and save to file path
+        svg2png(buf, { width: 2500, height: 2500 })
+          .then(buffer => gm(buffer, 'patch.svg')
+            .antialias(false)
+            .scale(1000, 1000)
+            .write(filePath, function (err) {
+              if (err) {
+                console.log('GM error', err)
+                return next(err)
+              } else {
+                cb.call()
+              }
+            }))
+          .catch(e => console.error(e))
+
+      })
+    })
 }
 
 router.get('/svg/:uid', function (req, res, next) {
