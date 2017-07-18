@@ -26,7 +26,7 @@
         <a class="view-link" href="/quilts/view/{{id}}">
           {{#if title}}{{title}}{{else}}{{id}}{{/if}}
           {{#if_eq type 'private'}}<span class="icon icon-lock"></span>{{/if_eq}}
-          {{#if owner}}<span class="owner">{{_user.username}}</span>{{/if}}
+          {{#if ../owner}}<span class="owner tag tag-info">{{_user.username}}</span>{{/if}}
         </a>
       </li>
     {{/each}}
