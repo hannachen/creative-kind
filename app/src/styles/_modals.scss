@@ -14,7 +14,6 @@
   }
 }
 .modal-dialog {
-  padding: 0 1em 1em;
   bottom: 0;
   height: 100%;
   margin: 0 auto;
@@ -32,10 +31,9 @@
   }
 
   .modal-content {
-    top: 50%;
-    transform: translateY(-50%);
     pointer-events: auto;
     border-radius: .6em;
+    padding: 0;
     border: 0;
     overflow: hidden;
   }
@@ -51,7 +49,6 @@
   .modal-title {
     text-align: center;
     font-weight: bold;
-    //text-transform: uppercase;
   }
   .modal-body {
     padding: .5em 2.5em 1.5em;
@@ -67,6 +64,9 @@
     padding: 0;
     border-top: 1px solid $gray;
 
+    .btn { // Override MaterializeCSS modal styles
+      margin: 0;
+    }
     .btn-primary,
     .btn-secondary {
       display: block;

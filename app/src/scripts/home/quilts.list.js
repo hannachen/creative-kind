@@ -90,7 +90,7 @@ var quiltsList = (function($) {
         // Add cb to buttons
         $loginModal.find('.signin-link').attr('href', '/account/login/?cb=' + targetUrl);
         $loginModal.find('.signup-link').attr('href', '/account/signup/?cb=' + targetUrl);
-        $loginModal.modal('show');
+        $loginModal.modal('open');
       }
     } else {
       if (patchData.status === 'mine') {
@@ -98,11 +98,11 @@ var quiltsList = (function($) {
         window.location.href = targetUrl;
       } else if (patchData.status === 'new') {
         if (myPatch.length) {
-          $alertModal.modal('show');
+          $alertModal.modal('open');
         } else {
           // $confirmationButton.attr('href', targetUrl);
           targetUrl = '/patch/start/' + patchData.uid;
-          $confirmationModal.modal('show');
+          $confirmationModal.modal('open');
 
           // Show modal based on feature toggle
           if (options.showDonationModal) {

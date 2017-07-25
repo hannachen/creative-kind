@@ -24,7 +24,7 @@
       }
       console.log('flash',_.isEmpty(this.$flashMsg.find('.modal-body').text().trim()));
       if (!_.isEmpty(this.$flashMsg.find('.modal-body').text().trim())) {
-        this.$flashMsg.modal('show');
+        this.$flashMsg.modal('open');
       }
     },
     onDrawerOpen: function(e) {

@@ -274,12 +274,6 @@ router.post('/reset', function(req, res, next) {
   });
 });
 
-
-router.get('/login', function(req, res) {
-  var cb = req.query.cb;
-  res.redirect('/login-signup/'+(cb?'?cb='+cb:'')+'#login');
-});
-
 router.post('/login', passport.authenticate('local'), function(req, res) {
   var cb = req.body.cb;
   if (cb) {
@@ -288,7 +282,6 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
     res.redirect('/');
   }
 });
-
 
 router.get('/logout', function(req, res) {
   req.logout();

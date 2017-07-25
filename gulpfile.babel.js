@@ -64,7 +64,6 @@ gulp.task('js:vendor', function() {
       'bower_components/paper/dist/paper-full.js',
       'bower_components/bootstrap/js/dist/util.js',
       'bower_components/bootstrap/js/dist/tab.js',
-      'bower_components/bootstrap/js/dist/modal.js',
       'bower_components/bootstrap/js/dist/collapse.js',
       'bower_components/bootstrap-drawer/dist/js/drawer.js',
       'bower_components/bootstrap-tokenfield/dist/bootstrap-tokenfield.js',

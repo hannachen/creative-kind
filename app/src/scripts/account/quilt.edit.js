@@ -35,7 +35,7 @@ var quiltEdit = (function($) {
         $target = $(e.currentTarget.getAttribute('data-target')),
         actionUrl = '/quilts/' + $target.data('id');
     $confirmModal.find('.btn-delete').on('click', onConfirmClick($currentTarget, actionUrl))
-    $confirmModal.modal('show')
+    $confirmModal.modal('open')
   }
 
   function onConfirmClick($target, actionUrl) {
@@ -50,7 +50,7 @@ var quiltEdit = (function($) {
         }
       }
     });
-    $confirmModal.modal('hide')
+    $confirmModal.modal('close')
     $confirmModal.find('.btn-delete').off('click', onConfirmClick)
   }
 

@@ -2321,100 +2321,6 @@ a.tag:focus, a.tag:hover {
   .tag-danger[href]:focus, .tag-danger[href]:hover {
     background-color: #c9302c; }
 
-.modal-open {
-  overflow: hidden; }
-
-.modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  overflow: hidden;
-  outline: 0; }
-  .modal.fade .modal-dialog {
-    transition: transform .3s ease-out;
-    transform: translate(0, -25%); }
-  .modal.in .modal-dialog {
-    transform: translate(0, 0); }
-
-.modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto; }
-
-.modal-dialog {
-  position: relative;
-  width: auto;
-  margin: 10px; }
-
-.modal-content {
-  position: relative;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0; }
-
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1040;
-  background-color: #000; }
-  .modal-backdrop.fade {
-    opacity: 0; }
-  .modal-backdrop.in {
-    opacity: 0.5; }
-
-.modal-header {
-  padding: 15px;
-  border-bottom: 1px solid #e5e5e5; }
-  .modal-header::after {
-    content: "";
-    display: table;
-    clear: both; }
-
-.modal-header .close {
-  margin-top: -2px; }
-
-.modal-title {
-  margin: 0;
-  line-height: 1.5; }
-
-.modal-body {
-  position: relative;
-  padding: 15px; }
-
-.modal-footer {
-  padding: 15px;
-  text-align: right;
-  border-top: 1px solid #e5e5e5; }
-  .modal-footer::after {
-    content: "";
-    display: table;
-    clear: both; }
-
-.modal-scrollbar-measure {
-  position: absolute;
-  top: -9999px;
-  width: 50px;
-  height: 50px;
-  overflow: scroll; }
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 600px;
-    margin: 30px auto; }
-
-  .modal-sm {
-    max-width: 300px; } }
-@media (min-width: 992px) {
-  .modal-lg {
-    max-width: 900px; } }
 .fade {
   opacity: 0;
   transition: opacity .15s linear; }
@@ -5124,7 +5030,7 @@ a {
 .z-depth-3 {
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3); }
 
-.z-depth-4 {
+.z-depth-4, .modal {
   box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3); }
 
 .z-depth-5 {
@@ -6268,6 +6174,76 @@ select:disabled {
   left: 0;
   height: 18px; }
 
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: #fafafa;
+  padding: 0;
+  max-height: 70%;
+  width: 55%;
+  margin: auto;
+  overflow-y: auto;
+  border-radius: 2px;
+  will-change: top, opacity; }
+  @media only screen and (max-width: 992px) {
+    .modal {
+      width: 80%; } }
+  .modal h1, .modal h2, .modal h3, .modal h4 {
+    margin-top: 0; }
+  .modal .modal-content {
+    padding: 24px; }
+  .modal .modal-close {
+    cursor: pointer; }
+  .modal .modal-footer {
+    border-radius: 0 0 2px 2px;
+    background-color: #fafafa;
+    padding: 4px 6px;
+    height: 56px;
+    width: 100%; }
+    .modal .modal-footer .btn, .modal .modal-footer form .button-facebook, form .modal .modal-footer .button-facebook,
+    .modal .modal-footer form .button-twitter,
+    form .modal .modal-footer .button-twitter, .modal .modal-footer form .btn-submit, form .modal .modal-footer .btn-submit, .modal .modal-footer #create-quilt-form .submit-create-quilt, #create-quilt-form .modal .modal-footer .submit-create-quilt, .modal .modal-footer .btn-flat {
+      float: right;
+      margin: 6px 0; }
+
+.modal-overlay {
+  position: fixed;
+  z-index: 999;
+  top: -100px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 125%;
+  width: 100%;
+  background: #000;
+  display: none;
+  will-change: opacity; }
+
+.modal.modal-fixed-footer {
+  padding: 0;
+  height: 70%; }
+  .modal.modal-fixed-footer .modal-content {
+    position: absolute;
+    height: calc(100% - 56px);
+    max-height: 100%;
+    width: 100%;
+    overflow-y: auto; }
+  .modal.modal-fixed-footer .modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 0; }
+
+.modal.bottom-sheet {
+  top: auto;
+  bottom: -100%;
+  margin: 0;
+  width: 100%;
+  max-height: 45%;
+  border-radius: 0;
+  will-change: bottom, opacity; }
+
 /* Keyframes for the fade-in */
 @keyframes fadeIn {
   from {
@@ -6395,7 +6371,6 @@ label:hover:before {
       height: auto; } }
 
 .modal-dialog {
-  padding: 0 1em 1em;
   bottom: 0;
   height: 100%;
   margin: 0 auto;
@@ -6412,10 +6387,9 @@ label:hover:before {
     .modal-dialog {
       max-width: 750px; } }
   .modal-dialog .modal-content {
-    top: 50%;
-    transform: translateY(-50%);
     pointer-events: auto;
     border-radius: .6em;
+    padding: 0;
     border: 0;
     overflow: hidden; }
   .modal-dialog .modal-header {
@@ -6437,6 +6411,10 @@ label:hover:before {
     text-align: center;
     padding: 0;
     border-top: 1px solid #b2b2b2; }
+    .modal-dialog .modal-footer .btn, .modal-dialog .modal-footer form .button-facebook, form .modal-dialog .modal-footer .button-facebook,
+    .modal-dialog .modal-footer form .button-twitter,
+    form .modal-dialog .modal-footer .button-twitter, .modal-dialog .modal-footer form .btn-submit, form .modal-dialog .modal-footer .btn-submit, .modal-dialog .modal-footer #create-quilt-form .submit-create-quilt, #create-quilt-form .modal-dialog .modal-footer .submit-create-quilt {
+      margin: 0; }
     .modal-dialog .modal-footer .btn-primary,
     .modal-dialog .modal-footer .btn-secondary {
       display: block;

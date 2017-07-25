@@ -48,13 +48,14 @@ router.get('/view/:uid*', function (req, res, next) {
     .populate('_quilt')
     .exec(function (err, patch) {
       if (err) return next(err);
-      console.log('EDIT PATCH');
       if (patch._user) {
         res.render('pages/patch/view', {
           title: 'View Patch',
           patch: patch,
-          pageId: 'view-patch'
-        });
+          pageId: 'view-patch',
+          fbConfig: res.fbConfig,
+          host: res.config.host
+        })
       } else {
         res.redirect('/quilts/view/'+patch._quilt.id);
       }

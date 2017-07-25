@@ -49,8 +49,9 @@ module.exports = function(app, config) {
     defaultLayout: 'main',
     partialsDir: [config.root + '/app/views/partials/']
   }));
-  app.set('views', config.root + '/app/views');
-  app.set('view engine', 'handlebars');
+  app.set('views', config.root + '/app/views')
+  app.set('view engine', 'handlebars')
+  app.set('config', config)
 
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
@@ -79,12 +80,12 @@ module.exports = function(app, config) {
 
   // Make the user object available to all views provided that req.user is available.
   app.use(function(req, res, next) {
-    res.locals.user = req.user;
-    res.locals.flash = req.flash();
-    req.config = config;
-    req.fbConfig = fbConfig;
-    next();
-  });
+    res.locals.user = req.user
+    res.locals.flash = req.flash()
+    res.config = config
+    res.fbConfig = fbConfig[app.locals.ENV]
+    next()
+  })
 
   // Initialize reCAPTCHA
   recaptcha.init('6LdaWRkTAAAAAA4kTdqU6kzSCv2CgQsfgtKltN2q', '6LdaWRkTAAAAAO9kULf6PhFROv1wOCbSg-AgS6lZ');

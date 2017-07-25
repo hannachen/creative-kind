@@ -174,30 +174,17 @@ var patch = (function($) {
     console.log('SAVING...', e)
     var $form = $(e.currentTarget.getAttribute('data-target')),
         status = e.currentTarget.value.toLowerCase(),
-        postUrl = $form.attr('action') + '/' + status;
+        postUrl = $form.attr('action') + '/' + status,
+        modalId = status === 'complete' ? '#submit-patch-modal' : '#save-patch-modal',
+        $nextModal = $(modalId).modal()
 
-    console.log(postUrl)
-    if (status === 'complete') {
-      var $submitPatchModal = $('#submit-patch-modal')
-      $submitPatchModal.find('.btn').on('click', function() {
-        $(this).off('click')
-      })
-      $submitPatchModal.find('.btn-submit-design').on('click', function() {
-        savePatch(postUrl)
-      })
-      $submitPatchModal.modal('show')
-    } else {
-      var $savePatchModal = $('#save-patch-modal')
-      console.log('modal', $savePatchModal)
-      $savePatchModal.find('.btn').on('click', function() {
-        $(this).off('click')
-      });
-      $savePatchModal.find('.btn-save-design').on('click', function() {
-        savePatch(postUrl)
-      });
-      $savePatchModal.modal('show')
-    }
-
+    $nextModal.find('.btn').on('click', function() {
+      $(this).off('click')
+    })
+    $nextModal.find('.btn-primary').on('click', function() {
+      savePatch(postUrl)
+    })
+    $nextModal.modal('open')
   }
 
   function savePatch(postUrl) {
@@ -207,18 +194,18 @@ var patch = (function($) {
         $svg = $(doc).find('#gridareas'),
         $gridItem = $svg.find('path'),
         colorData = [],
-        data = [];
+        data = []
 
     // Collect color index
     _.forEach(colourAreas, function(shapeArea) {
       var colorIndex = shapeArea.data.colorIndex || ''
       colorData.push(colorIndex)
-    });
+    })
 
     // Collect shape colors
     $gridItem.each(function(i, v) {
       data.push(v.getAttribute('fill'))
-    });
+    })
 
     // Post the data
     $.post(postUrl, {
@@ -230,7 +217,7 @@ var patch = (function($) {
     }, function(data) {
       console.log(data)
       window.location = data.url
-    }, 'json');
+    }, 'json')
   }
 
   function initFormActions() {
