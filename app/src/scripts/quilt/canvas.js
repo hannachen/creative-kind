@@ -5,11 +5,11 @@ var quiltCanvas = (function($) {
     showDonationModal: false
   }
 
-  var $loginModal = $('#login-modal').modal('close'),
-      $donationModal = $('#donation-modal').modal('close'),
-      $confirmationModal = $('#confirmation-modal').modal('close'),
-      $loginInviteModal = $('#login-invite-modal').modal('close'),
-      $alertModal = $('#alert-modal').modal('close'),
+  var $loginModal = $('#login-modal').modal(),
+      $donationModal = $('#donation-modal').modal(),
+      $confirmationModal = $('#confirmation-modal').modal(),
+      $loginInviteModal = $('#login-invite-modal').modal(),
+      $alertModal = $('#alert-modal').modal(),
       $quiltArea = $('#grid-area')
 
   var containerEl, quiltData, userData, quiltId, newPatch, grid, patchStatus,
@@ -70,22 +70,22 @@ var quiltCanvas = (function($) {
       } else {
         targetUrl = '/patch/edit/' + patchData.uid;
         if (patchData.status === 'mine') {
-          window.location.href = targetUrl;
+          window.location.href = targetUrl
         } else if (patchData.status === 'new') {
           if (myPatch.length) {
-            $alertModal.modal('open');
+            $alertModal.modal('open')
           } else {
             targetUrl = '/patch/start/' + patchData.uid;
-            $confirmationModal.modal('open');
+            $confirmationModal.modal('open')
             // Show modal based on feature toggle
             if (options.showDonationModal) {
               $donationModal.find('.btn-secondary').on('click', function() {
-                window.location.href = targetUrl;
-              });
+                window.location.href = targetUrl
+              })
             } else {
               // Go straight to patch if donation toggle is turned off
               $confirmationModal.find('.btn-primary').off('click').on('click', function() {
-                window.location.href = targetUrl;
+                window.location.href = targetUrl
               })
             }
           }

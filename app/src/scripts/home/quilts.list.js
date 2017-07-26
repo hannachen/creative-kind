@@ -94,29 +94,30 @@ var quiltsList = (function($) {
       }
     } else {
       if (patchData.status === 'mine') {
-        targetUrl = '/patch/edit/' + patchData.uid;
-        window.location.href = targetUrl;
+        targetUrl = '/patch/edit/' + patchData.uid
+        window.location.href = targetUrl
       } else if (patchData.status === 'new') {
         if (myPatch.length) {
-          $alertModal.modal('open');
+          $alertModal.modal('open')
         } else {
           // $confirmationButton.attr('href', targetUrl);
-          targetUrl = '/patch/start/' + patchData.uid;
-          $confirmationModal.modal('open');
+          targetUrl = '/patch/start/' + patchData.uid
+          console.log(targetUrl)
+          $confirmationModal.modal('open')
 
           // Show modal based on feature toggle
           if (options.showDonationModal) {
             $donationModal.find('.btn-secondary').on('click', function() {
-              window.location.href = targetUrl;
-            });
+              window.location.href = targetUrl
+            })
           } else {
             // Go straight to patch if donation toggle is turned off
             $confirmationModal.find('.btn-primary').off('click').on('click', function() {
-              window.location.href = targetUrl;
+              window.location.href = targetUrl
             })
           }
         }
-        view.emit('onMouseUp');
+        view.emit('onMouseUp')
       }
     }
   }

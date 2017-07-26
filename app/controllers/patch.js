@@ -154,12 +154,12 @@ router.post('/save/:uid/:status?', isAuthenticated, function (req, res, next) {
 router.get('/start/:uid*', isAuthenticated, function (req, res, next) {
   Patch.findOne({'uid':req.params.uid })
     .exec(function (err, patch) {
-      if (err) return next(err);
+      if (err) return next(err)
       if (patch._user === null) {
-        patch._user = req.user.id;
-        patch.status = 'progress';
+        patch._user = req.user.id
+        patch.status = 'progress'
         patch.save(function(err) {
-          if (err) throw err;
+          if (err) throw err
           console.log('patch saved.');
           res.redirect('/patch/edit/'+patch.uid);
         });
