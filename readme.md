@@ -6,6 +6,7 @@ Prototype/proof of concept for Monika's community-powered non-profit--hack/slash
 yarn >= v0.27 or npm >= v5.0
 
 ### Built With
+- [Paper.js](http://http://paperjs.org/) - Vector graphic framework
 - [Materialize](http://materializecss.com/) - UI framework
 - [Express](https://expressjs.com/) - Web application
 - [Passport.js](http://www.passportjs.org/) - Social/Login authentication
